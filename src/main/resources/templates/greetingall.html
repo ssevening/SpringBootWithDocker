@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<p th:text="'Hello, ' + ${users} + '!'" />
+
+
+<li>List循环：
+    <table border="1">
+        <tr>
+            <th>用户名</th>
+            <th>邮箱</th>
+        </tr>
+        <tr th:each="user,userStat : ${users}">
+            <td th:text="${user.name}">Onions</td>
+            <td th:text="${user.email}">test@test.com.cn</td>
+        </tr>
+    </table>
+</li>
+
+</body>
+</html>
