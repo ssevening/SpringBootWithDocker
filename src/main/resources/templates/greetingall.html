@@ -15,7 +15,7 @@
             <th>用户名</th>
             <th>邮箱</th>
         </tr>
-        <tr th:each="user, userStat : ${users}">
+        <tr th:each="user : ${users}">
             <td th:text="${user.name}">Onions</td>
             <td th:text="${user.email}">test@test.com.cn</td>
         </tr>

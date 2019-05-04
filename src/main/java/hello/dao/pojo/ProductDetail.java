@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -22,6 +25,12 @@ public class ProductDetail implements Serializable {
     // 逗号分隔的
     @Column(nullable = false, columnDefinition = "varchar(3072)")
     public String allImageUrls;
+
+    public List<String> getImageUrlList() {
+        String[] imageArray = allImageUrls.split(",");
+        return Arrays.asList(imageArray);
+    }
+
     // 平均评分4.8
     public String evaluationScore;
 
@@ -59,6 +68,7 @@ public class ProductDetail implements Serializable {
 
     // 点击URL
     public String clickUrl;
+
     public String getDisplayPrice() {
         if (localPrice != null) {
             return localPrice;

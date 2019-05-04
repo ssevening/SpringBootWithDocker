@@ -3,9 +3,7 @@
 <!--/*@thymesVar id="product" type="hello.dao.pojo.ProductDetail"*/-->
 <head>
     <meta charset="utf-8"/>
-    <title th:text="${product.productTitle}">Vadim women lace patchwork floral playsuits ruffles flare sleeve bodysuits
-        female orange black stylish top blusas KA665-in Bodysuits from Women's Clothing on Aliexpress.com | Alibaba
-        Group</title>
+    <title th:text="${product.productTitle}">Product Title</title>
     <meta name="keywords"
           th:content="${product.keywords}"
           content="Bodysuits, Cheap Bodysuits, Vadim women lace patchwork floral playsuits ruffles flare sleeve bodysuits female orange black stylish top blusas KA665"/>
@@ -76,7 +74,8 @@ Enjoy ✓Free Shipping Worldwide! ✓Limited Time Sale&nbsp;✓Easy Return."/>
     <div class="store-header notranslate" id="j-store-header">
         <div class="container util-clearfix">
             <div class="store-header-container" data-role="store-header">
-                <span class="shop-name"><i>Store:</i><a th:href="${product.storeUrl}" href="" th:text="${product.storeName}">Store Name</a></span>
+                <span class="shop-name"><i>Store:</i><a th:href="${product.storeUrl}" href=""
+                                                        th:text="${product.storeName}">Store Name</a></span>
                 <span class="shop-time">Open:<em>6 year(s)</em></span>
                 <div class="store-rank" data-role="shop-rank"></div>
                 <div class="positive-feedback" data-role="positive-feedback"></div>
@@ -106,13 +105,13 @@ Enjoy ✓Free Shipping Worldwide! ✓Limited Time Sale&nbsp;✓Easy Return."/>
                                 <a href=""><b></b><span></span></a>
                             </dd>
                         </dl>
-                        <p class="no-dsr" data-role="no-dsr">Detailed Seller Ratings information is unavailable when there're less than 10 ratings.</p>
+                        <p class="no-dsr" data-role="no-dsr">Detailed Seller Ratings information is unavailable when
+                            there're less than 10 ratings.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 
 
     <div class="ui-breadcrumb" data-spm="100004">
@@ -121,15 +120,109 @@ Enjoy ✓Free Shipping Worldwide! ✓Limited Time Sale&nbsp;✓Easy Return."/>
             <span class="divider">&gt;</span>
             <a href="https://www.aliexpress.com/all-wholesale-products.html">All Categories</a>
             <span class="divider">&gt;</span>
-            <a href="https://www.aliexpress.com/category/100003109/women-clothing.html" title="Women's Clothing">Women's Clothing</a>
+            <a href="https://www.aliexpress.com/category/100003109/women-clothing.html" title="Women's Clothing">Women's
+                Clothing</a>
             <span class="divider">&gt;</span>
-            <h2><a href="https://www.aliexpress.com/category/200215336/bodysuits.html" title="Bodysuits">Bodysuits</a></h2>
+            <h2><a href="https://www.aliexpress.com/category/200215336/bodysuits.html" title="Bodysuits">Bodysuits</a>
+            </h2>
         </div>
     </div>
 
 
+    <div class="detail" id="j-detail-page" itemscope="" itemtype="//schema.org/Product">
+        <div class="detail-bd-wrap">
+            <div class="detail-bd container util-clearfix detail-image-dynamic" id="j-product-detail-bd">
+                <div class="detail-main" data-spm="1000016">
+                    <div class="detail-wrap">
+                        <h1 class="product-name" itemprop="name" th:text="${product.productTitle}"></h1>
+                        <div class="product-star-order">
+                        </div>
+                        <!-- detail esi-->
+                        <div class="product-price-area">
+
+                        </div>
+                        <div class="product-attribute-main" id="j-product-attribute-main">
+
+                        </div>
+                        <div id="j-p-shop-support"></div>
 
 
+                        <div id="j-seller-promise-list" class="seller-promise-list">
+                            <dl class="return-policy util-clearfix">
+                                <dt>
+                                    Return Policy
+                                </dt>
+                                <dd>
+                                    <div class="s-serve sp-1">
+                                        Returns accepted if product not as described, buyer pays return shipping fee; or
+                                        keep the product &amp; agree refund with seller.
+                                        <a rel="nofollow" class="ui-arrow-right-after" href="javascript:void(0)">View
+                                            details</a>
+                                    </div>
+                                </dd>
+                            </dl>
+                        </div>
+                        <dl class="p-property-item p-payment-type" id="j-p-payment-type">
+                            <dt class="p-item-title">
+                                Payment:
+                            </dt>
+                            <dd class="p-item-main util-clearfix">
+                                <ul class="payment-type-list util-clearfix">
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="detail-gallery">
+                    <div class="detail-gallery-main" id="j-detail-gallery-main">
+                        photo show area
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-main-layout container util-clearfix">
+            <div class="col-main">
+                <div class="main-wrap">
+                    <div class="main-content">
+                        <div id="j-product-tabbed-pane" class="ui-tab ui-tab-normal">
+                            <div class="ui-tab-body">
+                                <div class="ui-tab-pane" data-role="panel" style="display:block;">
+                                    <div class="product-desc" id="j-product-desc">
+                                        <div class="ui-box product-description-main" id="j-product-description">
+                                            <div class="ui-box-title">
+                                                Product Description
+                                            </div>
+                                            <div class="ui-box-body">
+                                                <div class="description-content" data-role="description">
+                                                    <div th:each="image : ${product.getImageUrlList()}">
+                                                        <img th:src="${image}" th:alt="${product.productTitle}"/><br/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-box related-products-main" id="j-related-products">
+                            <div class="ui-box-title">
+                                <h5>More Products</h5>
+                            </div>
+                            <div class="ui-box-body">
+                                <div id="j-rpbk-from-thisseller" class="ui-sub-box" data-spm="1000013">
+                                    <!-- 类似产品推荐 -->
+                                </div>
+                            </div>
+                        </div>
+                        <div id="j-related-searches" data-spm="1000012">
+                            <div class="loading32"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>
