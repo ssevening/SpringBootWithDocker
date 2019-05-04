@@ -64,7 +64,7 @@ public class MainController {
 
     @GetMapping(path = "/addProduct") // Map ONLY GET Requests
     public @ResponseBody
-    String addProduct(@RequestParam String productId) {
+    String addProduct(@RequestParam String productId,@RequestParam String productCategory) {
         String resultStr = "200";
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
@@ -90,6 +90,7 @@ public class MainController {
                     Map<String, String> map = WebPageUtils.getSEOInfo(MessageFormat.format("https://www.aliexpress.com/item/{0}.html", productId));
                     p.keywords = map.get(WebPageUtils.KEYWORDS);
                     p.description = map.get(WebPageUtils.DESC);
+                    p.productCategory = productCategory;
                     productRepository.save(p);
                 }
             } catch (Exception e) {

@@ -39,11 +39,6 @@ Enjoy ✓Free Shipping Worldwide! ✓Limited Time Sale&nbsp;✓Easy Return."/>
         <a class="notice-close" data-role="close" href="javascript:;">Close</a>
     </div>
 </div>
-<link href="//i.alicdn.com/ae-header/20190416231626/buyer/front/ae-header.css" rel="stylesheet" type="text/css"/>
-<div class="site-download-header" data-spm="100067" id="j-site-download-header" style="display:none;">
-    <a href="https://itunes.apple.com/app/aliexpress-for-ipad/id854356557"><img
-            src="//ae01.alicdn.com/kf/HTB1tEHzb.gQMeJjy0Ff762ddXXaF.png"/></a>
-</div>
 <div class="top-lighthouse" data-spm="1000001" id="top-lighthouse">
     <div class="top-lighthouse-wrap container">
         <div class="nav-global" id="nav-global">
@@ -73,19 +68,7 @@ Enjoy ✓Free Shipping Worldwide! ✓Limited Time Sale&nbsp;✓Easy Return."/>
 
     <div class="header header-outer-container" id="header" data-spm="1000002">
         <div class="header-wrap container">
-            <div class="hm-left">
-                <div class="header-categories" id="header-categories">
-                    <span class="categories-title">CATEGORIAS</span>
-                    <i class="balloon-arrow"></i>
-                </div>
-                <div class="site-logo inside-page-logo">
-                    <a href="//www.aliexpress.com/"><span class="logo-base">AliExpress</span></a>
-                </div>
-            </div>
-            <div class="hm-middle">
-                <form id="form-searchbar" class="searchbar-form" action="/wholesale" method="get">
-                </form>
-            </div>
+
         </div>
     </div>
 
@@ -93,7 +76,7 @@ Enjoy ✓Free Shipping Worldwide! ✓Limited Time Sale&nbsp;✓Easy Return."/>
     <div class="store-header notranslate" id="j-store-header">
         <div class="container util-clearfix">
             <div class="store-header-container" data-role="store-header">
-                <span class="shop-name"><i>Store:</i><a href="//www.aliexpress.com/store/913072" title="">vadim Official Store</a></span>
+                <span class="shop-name"><i>Store:</i><a th:href="${product.storeUrl}" href="" th:text="${product.storeName}">Store Name</a></span>
                 <span class="shop-time">Open:<em>6 year(s)</em></span>
                 <div class="store-rank" data-role="shop-rank"></div>
                 <div class="positive-feedback" data-role="positive-feedback"></div>

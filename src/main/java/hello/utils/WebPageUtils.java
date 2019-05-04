@@ -14,13 +14,13 @@ public class WebPageUtils {
     public static String DESC = "description";
     public static String KEYWORDS = "keywords";
 
+
     public static Map<String, String> getSEOInfo(String url) {
         HashMap<String, String> map = new HashMap<>();
         Document doc = null;
         try {
             doc = Jsoup.connect(url).get();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         String title = doc.title();

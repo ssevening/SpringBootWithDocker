@@ -4,9 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -27,6 +24,9 @@ public class ProductDetail implements Serializable {
     public String allImageUrls;
     // 平均评分4.8
     public String evaluationScore;
+
+    // 产品类目
+    public String productCategory;
     // 权重
     public String volume;
     public String productId;
