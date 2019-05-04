@@ -43,7 +43,6 @@ public class ProductDetail implements Serializable {
     @Column(nullable = true, columnDefinition = "varchar(1024)")
     public String productTitle;
     // 产品URL
-    @Column(nullable = true, columnDefinition = "varchar(1024)")
     public String productUrl;
     // 活动价格
     public String salePrice;
@@ -52,6 +51,7 @@ public class ProductDetail implements Serializable {
     // 佣金
     public String commission;
     public String storeUrl;
+
     @Column(nullable = false, columnDefinition = "varchar(3072)")
     public String keywords;
     @Column(nullable = false, columnDefinition = "varchar(3072)")
@@ -59,7 +59,6 @@ public class ProductDetail implements Serializable {
 
     // 点击URL
     public String clickUrl;
-
     public String getDisplayPrice() {
         if (localPrice != null) {
             return localPrice;

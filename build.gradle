@@ -80,7 +80,6 @@ dependencies {
     compile files('libs/jackson-mapper-asl-1.9.13.jar')
 
 
-
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
