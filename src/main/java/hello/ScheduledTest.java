@@ -1,5 +1,9 @@
 package hello;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,6 +25,10 @@ import java.net.URL;
  * @Scheduled(cron="0 0/3 8-20 * * ?")
  * // 每天早八点到晚八点，间隔1分钟执行任务
  * @Scheduled(cron="0 0/1 8-20 * * ?")
+ *
+ *
+ *
+ *
  */
 @Component
 public class ScheduledTest {
@@ -36,7 +44,7 @@ public class ScheduledTest {
 
     }
 
-    @Scheduled(cron = "0 0/1 8-20 * * ?")
+    @Scheduled(cron = "0 0/2 8-20 * * ?")
     public void executeUploadTask() {
 
         // 间隔1分钟,执行工单上传任务
@@ -50,15 +58,39 @@ public class ScheduledTest {
             // 喜大普奔，百度的网站打不开啦！
             // send mail to admin@baidu.com
         }
+
+        Document doc = null;
+        try {
+            doc = Jsoup.connect("https://www.aliexpress.com/item/2019-New-Handheld-Mini-Tripod-Mount-Selfie-Stick-Extendable-Monopod-for-Gopro-Hero-7-6-5/32947442084.html?spm=a2g0o.home.15002.4.650c2c25WpLQC0&gps-id=pcJustForYou&scm=1007.13562.109986.0&scm_id=1007.13562.109986.0&scm-url=1007.13562.109986.0&pvid=de7d3fee-5200-48cf-8c00-d36d0cb9a9ae").get();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String title = doc.title();
+        Elements metas = doc.head().select("meta");
+        for (Element meta : metas) {
+            String content = meta.attr("content");
+            if ("keywords".equalsIgnoreCase(meta.attr("name"))) {
+                System.out.println("关键字：" + content);
+            }
+            if ("description".equalsIgnoreCase(meta.attr("name"))) {
+                System.out.println("网站内容描述:" + content);
+            }
+        }
+        Elements keywords = doc.getElementsByTag("meta");
+        System.out.println("标题" + title);
     }
 
-    @Scheduled(cron = "0 0/3 5-23 * * ?")
+
+    @Scheduled(cron = "0 0/2 8-20 * * ?")
     public void executeUploadBackTask() {
 
         // 间隔3分钟,执行工单上传任务
         Thread current = Thread.currentThread();
         System.out.println("定时任务3:" + current.getId());
         logger.info("ScheduledTest.executeUploadBackTask 定时任务3:" + current.getId() + ",name:" + current.getName());
+
+
     }
 
 

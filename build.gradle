@@ -71,6 +71,11 @@ dependencies {
     // add for web use
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    // add for 网页关键词和详描解析
+    compile 'org.jsoup:jsoup:1.10.2'
+
+    compile files('libs/jackson-core-asl-1.9.13.jar')
+    compile files('libs/jackson-mapper-asl-1.9.13.jar')
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

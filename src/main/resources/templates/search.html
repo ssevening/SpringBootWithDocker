@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<!--/*@thymesVar id="productList" type="org.springframework.data.domain.Page"*/-->
+<p th:text="'Hello, ' + ${productList} + '!'"/>
+
+<p th:text="'Total Page' + ${productList.getTotalPages()}"/>
+<p th:text="'Total Elements:' + ${productList.getTotalElements()}"/>
+
+
+<li>List循环：
+    <table border="1">
+        <tr>
+            <th>用户名</th>
+            <th>邮箱</th>
+        </tr>
+        <!--/*@thymesVar id="product" type="hello.dao.pojo.ProductDetail"*/-->
+        <tr th:each="product, userStat : ${productList}">
+            <td th:text="${product.productTitle}">Onions</td>
+            <td th:text="${product.imageUrl}">test@test.com.cn</td>
+        </tr>
+    </table>
+</li>
+
+</body>
+</html>
