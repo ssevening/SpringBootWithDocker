@@ -4,23 +4,22 @@
 <!--/*@thymesVar id="product" type="hello.dao.pojo.ProductDetail"*/-->
 <head>
     <meta charset="utf-8"/>
-    <title th:text="${product.productTitle}">Product Title</title>
+    <title th:text="${product}">Product Title</title>
     <meta name="keywords"
           th:content="${product.keywords}"
-          content="Bodysuits, Cheap Bodysuits, Vadim women lace patchwork floral playsuits ruffles flare sleeve bodysuits female orange black stylish top blusas KA665"/>
-    <meta name="description" th:content="${product.description}" content="Cheap Bodysuits, Buy Directly from China Suppliers:Vadim women lace patchwork floral playsuits ruffles flare sleeve bodysuits female orange black stylish top blusas KA665
-Enjoy ✓Free Shipping Worldwide! ✓Limited Time Sale&nbsp;✓Easy Return."/>
+          content="keywords"/>
+    <meta name="description" th:content="${product.description}" content="description"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
-    <meta property="og:title" th:content="${product.productTitle} + 'Aliexpress.com | Alibaba Group'"
-          content="Aliexpress.com | Alibaba Group"/>
+    <meta property="og:title" th:content="${product.productTitle}"
+          content="og:title"/>
     <meta property="og:type" content="product"/>
     <meta property="og:image"
           th:content="${product.imageUrl}"
           content=""/>
     <meta property="og:description" th:content="${product.description}"
-          content="Smarter Shopping, Better Living!  Aliexpress.com"/>
-    <meta property="og:site_name" content="dealsfun.com"/>
+          content="description"/>
+    <meta property="og:site_name" content="dealfuns.com"/>
     <link href=""
           rel="canonical"/>
 
@@ -43,7 +42,7 @@ Enjoy ✓Free Shipping Worldwide! ✓Limited Time Sale&nbsp;✓Easy Return."/>
     <div class="header-wrap container">
         <div class="hm-left">
             <div class="site-logo inside-page-logo">
-                <a href="//www.aliexpress.com/"><span class="logo-base">AliExpress</span></a>
+
             </div>
         </div>
         <div class="hm-right">
@@ -55,41 +54,11 @@ Enjoy ✓Free Shipping Worldwide! ✓Limited Time Sale&nbsp;✓Easy Return."/>
 <div class="store-header notranslate" id="j-store-header">
     <div class="container util-clearfix">
         <div class="store-header-container" data-role="store-header">
-            <span class="shop-name"><i>Store:</i><a href="//www.aliexpress.com/store/1131150" title="">KEHU Official Store</a></span>
-            <span class="shop-time">Open:<em>5 year(s)</em></span>
-            <div class="store-rank" data-role="shop-rank"></div>
-            <div class="positive-feedback" data-role="positive-feedback"></div>
-            <div class="store-info-header util-clearfix" data-role="store-container">
-                <i class="i-arrow"></i>
-                <div class="store-summary">
-                    <span class="store-number">Store No.1131150</span>
-                    <span class="store-location">
-                                                    Zhejiang
-                                                China
-                    </span>
-                    <span class="store-time">This store has been open since <em>Feb 17, 2014</em></span>
-                </div>
-                <div class="store-dsr-data" data-role="dsr-data">
-                    <div class="dsr-loading" data-role="dsr-loading"></div>
-                    <dl>
-                        <dt><span>Detailed seller ratings</span>(Out of 5)</dt>
-                        <dd data-role="desc"><em>Item as Described:</em><a href=""><b></b><span></span></a></dd>
-                        <dd data-role="seller"><em>Communication:</em><a href=""><b></b><span></span></a></dd>
-                        <dd data-role="shipping"><em>Shipping Speed:</em><a href=""><b></b><span></span></a></dd>
-                    </dl>
-                    <p class="no-dsr" data-role="no-dsr">Detailed Seller Ratings information is unavailable when there&#39;re
-                        less than 10 ratings.</p>
-                </div>
-                <div class="store-operate-box">
-                    <div class="store-contact">
+            <span class="shop-name"><i>Store:</i><a href="//www.aliexpress.com/store/1131150"
+                                                    th:href="${product.storeUrl}" th:text="${product.storeName}">Store Name</a></span>
 
-                    </div>
-                    <div class="store-contact-right">
-                        <a class="store-home-link" href="//www.aliexpress.com/store/1131150">Visit Store</a>
-                        <a class="wishlist-btn" href="javascript:;" data-action="add-wishlist">Follow</a>
-                    </div>
-                </div>
-            </div>
+
+
         </div>
     </div>
 </div>
@@ -105,14 +74,12 @@ Enjoy ✓Free Shipping Worldwide! ✓Limited Time Sale&nbsp;✓Easy Return."/>
                 <div class="detail-wrap">
 
 
-                    <h1 class="product-name" itemprop="name">KEHU Classic Design Round Sunglasses Women Ultralight Rivet
-                        Frame Sun Glasses Ladies Summer Tourism UV Goggles Retro Shades KH99</h1>
+                    <h1 class="product-name" itemprop="name" th:text="${product.productTitle}"></h1>
 
                     <div class="product-star-order">
                         <span class="order-num" id="j-order-num">1 order</span>
                     </div>
                     <!-- detail esi-->
-
 
                     <div class="product-price-area">
                         <div class="product-price ">
@@ -241,96 +208,6 @@ Enjoy ✓Free Shipping Worldwide! ✓Limited Time Sale&nbsp;✓Easy Return."/>
                             <div class="ui-tab-pane" data-role="panel" id="feedback">
 
                             </div>
-                            <div class="ui-tab-pane shipping-payment-main" data-role="panel"
-                                 id="j-shipping-payment-pane" data-spm="1000020">
-                                <div class="ui-box shipping-info-main">
-                                    <div class="ui-box-title">Shipping</div>
-                                    <div class="ui-box-body">
-                                        <div class="caption-title">Calculate your shipping cost by country/region and
-                                            quantity.
-                                        </div>
-                                        <div class="caption-main util-clearfix">
-                                            <span class="c-desc-title">Quantity:</span>
-                                            <span class="c-desc-title">Ship to:</span>
-                                            <div id="j-pnl-country-selector" class="c-pnl-selector"></div>
-                                        </div>
-                                    </div>
-                                    <div class="shipping-table-wrap" data-role="shipping-table">
-                                        <div class="loading32"></div>
-                                    </div>
-                                </div>
-                                <div class="ui-box pnl-packaging-main">
-                                    <div class="ui-box-title">Packaging Details</div>
-                                    <div class="ui-box-body">
-                                        <ul class="product-packaging-list util-clearfix">
-                                            <li class="packaging-item">
-                                                <span class="packaging-title">Unit Type:</span>
-                                                <span class="packaging-des">piece</span>
-                                            </li>
-                                            <li class="packaging-item">
-                                                <span class="packaging-title">Package Weight:</span>
-                                                <span class="packaging-des" rel="0.06">0.06kg (0.13lb.)</span>
-                                            </li>
-                                            <li class="packaging-item">
-                                                <span class="packaging-title">Package Size:</span>
-                                                <span class="packaging-des" rel="10|10|10">10cm x 10cm x 10cm (3.94in x 3.94in x 3.94in)</span>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="ui-box payment-list-main">
-                                    <div class="ui-box-title">Payment</div>
-                                    <div class="ui-box-body">
-                                        <div class="payment-title">We support the following payment methods.</div>
-                                        <!--ams-region-start 403-->
-                                        <ul class="util-clearfix payment-logo-method">
-                                            <li class="payment-visa"></li>
-                                            <li class="payment-mastercard"></li>
-                                            <li class="payment-maestro"></li>
-                                            <li class="payment-amex"></li>
-                                            <li class="payment-qiwi"></li>
-                                            <li class="payment-yandex"></li>
-                                            <li class="payment-webmoney"></li>
-                                            <li class="payment-casein"></li>
-                                            <li class="payment-balance"></li>
-                                            <li class="payment-ideal"></li>
-                                            <li class="payment-boleto"></li>
-                                            <li class="payment-tef"></li>
-                                            <li class="payment-sofortbanking"></li>
-                                            <li class="payment-giropay"></li>
-                                            <li class="payment-p24"></li>
-                                            <li class="payment-mp"></li>
-                                            <li class="payment-doku"></li>
-                                            <li class="payment-wu"></li>
-                                            <li class="payment-tt"></li>
-                                        </ul>
-                                        <style type="text/css">.big-sale-store-header-banner {
-                                            display: none;
-                                        }
-
-                                        .breadcrumb-layout {
-                                            position: relative;
-                                            z-index: 3;
-                                        }
-
-                                        #bd {
-                                            width: 1200px;
-                                        }
-
-                                        #bd .detail-page {
-                                            background: transparent;
-                                        }
-
-                                        .mobile-discount-trigger {
-                                            font-weight: bolder;
-                                            color: red !important;
-                                        }
-                                        </style>
-                                        <!--ams-region-end 403-->
-                                    </div>
-                                </div>
-                            </div>
                             <div class="ui-tab-pane seller-guarantees-main" data-role="panel"
                                  id="j-seller-guarantees-pane" data-spm="1000021">
                                 <div class="loading32"></div>
@@ -377,7 +254,6 @@ Enjoy ✓Free Shipping Worldwide! ✓Limited Time Sale&nbsp;✓Easy Return."/>
                 <div class="store-operate-main">
                     <a target="_blank" href="//www.aliexpress.com/store/1131150" class="go-store-link"
                        rel="nofollow"><span>Visit Store</span></a>
-                    <a href="javascript:;" data-role="add-storelist" class="follow-store-btn"><span>Follow</span></a>
                 </div>
             </div>
             <div id="j-seller-categories" class="ui-box seller-categories">

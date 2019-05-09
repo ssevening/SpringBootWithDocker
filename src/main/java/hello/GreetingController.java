@@ -2,10 +2,11 @@ package hello;
 
 import hello.dao.ProductRepository;
 import hello.dao.UserRepository;
+import hello.dao.pojo.Notice;
+import hello.dao.pojo.ProductDetail;
 import hello.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,9 +65,18 @@ public class GreetingController {
 
     @RequestMapping("/product")
     public String findProductByProductId(@RequestParam String productId, Model model) {
-        model.addAttribute("product", productRepository.queryProductDetailByProductId(productId));
-        return "product";
+        ProductDetail productDetail = productRepository.queryProductDetailByProductId(productId);
+        if (productDetail != null) {
+            model.addAttribute("product", productRepository.queryProductDetailByProductId(productId));
+            return "product";
+        } else {
+            Notice notice = new Notice();
+            notice.message = "Product not found.";
+            model.addAttribute("message", notice);
+            return "notice";
+        }
     }
+
 
     @RequestMapping("/search")
     public String queryProductDetailBySearch(@RequestParam String keywords, @RequestParam int page, @RequestParam int size, Model model) {

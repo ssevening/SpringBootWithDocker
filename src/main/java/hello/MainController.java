@@ -64,7 +64,7 @@ public class MainController {
 
     @GetMapping(path = "/addProduct") // Map ONLY GET Requests
     public @ResponseBody
-    String addProduct(@RequestParam String productId,@RequestParam String productCategory) {
+    String addProduct(@RequestParam String productId, @RequestParam String productCategory) {
         String resultStr = "200";
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
@@ -92,13 +92,15 @@ public class MainController {
                     p.description = map.get(WebPageUtils.DESC);
                     p.productCategory = productCategory;
                     productRepository.save(p);
+                } else {
+                    resultStr = "product is not aff product";
                 }
             } catch (Exception e) {
                 e.printStackTrace();
                 resultStr = e.getMessage();
             }
         } else {
-            return "product have already existed.";
+            resultStr = "product have already existed.";
         }
 
         return resultStr;

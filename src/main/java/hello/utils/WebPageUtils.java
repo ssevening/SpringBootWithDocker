@@ -19,7 +19,7 @@ public class WebPageUtils {
         HashMap<String, String> map = new HashMap<>();
         Document doc = null;
         try {
-            doc = Jsoup.connect(url).get();
+            doc = Jsoup.connect(url).header("User-Agent","Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)").get();
         } catch (IOException e) {
             e.printStackTrace();
         }
