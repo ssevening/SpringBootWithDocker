@@ -76,6 +76,9 @@ dependencies {
     // add for 网页关键词和详描解析
     compile 'org.jsoup:jsoup:1.10.2'
 
+    // https://mvnrepository.com/artifact/com.github.dfabulich/sitemapgen4j
+    compile group: 'com.github.dfabulich', name: 'sitemapgen4j', version: '1.0.2'
+
     compile files('libs/jackson-core-asl-1.9.13.jar')
     compile files('libs/jackson-mapper-asl-1.9.13.jar')
 

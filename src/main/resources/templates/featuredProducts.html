@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${featureInfo.seoTitle}">Product Title</title>
+    <meta name="keywords"
+          th:content="${featureInfo.seoKeywords}"
+          content="keywords"/>
+    <meta name="description" th:content="${featureInfo.seoDesccription}" content="description"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+    <meta property="og:title" th:content="${featureInfo.seoTitle}"
+          content="og:title"/>
+    <meta property="og:type" content="product"/>
+    <meta property="og:description" th:content="${featureInfo.seoDesccription}"
+          content="description"/>
+    <meta property="og:site_name" content="dealfuns.com"/>
+</head>
+<body>
+
+
+<h1 th:text="${featureInfo.seoTitle}"></h1>
+
+<table>
+
+    <tr th:each="product,productStat:${featuredProductsList.products}">
+        <td>
+
+            <img th:src="${product.imageUrl}" th:alt="${product.productTitle}" src=""/><br/>
+            <span th:text="${product.productTitle}"></span><br/>
+            <span th:text="${product.salePrice}"></span><br/>
+
+        </td>
+    </tr>
+
+</table>
+
+</body>
+</html>

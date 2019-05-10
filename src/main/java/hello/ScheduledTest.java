@@ -1,20 +1,34 @@
 package hello;
 
+import com.redfin.sitemapgenerator.ChangeFreq;
+import com.redfin.sitemapgenerator.WebSitemapGenerator;
+import com.redfin.sitemapgenerator.WebSitemapUrl;
+import hello.dao.ProductRepository;
+import hello.dao.pojo.ProductDetail;
+import hello.service.ProductService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.swing.plaf.TextUI;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -28,6 +42,9 @@ import java.net.URL;
  */
 @Component
 public class ScheduledTest {
+
+    @Autowired
+    private ProductService productService;
     private static final Logger logger = LoggerFactory.getLogger(ScheduledTest.class);
 
 //    @Scheduled(cron = "0 0/2 8-20 * * ?")
@@ -64,6 +81,47 @@ public class ScheduledTest {
         logger.info("ScheduledTest.executeUploadBackTask 定时任务3:" + current.getId() + ",name:" + current.getName());
 
 
+    }
+
+    /**
+     * 生成SEO文件
+     */
+    public void genSiteMap() {
+
+        //文件目录
+        Path rootLocation = Paths.get("seo");
+        if (Files.notExists(rootLocation)) {
+            try {
+                Files.createDirectories(rootLocation);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        //data.js是文件
+        Path path = rootLocation.resolve("siteMap.xml");
+
+        File myDir = path.toFile();
+        WebSitemapGenerator wsg = null;
+        try {
+            wsg = new WebSitemapGenerator("http://www.example.com", myDir);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        // this will configure the URL with lastmod=now, priority=1.0, changefreq=hourly
+        List<ProductDetail> productDetailList = productService.findAll();
+        for (int i = 0; i < productDetailList.size(); i++) {
+            WebSitemapUrl url = null;
+            try {
+                url = new WebSitemapUrl.Options("http://www.example.com/index.html")
+                        .lastMod(new Date()).priority(1.0).changeFreq(ChangeFreq.HOURLY).build();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            wsg.addUrl(url);
+        }
+
+        wsg.write();
     }
 
 

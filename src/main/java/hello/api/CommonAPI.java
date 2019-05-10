@@ -8,6 +8,9 @@ public class CommonAPI {
     public static String[] getPromotionProductBySmartMatch = new String[]{"param2", "1", "portals.open",
             "api.getPromotionProductBySmartMatch"};
 
+    public static String[] listFeaturedProducts = new String[]{"param2", "1", "portals.open",
+            "api.listProductbyFeaturedList"};
+
     public static String[] getPromotionProductDetail = new String[]{"param2", "2", "portals.open",
             "api.getPromotionProductDetail"};
 

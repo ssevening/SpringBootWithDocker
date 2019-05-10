@@ -4,6 +4,8 @@ import hello.dao.pojo.ProductDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface ProductService {
 
     /**
@@ -21,5 +23,11 @@ public interface ProductService {
      * @return
      */
     Page<ProductDetail> findByProductTitleContains(String keywords, Pageable pageable);
+
+    /**
+     * 查找所有产品
+     * @return
+     */
+    public List<ProductDetail> findAll();
 
 }

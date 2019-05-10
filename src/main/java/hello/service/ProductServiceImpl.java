@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -22,5 +23,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<ProductDetail> findByProductTitleContains(String keywords, Pageable pageable) {
         return productRepository.findByProductTitleContains(keywords, pageable);
+    }
+
+    @Override
+    public List<ProductDetail> findAll() {
+        return productRepository.findAll();
     }
 }

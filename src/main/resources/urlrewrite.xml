@@ -9,4 +9,12 @@
         <to type="forward">/product?productId=$1</to>
     </rule>
 
+
+    <rule>
+        <!--拦截页面以/_开头的数据,作为转发给前端使用-->
+        <from>^/promotion/(\w+).html$</from>
+        <!-- to: 真实的URL -->
+        <to type="forward">/listFeaturedProducts?promotionType=$1</to>
+    </rule>
+
 </urlrewrite>
