@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface FeatureService {
 
+    void addFeatureInfo(List<FeatureInfo> features);
+
     /**
      * 按照名称类型来查询新品信息
      *

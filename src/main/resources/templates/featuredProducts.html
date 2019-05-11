@@ -6,13 +6,13 @@
     <meta name="keywords"
           th:content="${featureInfo.seoKeywords}"
           content="keywords"/>
-    <meta name="description" th:content="${featureInfo.seoDesccription}" content="description"/>
+    <meta name="description" th:content="${featureInfo.seoDescription}" content="description"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
     <meta property="og:title" th:content="${featureInfo.seoTitle}"
           content="og:title"/>
     <meta property="og:type" content="product"/>
-    <meta property="og:description" th:content="${featureInfo.seoDesccription}"
+    <meta property="og:description" th:content="${featureInfo.seoDescription}"
           content="description"/>
     <meta property="og:site_name" content="dealfuns.com"/>
 </head>
@@ -26,7 +26,8 @@
     <tr th:each="product,productStat:${featuredProductsList.products}">
         <td>
 
-            <img th:src="${product.imageUrl}" th:alt="${product.productTitle}" src=""/><br/>
+            <img th:src="${product.imageUrl}" th:alt="${product.productTitle}" src="" width="200px"
+                 height="200px"/><br/>
             <span th:text="${product.productTitle}"></span><br/>
             <span th:text="${product.salePrice}"></span><br/>
 

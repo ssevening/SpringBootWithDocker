@@ -19,6 +19,16 @@ public class FeatureServiceImpl implements FeatureService {
 
 
     @Override
+    public void addFeatureInfo(List<FeatureInfo> features) {
+        for (int i = 0; i < features.size(); i++) {
+            FeatureInfo featureInfo = features.get(i);
+            if (featureRepository.findFeatureInfoByFeaturedName(featureInfo.featuredName) == null) {
+                featureRepository.save(featureInfo);
+            }
+        }
+    }
+
+    @Override
     public FeatureInfo findFeatureInfoByFeaturedName(String featureName) {
         return featureRepository.findFeatureInfoByFeaturedName(featureName);
     }

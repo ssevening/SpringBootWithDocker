@@ -22,7 +22,7 @@ public class FeatureInfo implements Serializable {
 
 
     public String seoTitle;
-    public String seoDesccription;
+    public String seoDescription;
     public String seoKeywords;
 
 }
