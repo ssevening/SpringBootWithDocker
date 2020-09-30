@@ -51,7 +51,7 @@ public class ProductController {
 
     @RequestMapping("/queryById")
     public String queryById(@RequestParam Integer userId, Model model) {
-        model.addAttribute("uuu", userRepository.findOne(new Long(userId)));
+        // model.addAttribute("uuu", userRepository.findOne(new Long(userId)));
         return "queryById";
     }
 
@@ -86,9 +86,9 @@ public class ProductController {
 
     @RequestMapping("/search")
     public String queryProductDetailBySearch(@RequestParam String keywords, @RequestParam int page, @RequestParam int size, Model model) {
-        Sort sort = new Sort(Sort.Direction.DESC, "id");
-        PageRequest pageRequest = new PageRequest(page, size, sort);
-        model.addAttribute("productList", productService.findByProductTitleContains(keywords, pageRequest));
+//        Sort sort = new Sort(Sort.Direction.DESC, "id");
+//        PageRequest pageRequest = new PageRequest(page, size, sort);
+//        model.addAttribute("productList", productService.findByProductTitleContains(keywords, pageRequest));
         return "search";
     }
 

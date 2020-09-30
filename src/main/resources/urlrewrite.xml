@@ -8,5 +8,5 @@
         <!-- to: 真实的URL -->
         <to type="forward">/product?productId=$1</to>
     </rule>
-    
+
 </urlrewrite>
