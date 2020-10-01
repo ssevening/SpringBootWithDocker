@@ -39,12 +39,6 @@ public class CommonAPI {
         apiMap.put("featuredApi", "http://csuperdeals.oss-us-west-1.aliyuncs.com/featured_92.txt");
         apiMap.put("updateApi", "http://csuperdeals.oss-us-west-1.aliyuncs.com/update.txt");
         apiMap.put("hotWishUrl", "http://activity.dealfuns.com/hotwish/1/Index.asp");
-        apiMap.put("waterFallApi", "http://gw.api.alibaba.com/openapi/param2/1/portals.open/api.listProductbyFeaturedList/" + APP_KEY);
-        apiMap.put("pushApi", "http://csuperdeals.oss-us-west-1.aliyuncs.com/push.txt");
-        apiMap.put("configApi", "http://csuperdeals.oss-us-west-1.aliyuncs.com/config.txt");
-        apiMap.put("aeAppUrl", "http://s.click.aliexpress.com/app/go_aff?sk=" + APP_SK + "&channel=go_aff");
-        apiMap.put("latestUrl", "superdeals://app/random?title=Recent Buys&api=http://portals.zimmem.com/recentbuys/");
-        apiMap.put("imageServer", "http://deals.dealfuns.com");
         apiMap.put("trackingId", "mogoair");
 
         apiMap.put("bestSellingUrl", "");
@@ -55,21 +49,5 @@ public class CommonAPI {
 
     }
 
-    public static boolean isListHotProductsUrl(String url) {
-        if (url.contains("api.listHotProducts")) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    public static boolean isFeaturedList(String url) {
-        if (url.contains("api.listProductbyFeaturedList")) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
 }

@@ -18,6 +18,4 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     @Query(value = "select * from User where email = ?1", nativeQuery = true)
     User findByEmailAddress(String emailAddress);
-
-
 }

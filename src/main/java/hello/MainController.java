@@ -1,7 +1,6 @@
 package hello;
 
 import hello.api.CommonAPI;
-import hello.api.GetProductDetailAPI;
 import hello.dao.ProductRepository;
 import hello.dao.UserRepository;
 import hello.dao.pojo.ProductDetail;
@@ -69,39 +68,39 @@ public class MainController {
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
 
-        ProductDetail oldProductDetail = productRepository.queryProductDetailByProductId(productId);
-
-        if (oldProductDetail == null) {
-            GetProductDetailAPI productApi = new GetProductDetailAPI(CommonAPI.getPromotionProductDetail);
-            HashMap<String, String> paramMap = new HashMap();
-            paramMap.put("productId", productId);
-            paramMap.put("localCurrency", "USD");
-            paramMap.put("language", "en");
-            paramMap.put("fields", "productId,productTitle,productUrl,imageUrl,originalPrice,salePrice,discount,evaluateScore,30daysCommission,volume,packageType,lotNum,validTime,storeName,storeUrl,allImageUrls");
-            productApi.isPostRequest = false;
-            productApi.needAopSignature = false;
-            productApi.setParamMap(paramMap);
-
-            try {
-                String result = productApi.request();
-                ProductDetailResult productDetailResult = JsonMapper.json2pojo(result, ProductDetailResult.class);
-                if (productDetailResult != null && productDetailResult.result != null) {
-                    ProductDetail p = productDetailResult.result;
-                    Map<String, String> map = WebPageUtils.getSEOInfo(MessageFormat.format("https://www.aliexpress.com/item/{0}.html", productId));
-                    p.keywords = map.get(WebPageUtils.KEYWORDS);
-                    p.description = map.get(WebPageUtils.DESC);
-                    p.productCategory = productCategory;
-                    productRepository.save(p);
-                } else {
-                    resultStr = "product is not aff product";
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                resultStr = e.getMessage();
-            }
-        } else {
-            resultStr = "product have already existed.";
-        }
+//        ProductDetail oldProductDetail = productRepository.queryProductDetailByProductId(productId);
+//
+//        if (oldProductDetail == null) {
+//            GetProductDetailAPI productApi = new GetProductDetailAPI(CommonAPI.getPromotionProductDetail);
+//            HashMap<String, String> paramMap = new HashMap();
+//            paramMap.put("productId", productId);
+//            paramMap.put("localCurrency", "USD");
+//            paramMap.put("language", "en");
+//            paramMap.put("fields", "productId,productTitle,productUrl,imageUrl,originalPrice,salePrice,discount,evaluateScore,30daysCommission,volume,packageType,lotNum,validTime,storeName,storeUrl,allImageUrls");
+//            productApi.isPostRequest = false;
+//            productApi.needAopSignature = false;
+//            productApi.setParamMap(paramMap);
+//
+//            try {
+//                String result = productApi.request();
+//                ProductDetailResult productDetailResult = JsonMapper.json2pojo(result, ProductDetailResult.class);
+//                if (productDetailResult != null && productDetailResult.result != null) {
+//                    ProductDetail p = productDetailResult.result;
+//                    Map<String, String> map = WebPageUtils.getSEOInfo(MessageFormat.format("https://www.aliexpress.com/item/{0}.html", productId));
+//                    p.keywords = map.get(WebPageUtils.KEYWORDS);
+//                    p.description = map.get(WebPageUtils.DESC);
+//                    p.productCategory = productCategory;
+//                    productRepository.save(p);
+//                } else {
+//                    resultStr = "product is not aff product";
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                resultStr = e.getMessage();
+//            }
+//        } else {
+//            resultStr = "product have already existed.";
+//        }
 
         return resultStr;
     }

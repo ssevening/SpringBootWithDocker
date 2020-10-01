@@ -1,17 +1,14 @@
 package hello;
 
-import hello.api.CommonAPI;
-import hello.api.ListFeaturedProductsAPI;
+import hello.api.AFFProductDetailGetAPI;
 import hello.dao.ProductRepository;
 import hello.dao.UserRepository;
-import hello.dao.pojo.FeatureInfo;
 import hello.dao.pojo.Notice;
 import hello.dao.pojo.ProductDetail;
-import hello.service.FeatureService;
+import hello.pojo.AliexpressAffiliateProductdetailGetResponse;
+import hello.pojo.Product;
 import hello.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,8 +48,29 @@ public class ProductController {
 
     @RequestMapping("/queryById")
     public String queryById(@RequestParam Integer userId, Model model) {
-        // model.addAttribute("uuu", userRepository.findOne(new Long(userId)));
+        //model.addAttribute("uuu", userRepository.findOne(new Long(userId)));
         return "queryById";
+    }
+
+
+    @RequestMapping("/getProduct")
+    public String getProduct(@RequestParam String productId, Model model) {
+        AFFProductDetailGetAPI affProductDetailGetAPI = new AFFProductDetailGetAPI();
+        affProductDetailGetAPI.setIsPostRequest(true);
+        HashMap<String, String> paramMap = new HashMap<>();
+        paramMap.put("method", "aliexpress.affiliate.productdetail.get");
+        paramMap.put("product_ids", productId);
+        paramMap.put("fields", "productId,productTitle,productUrl,imageUrl,originalPrice,salePrice,discount,evaluateScore,30daysCommission,volume,packageType,lotNum,validTime,storeName,storeUrl,allImageUrls");
+        affProductDetailGetAPI.setParamMap(paramMap);
+        try {
+            String result = affProductDetailGetAPI.request();
+            AliexpressAffiliateProductdetailGetResponse response = AFFProductDetailGetAPI.getResult(result);
+            Product product = response.getRespResult().getResult().products.product.get(0);
+            model.addAttribute("product", product);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "getProduct";
     }
 
 
