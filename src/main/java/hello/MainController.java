@@ -4,7 +4,6 @@ import hello.api.CommonAPI;
 import hello.dao.ProductRepository;
 import hello.dao.UserRepository;
 import hello.dao.pojo.ProductDetail;
-import hello.dao.pojo.ProductDetailResult;
 import hello.dao.pojo.User;
 import hello.utils.JsonMapper;
 import hello.utils.WebPageUtils;

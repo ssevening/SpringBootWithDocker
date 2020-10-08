@@ -1,10 +1,10 @@
 package hello;
 
 import hello.api.AFFProductDetailGetAPI;
+import hello.api.FeaturedPromoProductGetAPI;
 import hello.dao.ProductRepository;
 import hello.dao.UserRepository;
-import hello.dao.pojo.Notice;
-import hello.dao.pojo.ProductDetail;
+import hello.pojo.AliexpressAffiliateFeaturedpromoProductsGetResponse;
 import hello.pojo.AliexpressAffiliateProductdetailGetResponse;
 import hello.pojo.Product;
 import hello.service.ProductService;
@@ -43,6 +43,42 @@ public class ProductController {
     public String greetingall(Model model) {
         model.addAttribute("users", userRepository.findAll());
         return "greetingall";
+    }
+
+    @RequestMapping("/Index.html")
+    public String index(Model model) {
+        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("banner01", "https://cdn.cnbj1.fds.api.mi-img.com/middle.community.vip.bkt/a1ba3eca83e5838c109087635614a8f9");
+        model.addAttribute("banner02", "http://pic26.nipic.com/20130111/7447430_080239322000_2.jpg");
+        model.addAttribute("banner03", "http://pic32.nipic.com/20130809/7447430_154236841000_2.jpg");
+
+
+        buildFeaturedProducts(model, "New Arrival", "newArrivalProducts");
+        buildFeaturedProducts(model, "Hot Product", "hotProducts");
+
+        return "index";
+    }
+
+
+    private void buildFeaturedProducts(Model model, String promotionName, String result) {
+        HashMap<String, String> newArrivalMap = new HashMap<>();
+        newArrivalMap.put("target_language", "en");
+        newArrivalMap.put("target_currency", "usd");
+        newArrivalMap.put("page_no", "0");
+        newArrivalMap.put("promotion_name", promotionName);
+
+        FeaturedPromoProductGetAPI featuredPromoProductGetAPI = new FeaturedPromoProductGetAPI();
+        featuredPromoProductGetAPI.setIsPostRequest(true);
+        featuredPromoProductGetAPI.setNeedAopSignature();
+        newArrivalMap.put("method", "aliexpress.affiliate.featuredpromo.products.get");
+        featuredPromoProductGetAPI.setParamMap(newArrivalMap);
+        try {
+            String response = featuredPromoProductGetAPI.request();
+            AliexpressAffiliateFeaturedpromoProductsGetResponse aliexpressAffiliateFeaturedpromoProductsGetResponse = FeaturedPromoProductGetAPI.getResult(response);
+            model.addAttribute(result, aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult().getResult().products.product);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -89,16 +125,17 @@ public class ProductController {
 
     @RequestMapping("/product")
     public String findProductByProductId(@RequestParam String productId, Model model) {
-        ProductDetail productDetail = productRepository.queryProductDetailByProductId(productId);
-        if (productDetail != null) {
-            model.addAttribute("product", productRepository.queryProductDetailByProductId(productId));
-            return "product";
-        } else {
-            Notice notice = new Notice();
-            notice.message = "Product not found.";
-            model.addAttribute("message", notice);
-            return "notice";
-        }
+//        ProductDetail productDetail = productRepository.queryProductDetailByProductId(productId);
+//        if (productDetail != null) {
+//            model.addAttribute("product", productRepository.queryProductDetailByProductId(productId));
+//            return "product";
+//        } else {
+//            Notice notice = new Notice();
+//            notice.message = "Product not found.";
+//            model.addAttribute("message", notice);
+//            return "notice";
+//        }
+        return "";
     }
 
 

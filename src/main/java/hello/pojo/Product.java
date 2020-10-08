@@ -1,8 +1,6 @@
 package hello.pojo;
 
 
-
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -213,7 +211,7 @@ public class Product extends TaobaoObject {
     }
 
     public String getDiscount() {
-        return "-" + this.discount;
+        return this.discount;
     }
 
     public void setDiscount(String discount) {

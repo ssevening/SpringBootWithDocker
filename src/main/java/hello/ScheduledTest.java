@@ -4,7 +4,6 @@ import com.redfin.sitemapgenerator.ChangeFreq;
 import com.redfin.sitemapgenerator.WebSitemapGenerator;
 import com.redfin.sitemapgenerator.WebSitemapUrl;
 import hello.dao.ProductRepository;
-import hello.dao.pojo.ProductDetail;
 import hello.service.ProductService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -97,31 +96,6 @@ public class ScheduledTest {
                 e.printStackTrace();
             }
         }
-        //data.js是文件
-        Path path = rootLocation.resolve("siteMap.xml");
-
-        File myDir = path.toFile();
-        WebSitemapGenerator wsg = null;
-        try {
-            wsg = new WebSitemapGenerator("http://www.example.com", myDir);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-        // this will configure the URL with lastmod=now, priority=1.0, changefreq=hourly
-        List<ProductDetail> productDetailList = productService.findAll();
-        for (int i = 0; i < productDetailList.size(); i++) {
-            WebSitemapUrl url = null;
-            try {
-                url = new WebSitemapUrl.Options("http://www.example.com/index.html")
-                        .lastMod(new Date()).priority(1.0).changeFreq(ChangeFreq.HOURLY).build();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
-            wsg.addUrl(url);
-        }
-
-        wsg.write();
     }
 
 

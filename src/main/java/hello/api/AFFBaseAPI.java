@@ -23,7 +23,7 @@ public class AFFBaseAPI {
     public static String API_HOSTS = "https://api.taobao.com/router/rest";
 
     // TODO need to change to your own digital signature
-    public static String AFF_SIGNATURE = "d53d412b17e29737f404b681c6af0fe8c";
+    public static String AFF_SIGNATURE = "d53d412b17e29737404b681c6af0fe8c";
     // TODO need to change it
     public static String AFF_APP_KEY = "31349226";
     public static String TRACKING_ID = "API_DEMO";
