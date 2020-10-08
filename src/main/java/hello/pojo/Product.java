@@ -181,6 +181,18 @@ public class Product extends TaobaoObject {
     private String targetSalePriceCurrency;
 
 
+    public String getDisplayPrice() {
+        if (salePrice != null) {
+            return getSalePriceWithCurrency();
+        } else if (originalPrice != null) {
+            return getOriginalPriceWithCurrency();
+        } else {
+            return getOriginalPriceWithCurrency();
+        }
+
+
+    }
+
     public String getHttpDetailUrl() {
         return productDetailUrl;
     }

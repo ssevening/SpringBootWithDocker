@@ -4,6 +4,7 @@ import hello.api.AFFProductDetailGetAPI;
 import hello.api.FeaturedPromoProductGetAPI;
 import hello.dao.ProductRepository;
 import hello.dao.UserRepository;
+import hello.dao.pojo.Notice;
 import hello.pojo.AliexpressAffiliateFeaturedpromoProductsGetResponse;
 import hello.pojo.AliexpressAffiliateProductdetailGetResponse;
 import hello.pojo.Product;
@@ -15,7 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 
 // 这个就是专门用来做webservice使用的，直接输入JSON结果，用来做服务端的接口交互使用。
@@ -121,18 +124,40 @@ public class ProductController {
         return "findByEmail";
     }
 
-    @RequestMapping("/product")
+    @RequestMapping("/product.html")
     public String findProductByProductId(@RequestParam String productId, Model model) {
-//        ProductDetail productDetail = productRepository.queryProductDetailByProductId(productId);
-//        if (productDetail != null) {
-//            model.addAttribute("product", productRepository.queryProductDetailByProductId(productId));
-//            return "product";
-//        } else {
-//            Notice notice = new Notice();
-//            notice.message = "Product not found.";
-//            model.addAttribute("message", notice);
-//            return "notice";
-//        }
+        Map<String, String> productParamsMap = new HashMap<>();
+        AFFProductDetailGetAPI affProductDetailGetAPI = new AFFProductDetailGetAPI();
+        affProductDetailGetAPI.setNeedAopSignature();
+        affProductDetailGetAPI.setIsPostRequest(true);
+        productParamsMap.put("method", "aliexpress.affiliate.productdetail.get");
+        productParamsMap.put("product_ids", productId);
+        String localCurrency = "USD";
+        String language = "en";
+        productParamsMap.put("target_currency", localCurrency);
+        productParamsMap.put("target_language", language);
+        productParamsMap.put("fields", "productId,productTitle,productUrl,imageUrl,originalPrice,salePrice,discount,evaluateScore,30daysCommission,volume,packageType,lotNum,validTime,storeName,storeUrl,allImageUrls");
+
+        affProductDetailGetAPI.setParamMap(productParamsMap);
+
+        affProductDetailGetAPI.setParamMap(productParamsMap);
+        try {
+            String response = affProductDetailGetAPI.request();
+
+            AliexpressAffiliateProductdetailGetResponse productdetailGetResponse = AFFProductDetailGetAPI.getResult(response);
+            if (productdetailGetResponse != null && productdetailGetResponse.getRespResult() != null && productdetailGetResponse.getRespResult().getRespCode() == 200) {
+                model.addAttribute("product", productdetailGetResponse.getRespResult().getResult().products.product.get(0));
+                return "product";
+            } else {
+                Notice notice = new Notice();
+                notice.message = "Product not found.";
+                model.addAttribute("message", notice);
+                return "notice";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "";
     }
 

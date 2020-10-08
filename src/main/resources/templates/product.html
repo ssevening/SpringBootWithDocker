@@ -4,20 +4,20 @@
 <!--/*@thymesVar id="product" type="hello.dao.pojo.ProductDetail"*/-->
 <head>
     <meta charset="utf-8"/>
-    <title th:text="${product}">Product Title</title>
+    <title th:text="${product.getProductTitle()}">Product Title</title>
     <meta name="keywords"
-          th:content="${product.keywords}"
+          th:content="${product.getProductTitle()}"
           content="keywords"/>
-    <meta name="description" th:content="${product.description}" content="description"/>
+    <meta name="description" th:content="${product.getProductTitle()}" content="description"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 
-    <meta property="og:title" th:content="${product.productTitle}"
+    <meta property="og:title" th:content="${product.getProductTitle()}"
           content="og:title"/>
     <meta property="og:type" content="product"/>
     <meta property="og:image"
-          th:content="${product.imageUrl}"
+          th:content="${product.getProductMainImageUrl()}"
           content=""/>
-    <meta property="og:description" th:content="${product.description}"
+    <meta property="og:description" th:content="${product.getProductTitle()}"
           content="description"/>
     <meta property="og:site_name" content="dealfuns.com"/>
     <link href=""
@@ -55,8 +55,7 @@
     <div class="container util-clearfix">
         <div class="store-header-container" data-role="store-header">
             <span class="shop-name"><i>Store:</i><a href="//www.aliexpress.com/store/1131150"
-                                                    th:href="${product.storeUrl}" th:text="${product.storeName}">Store Name</a></span>
-
+                                                    th:href="${product.getShopUrl()}" th:text="${product.getShopUrl()}">Store Name</a></span>
 
 
         </div>
@@ -74,7 +73,7 @@
                 <div class="detail-wrap">
 
 
-                    <h1 class="product-name" itemprop="name" th:text="${product.productTitle}"></h1>
+                    <h1 class="product-name" itemprop="name" th:text="${product.getProductTitle()}"></h1>
 
                     <div class="product-star-order">
                         <span class="order-num" id="j-order-num">1 order</span>
@@ -89,9 +88,7 @@
                                     <del class="p-del-price-content notranslate">
                                         <span id="j-sku-price"
                                               class="p-price"
-                                              th:text="${product.originalPrice}"></span>
-                                        <span class="p-splitter">/</span><span class="p-unit"
-                                                                               th:text="${product.packageType}"> piece </span>
+                                              th:text="${product.getOriginalPriceWithCurrency()}"></span>
                                     </del>
                                 </div>
                                 <div class="p-price-detail util-clearfix">
@@ -100,12 +97,10 @@
                                         <div class="p-price-content">
                                             <span id="j-sku-discount-price"
                                                   class="p-price"
-                                                  th:text="${product.salePrice}">7.16</span>
-                                            <span class=" p-splitter">/</span><span class="p-unit"
-                                                                                    th:text="${product.packageType}"> piece </span>
+                                                  th:text="${product.getSalePriceWithCurrency()}">7.16</span>
                                         </div>
 
-                                        <span class="p-discount-rate" th:text="${product.discount}">48%</span>
+                                        <span class="p-discount-rate" th:text="${product.getDiscount()}">48%</span>
                                     </div>
                                 </div>
                             </div>
@@ -114,7 +109,7 @@
 
                     <div class="product-action-block" id="j-product-action-block">
 	<span class="product-action-main">
-		<a href="javascript:;" class="buy-now-btn" id="j-buy-now-btn" data-disabled="false">Buy Now</a>
+		<a href="" th:href="${product.getPromotionLink()}" class="buy-now-btn" id="j-buy-now-btn" data-disabled="false">Buy Now</a>
 	</span>
 
                     </div>
@@ -193,9 +188,11 @@
                                 <div class="product-desc" id="j-product-desc">
 
                                     <div class="ui-box product-description-main" id="j-product-description">
-                                        <div th:each="image : ${product.getImageUrlList()}">
-                                            <img th:src="${image}" th:alt="${product.productTitle}"/><br/>
+                                        <!--
+                                        <div th:each="image : ${product.productSmallImageUrls.string}">
+                                            <img th:src="${image}" th:alt="${product.getProductTitle()}"/><br/>
                                         </div>
+                                        -->
                                     </div>
 
 

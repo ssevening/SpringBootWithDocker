@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap"
           rel="stylesheet">
 
-    <title>Sixteen Clothing HTML Template</title>
+    <title>Super Deals In China</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -67,7 +67,7 @@
 <!-- Page Content -->
 <!-- Banner Starts Here -->
 <div class="banner header-text">
-    <div class="owl-banner owl-carousel" >
+    <div class="owl-banner owl-carousel">
         <a th:href="${bannerInfo.promotionUrl}" target="_blank" th:each="bannerInfo,status: ${bannerList}">
             <div th:class="'banner-item-0'+${status.index+1}"
                  th:style="'background-image: url(' + ${bannerInfo.bannerUrl} + ');'">
@@ -93,14 +93,15 @@
 
             <div class="col-md-4" th:each="product,status: ${newArrivalProducts}">
                 <div class="product-item">
-                    <a th:href="${product.getPromotionLink()}" target="_blank"><img src="assets/images/product_01.jpg"
-                                                                                    alt=""
-                                                                                    th:alt="${product.getProductTitle()}"
-                                                                                    th:src="${product.getProductMainImageUrl()}"></a>
+                    <a th:href="'product.html?productId=' + ${product.getProductId()}" target="_blank"><img
+                            src="assets/images/product_01.jpg"
+                            alt=""
+                            th:alt="${product.getProductTitle()}"
+                            th:src="${product.getProductMainImageUrl()}"></a>
                     <div class="down-content">
                         <a th:href="${product.getPromotionLink()}" target="_blank"><h4
                                 th:text="${product.getProductTitle()}"></h4></a>
-                        <p th:text="${product.getSalePrice()}">Price</p>
+                        <p th:text="${product.getDisplayPrice()}">Price</p>
                         <ul class="stars">
                             <li><i class="fa fa-star"></i></li>
                             <li><i class="fa fa-star"></i></li>
@@ -138,7 +139,7 @@
                     <div class="down-content">
                         <a th:href="${product.getPromotionLink()}" target="_blank"><h4
                                 th:text="${product.getProductTitle()}"></h4></a>
-                        <p th:text="${product.getSalePrice()}">Price</p>
+                        <p th:text="${product.getDisplayPrice()}">Price</p>
                         <ul class="stars">
                             <li><i class="fa fa-star"></i></li>
                             <li><i class="fa fa-star"></i></li>
@@ -253,6 +254,8 @@
           t.style.color='#fff';
           }
       }
+
+
 
 
 
