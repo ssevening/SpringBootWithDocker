@@ -67,27 +67,17 @@
 <!-- Page Content -->
 <!-- Banner Starts Here -->
 <div class="banner header-text">
-    <div class="owl-banner owl-carousel">
-        <div class="banner-item-01" th:style="'background-image: url(' + ${banner01} + ');'">
-            <div class="text-content">
-                <h4>Best Offer</h4>
-                <h2>New Arrivals On Sale</h2>
-            </div>
-        </div>
-        <a href="http://www.baidu.com" target="_blank">
-            <div class="banner-item-02" th:style="'background-image: url(' + ${banner02} + ');'">
+    <div class="owl-banner owl-carousel" >
+        <a th:href="${bannerInfo.promotionUrl}" target="_blank" th:each="bannerInfo,status: ${bannerList}">
+            <div th:class="'banner-item-0'+${status.index+1}"
+                 th:style="'background-image: url(' + ${bannerInfo.bannerUrl} + ');'">
                 <div class="text-content">
-                    <h4>Flash Deals</h4>
-                    <h2>Get your best products</h2>
+                    <h4 th:text="${bannerInfo.title}">Flash Deals</h4>
+                    <h2 th:text="${bannerInfo.description}">Get your best products</h2>
                 </div>
             </div>
         </a>
-        <div class="banner-item-03" th:style="'background-image: url(' + ${banner03} + ');'">
-            <div class="text-content">
-                <h4>Last Minute</h4>
-                <h2>Grab last minute deals</h2>
-            </div>
-        </div>
+
     </div>
 </div>
 <!-- Banner Ends Here -->
@@ -263,6 +253,7 @@
           t.style.color='#fff';
           }
       }
+
 
 
 

@@ -49,16 +49,23 @@ public class AdminController {
         return "200";
     }
 
-    @GetMapping(path = "/bannerAdd.html")
+    @GetMapping(path = "/addBanner.html")
     public String checkIfCanAddBanner() {
         // checkLogin
-        return "bannerAdd";
+        return "addBanner";
     }
 
     @GetMapping(path = "/listAllBanners") // Map ONLY GET Requests
     public @ResponseBody
     List<BannerInfo> listAddBanner() {
         return bannerRepository.findAll();
+    }
+
+    @GetMapping(path = "/deleteBanner") // Map ONLY GET Requests
+    public @ResponseBody
+    String listAddBanner(@RequestParam Long id) {
+        bannerRepository.deleteById(id);
+        return "200";
     }
 
 }

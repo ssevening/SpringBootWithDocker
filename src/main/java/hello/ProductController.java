@@ -50,11 +50,7 @@ public class ProductController {
     @RequestMapping("/Index.html")
     public String index(Model model) {
         model.addAttribute("users", userRepository.findAll());
-        model.addAttribute("banner01", "https://cdn.cnbj1.fds.api.mi-img.com/middle.community.vip.bkt/a1ba3eca83e5838c109087635614a8f9");
-        model.addAttribute("banner02", "http://pic26.nipic.com/20130111/7447430_080239322000_2.jpg");
-        model.addAttribute("banner03", "http://pic32.nipic.com/20130809/7447430_154236841000_2.jpg");
-
-        // model.addAttribute("bannerList", bannerService.findAllOnlineBanner());
+        model.addAttribute("bannerList", bannerService.findAll());
         buildFeaturedProducts(model, "New Arrival", "newArrivalProducts");
         buildFeaturedProducts(model, "Hot Product", "hotProducts");
 
