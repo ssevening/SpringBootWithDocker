@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>添加 Banner</title>
+    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<form role="form" action="/admin/addNewBanner" method="get">
+    <div class="form-group">
+        <label for="title">Banner名称</label>
+        <input type="text" class="form-control" id="title" name="title"
+               placeholder="请输入名称">
+    </div>
+
+    <div class="form-group">
+        <label for="description">Banner描述</label>
+        <input type="text" class="form-control" id="description" name="description"
+               placeholder="请输入描述信息">
+    </div>
+
+    <div class="form-group">
+        <label for="promotionUrl">活动 URL</label>
+        <input type="text" class="form-control" id="promotionUrl" name="promotionUrl"
+               placeholder="请输入活动 URL">
+    </div>
+
+
+    <div class="form-group">
+        <label for="bannerUrl">Banner 网址</label>
+        <input type="text" class="form-control" id="bannerUrl" name="bannerUrl"
+               placeholder="请输入Banner网址">
+    </div>
+
+    <button type="submit" class="btn btn-default">提交</button>
+</form>
+
+</body>
+</html>
