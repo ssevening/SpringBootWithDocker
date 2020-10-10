@@ -140,6 +140,17 @@ public class ProductController {
 
     @RequestMapping("/product.html")
     public String findProductByProductId(@RequestParam String productId, Model model) {
+        queryProductById(productId, model);
+        return "detail";
+    }
+
+    @RequestMapping("/detail.html")
+    public String detail(@RequestParam String productId, Model model) {
+        queryProductById(productId, model);
+        return "detail";
+    }
+
+    private String queryProductById(String productId, Model model) {
         Map<String, String> productParamsMap = new HashMap<>();
         AFFProductDetailGetAPI affProductDetailGetAPI = new AFFProductDetailGetAPI();
         affProductDetailGetAPI.setNeedAopSignature();
@@ -161,18 +172,15 @@ public class ProductController {
             AliexpressAffiliateProductdetailGetResponse productdetailGetResponse = AFFProductDetailGetAPI.getResult(response);
             if (productdetailGetResponse != null && productdetailGetResponse.getRespResult() != null && productdetailGetResponse.getRespResult().getRespCode() == 200) {
                 model.addAttribute("product", productdetailGetResponse.getRespResult().getResult().products.product.get(0));
-                return "product";
             } else {
                 Notice notice = new Notice();
                 notice.message = "Product not found.";
                 model.addAttribute("message", notice);
-                return "notice";
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "";
+        return null;
     }
 
 

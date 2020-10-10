@@ -334,14 +334,14 @@ public class Product extends TaobaoObject {
         return this.productMainImageUrl;
     }
 
-    public String getProductSecondImageUrl() {
-        String secondImageUrl = "";
-        if (getProductSmallImageUrls() != null && !getProductSmallImageUrls().isEmpty() && getProductSmallImageUrls().size() > 1) {
-            secondImageUrl = getProductSmallImageUrls().get(1).replace("http://", "https://");
+    public String getProductImageByIndex(int index) {
+        String imageUrl = "";
+        if (getProductSmallImageUrls() != null && !getProductSmallImageUrls().isEmpty() && getProductSmallImageUrls().size() > index) {
+            imageUrl = getProductSmallImageUrls().get(index).replace("http://", "https://");
         } else {
             return "";
         }
-        return secondImageUrl;
+        return imageUrl;
     }
 
     public void setProductMainImageUrl(String productMainImageUrl) {
