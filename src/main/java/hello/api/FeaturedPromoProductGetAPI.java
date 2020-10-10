@@ -1,13 +1,13 @@
 package hello.api;
 
 
-
-
 import com.fasterxml.jackson.databind.JsonNode;
 import hello.pojo.AliexpressAffiliateFeaturedpromoProductsGetResponse;
 import hello.utils.JsonMapper;
+import org.springframework.ui.Model;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 
 public class FeaturedPromoProductGetAPI extends AFFBaseAPI {

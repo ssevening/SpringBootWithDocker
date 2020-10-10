@@ -235,7 +235,15 @@ public class Product extends TaobaoObject {
     }
 
     public int getEvaluateRateIntValue() {
-        return (int) Float.parseFloat(getEvaluateRate().replace("%", ""));
+        if (getEvaluateRate() != null) {
+            return (int) Float.parseFloat(getEvaluateRate().replace("%", ""));
+        } else {
+            return 0;
+        }
+    }
+
+    public int getEvaluateRate5IntValue() {
+        return getEvaluateRateIntValue() / 20;
     }
 
     public void setEvaluateRate(String evaluateRate) {
@@ -324,6 +332,16 @@ public class Product extends TaobaoObject {
             productMainImageUrl = productMainImageUrl.replace("http://", "https://");
         }
         return this.productMainImageUrl;
+    }
+
+    public String getProductSecondImageUrl() {
+        String secondImageUrl = "";
+        if (getProductSmallImageUrls() != null && !getProductSmallImageUrls().isEmpty() && getProductSmallImageUrls().size() > 1) {
+            secondImageUrl = getProductSmallImageUrls().get(1).replace("http://", "https://");
+        } else {
+            return "";
+        }
+        return secondImageUrl;
     }
 
     public void setProductMainImageUrl(String productMainImageUrl) {

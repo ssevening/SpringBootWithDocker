@@ -1,15 +1,18 @@
 package hello;
 
 import hello.api.AFFProductDetailGetAPI;
+import hello.api.AFFProductQueryAPI;
 import hello.api.FeaturedPromoProductGetAPI;
 import hello.dao.ProductRepository;
 import hello.dao.UserRepository;
 import hello.dao.pojo.Notice;
 import hello.pojo.AliexpressAffiliateFeaturedpromoProductsGetResponse;
+import hello.pojo.AliexpressAffiliateProductQueryResponse;
 import hello.pojo.AliexpressAffiliateProductdetailGetResponse;
 import hello.pojo.Product;
 import hello.service.BannerService;
 import hello.service.ProductService;
+import hello.utils.MainUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,6 +61,17 @@ public class ProductController {
         buildFeaturedProducts(model, "Hot Product", "hotProducts");
 
         return "index";
+    }
+
+
+    @RequestMapping("/main.html")
+    public String main(Model model) {
+        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("bannerList", bannerService.findAll());
+        buildFeaturedProducts(model, "New Arrival", "newArrivalProducts");
+        buildFeaturedProducts(model, "Hot Product", "hotProducts");
+
+        return "main";
     }
 
 
@@ -162,11 +176,35 @@ public class ProductController {
     }
 
 
-    @RequestMapping("/search")
-    public String queryProductDetailBySearch(@RequestParam String keywords, @RequestParam int page, @RequestParam int size, Model model) {
-//        Sort sort = new Sort(Sort.Direction.DESC, "id");
-//        PageRequest pageRequest = new PageRequest(page, size, sort);
-//        model.addAttribute("productList", productService.findByProductTitleContains(keywords, pageRequest));
+    @RequestMapping("/search.html")
+    public String queryProductDetailBySearch(@RequestParam String keywords, @RequestParam int pageNo, Model model) {
+        AFFProductQueryAPI affProductQueryAPI = new AFFProductQueryAPI();
+        affProductQueryAPI.setIsPostRequest(true);
+        affProductQueryAPI.setNeedAopSignature();
+        HashMap<String, String> paramMap = new HashMap<String, String>();
+        paramMap.put("fields",
+                "totalResults,lotNum,packageType,imageUrl,volume,productId,discount,validTime,originalPrice,productTitle,productUrl,salePrice,commission");
+        paramMap.put("keywords", keywords);
+        // 类目
+        paramMap.put("category_ids", "");
+        paramMap.put("min_sale_price", "");
+        paramMap.put("max_sale_price", "");
+        paramMap.put("page_no", pageNo + "");
+        // orignalPriceUp, orignalPriceDown, sellerRateDown, commissionRateUp, commissionRateDown, volumeDown,
+        // validTimeUp, validTimeDown
+        paramMap.put("sort", "");
+        paramMap.put("method", "aliexpress.affiliate.product.query");
+        affProductQueryAPI.setParamMap(paramMap);
+        try {
+            String response = affProductQueryAPI.request();
+            AliexpressAffiliateProductQueryResponse aliexpressAffiliateProductQueryResponse = AFFProductQueryAPI.getResult(response);
+
+            model.addAttribute("trafficProductResultDto", aliexpressAffiliateProductQueryResponse.getRespResult().getResult());
+            System.out.println(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return "search";
     }
 

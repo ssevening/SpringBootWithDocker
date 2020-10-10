@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,7 +55,7 @@ public class MainController {
 
     @GetMapping(path = "/allProducts")
     public @ResponseBody
-    Iterable<ProductDetail> getAllProducts() {
+    Iterable<ProductDetail> getAllProducts(HttpServletRequest request) {
         // This returns a JSON or XML with the users
         return productRepository.findAll();
     }

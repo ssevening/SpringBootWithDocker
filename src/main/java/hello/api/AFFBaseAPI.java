@@ -164,6 +164,15 @@ public class AFFBaseAPI {
         return resultBuffer.toString();
     }
 
+    public String getFinalRequestUrl() {
+        try {
+            return getRequestUrl() + "?" + getRequestData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     private String doGet() throws Exception {
         URL localURL = new URL(getRequestUrl() + "?" + getRequestData());
         URLConnection connection = localURL.openConnection();

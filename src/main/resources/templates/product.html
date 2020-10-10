@@ -188,11 +188,20 @@
                                 <div class="product-desc" id="j-product-desc">
 
                                     <div class="ui-box product-description-main" id="j-product-description">
-                                        <!--
-                                        <div th:each="image : ${product.productSmallImageUrls.string}">
-                                            <img th:src="${image}" th:alt="${product.getProductTitle()}"/><br/>
+
+
+                                        <video th:if="${product.getProductVideoUrl()}!=null"
+                                               th:src="${product.getProductVideoUrl()}" src="movie.ogg"
+                                               controls="controls" style="width:90%">
+                                            您的浏览器不支持 video 标签。
+                                        </video>
+
+
+                                        <div th:each="image : ${product.getProductSmallImageUrls()}">
+                                            <img th:src="${image}" th:alt="${product.getProductTitle()}"
+                                                 style="width:90%"/><br/>
                                         </div>
-                                        -->
+
                                     </div>
 
 
