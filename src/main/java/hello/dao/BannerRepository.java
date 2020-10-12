@@ -1,7 +1,6 @@
 package hello.dao;
 
 import hello.dao.pojo.BannerInfo;
-import hello.dao.pojo.ProductDetail;
 import hello.dao.pojo.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

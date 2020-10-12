@@ -1,8 +1,6 @@
 package hello.pojo;
 
 
-
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -63,8 +61,8 @@ public class PromoCodeDto extends TaobaoObject {
 
 
     public String getPromotionCodeStrInDetail() {
-        String template = "<font color='#eb702d'>{0}</font><br><font color='#666666'>{1}</font>";
-        return MessageFormat.format(template, getPromoCode(), getCodeValue());
+        String template = "{0}, use {1}";
+        return MessageFormat.format(template, getCodeValue(), getPromoCode());
     }
 
     public String getCodeAvailabletimeEnd() {

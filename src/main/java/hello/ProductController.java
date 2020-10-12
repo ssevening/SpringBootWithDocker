@@ -1,15 +1,10 @@
 package hello;
 
-import hello.api.AFFProductDetailGetAPI;
-import hello.api.AFFProductQueryAPI;
-import hello.api.FeaturedPromoProductGetAPI;
+import hello.api.*;
 import hello.dao.ProductRepository;
 import hello.dao.UserRepository;
 import hello.dao.pojo.Notice;
-import hello.pojo.AliexpressAffiliateFeaturedpromoProductsGetResponse;
-import hello.pojo.AliexpressAffiliateProductQueryResponse;
-import hello.pojo.AliexpressAffiliateProductdetailGetResponse;
-import hello.pojo.Product;
+import hello.pojo.*;
 import hello.service.BannerService;
 import hello.service.ProductService;
 import hello.utils.MainUtils;
@@ -53,25 +48,13 @@ public class ProductController {
         return "greetingall";
     }
 
-    @RequestMapping("/Index.html")
+    @RequestMapping("/index.html")
     public String index(Model model) {
         model.addAttribute("users", userRepository.findAll());
         model.addAttribute("bannerList", bannerService.findAll());
         buildFeaturedProducts(model, "New Arrival", "newArrivalProducts");
         buildFeaturedProducts(model, "Hot Product", "hotProducts");
-
         return "index";
-    }
-
-
-    @RequestMapping("/main.html")
-    public String main(Model model) {
-        model.addAttribute("users", userRepository.findAll());
-        model.addAttribute("bannerList", bannerService.findAll());
-        buildFeaturedProducts(model, "New Arrival", "newArrivalProducts");
-        buildFeaturedProducts(model, "Hot Product", "hotProducts");
-
-        return "main";
     }
 
 
@@ -138,16 +121,11 @@ public class ProductController {
         return "findByEmail";
     }
 
-    @RequestMapping("/product.html")
-    public String findProductByProductId(@RequestParam String productId, Model model) {
-        queryProductById(productId, model);
-        return "detail";
-    }
 
-    @RequestMapping("/detail.html")
+    @RequestMapping("/product.html")
     public String detail(@RequestParam String productId, Model model) {
         queryProductById(productId, model);
-        return "detail";
+        return "product";
     }
 
     private String queryProductById(String productId, Model model) {
@@ -180,6 +158,36 @@ public class ProductController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+        SmartMatchAPI smartMatchAPI = new SmartMatchAPI();
+        smartMatchAPI.setIsPostRequest(true);
+        smartMatchAPI.setNeedAopSignature();
+        HashMap<String, String> sparamMap = new HashMap<String, String>();
+        sparamMap.put("method", "aliexpress.affiliate.product.smartmatch");
+        // Must have filed
+        sparamMap.put("device_id", "null");
+        sparamMap.put("tracking_id", AFFBaseAPI.TRACKING_ID);
+        // can be empty
+        sparamMap.put("product_id", productId);
+        sparamMap.put("device", "{}");
+        sparamMap.put("site", "{}");
+        sparamMap.put("app", "{}");
+        sparamMap.put("user", "{}");
+        sparamMap.put("target_currency", "USD");
+        sparamMap.put("target_language", "en");
+        smartMatchAPI.setParamMap(sparamMap);
+        try {
+            String response = smartMatchAPI.request();
+            AliexpressAffiliateProductSmartmatchResponse aliexpressAffiliateProductSmartmatchResponse = SmartMatchAPI.getResult(response);
+            if (aliexpressAffiliateProductSmartmatchResponse != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult() != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult().getRespCode() == 200) {
+                model.addAttribute("smartMatchProductList", aliexpressAffiliateProductSmartmatchResponse.getRespResult().getResult().products.product.subList(0, 16));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
         return null;
     }
 
@@ -208,7 +216,7 @@ public class ProductController {
             AliexpressAffiliateProductQueryResponse aliexpressAffiliateProductQueryResponse = AFFProductQueryAPI.getResult(response);
 
             model.addAttribute("trafficProductResultDto", aliexpressAffiliateProductQueryResponse.getRespResult().getResult());
-            System.out.println(response);
+            model.addAttribute("keywords", keywords);
         } catch (Exception e) {
             e.printStackTrace();
         }

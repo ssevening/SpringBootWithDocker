@@ -1,7 +1,6 @@
 package hello.service;
 
 import hello.dao.pojo.BannerInfo;
-import hello.dao.pojo.ProductDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -3,8 +3,8 @@ package hello;
 import hello.api.CommonAPI;
 import hello.dao.ProductRepository;
 import hello.dao.UserRepository;
-import hello.dao.pojo.ProductDetail;
 import hello.dao.pojo.User;
+import hello.pojo.Product;
 import hello.utils.JsonMapper;
 import hello.utils.WebPageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +55,7 @@ public class MainController {
 
     @GetMapping(path = "/allProducts")
     public @ResponseBody
-    Iterable<ProductDetail> getAllProducts(HttpServletRequest request) {
+    Iterable<Product> getAllProducts(HttpServletRequest request) {
         // This returns a JSON or XML with the users
         return productRepository.findAll();
     }

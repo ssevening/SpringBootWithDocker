@@ -4,7 +4,6 @@ import hello.dao.BannerRepository;
 import hello.dao.ProductRepository;
 import hello.dao.UserRepository;
 import hello.dao.pojo.BannerInfo;
-import hello.dao.pojo.ProductDetail;
 import hello.dao.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;

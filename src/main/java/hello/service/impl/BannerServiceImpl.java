@@ -3,7 +3,6 @@ package hello.service.impl;
 import hello.dao.BannerRepository;
 import hello.dao.ProductRepository;
 import hello.dao.pojo.BannerInfo;
-import hello.dao.pojo.ProductDetail;
 import hello.service.BannerService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

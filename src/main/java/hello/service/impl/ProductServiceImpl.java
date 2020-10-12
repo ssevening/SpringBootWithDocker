@@ -1,7 +1,7 @@
 package hello.service.impl;
 
 import hello.dao.ProductRepository;
-import hello.dao.pojo.ProductDetail;
+import hello.pojo.Product;
 import hello.service.ProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,17 +17,17 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public ProductDetail queryProductDetailByProductId(String productId) {
+    public Product queryProductDetailByProductId(String productId) {
         return productRepository.queryProductDetailByProductId(productId);
     }
 
     @Override
-    public Page<ProductDetail> findByProductTitleContains(String keywords, Pageable pageable) {
+    public Page<Product> findByProductTitleContains(String keywords, Pageable pageable) {
         return productRepository.findByProductTitleContains(keywords, pageable);
     }
 
     @Override
-    public List<ProductDetail> findAll() {
+    public List<Product> findAll() {
         return productRepository.findAll();
     }
 }

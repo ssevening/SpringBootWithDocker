@@ -1,6 +1,6 @@
 package hello.service;
 
-import hello.dao.pojo.ProductDetail;
+import hello.pojo.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,7 +14,7 @@ public interface ProductService {
      * @param productId
      * @return
      */
-    ProductDetail queryProductDetailByProductId(String productId);
+    Product queryProductDetailByProductId(String productId);
 
     /**
      * 通过标题来搜索产品
@@ -22,12 +22,12 @@ public interface ProductService {
      * @param pageable
      * @return
      */
-    Page<ProductDetail> findByProductTitleContains(String keywords, Pageable pageable);
+    Page<Product> findByProductTitleContains(String keywords, Pageable pageable);
 
     /**
      * 查找所有产品
      * @return
      */
-    public List<ProductDetail> findAll();
+    public List<Product> findAll();
 
 }

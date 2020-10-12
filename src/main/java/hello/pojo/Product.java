@@ -3,12 +3,37 @@ package hello.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import hello.utils.JsonMapper;
 
+import javax.persistence.*;
+import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.List;
 
+@Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Product extends TaobaoObject {
 
+    public void webToDB() {
+        try {
+            this.promoCodeInfoJson = JsonMapper.pojo2json(promoCodeInfo);
+            this.productSmallImageUrlsJson = JsonMapper.pojo2json(productSmallImageUrls);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void dbToWeb() {
+        try {
+            this.promoCodeInfo = JsonMapper.json2pojo(promoCodeInfoJson, PromoCodeDto.class);
+            this.productSmallImageUrls = JsonMapper.json2pojo(productSmallImageUrlsJson, ImageInfo.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public String id;
 
     private static final long serialVersionUID = 6897781539788667454L;
@@ -92,8 +117,13 @@ public class Product extends TaobaoObject {
      * 商品小图地址列表
      */
     // @ApiListField("product_small_image_urls")
+    @Transient
+    // 忽略掉这个字段
     @JsonProperty("product_small_image_urls")
     public ImageInfo productSmallImageUrls;
+
+    // 数据化持久字段
+    private String productSmallImageUrlsJson;
     /**
      * 商品标题
      */
@@ -108,7 +138,13 @@ public class Product extends TaobaoObject {
      * code信息
      */
     @JsonProperty("promo_code_info")
+    @Transient
     private PromoCodeDto promoCodeInfo;
+
+    /**
+     * code jsonInfo
+     */
+    private String promoCodeInfoJson;
     /**
      * 推广链接
      */
@@ -180,6 +216,27 @@ public class Product extends TaobaoObject {
     @JsonProperty("target_sale_price_currency")
     private String targetSalePriceCurrency;
 
+
+    public String getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(String keywords) {
+        this.keywords = keywords;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Column(nullable = false, columnDefinition = "varchar(3072)")
+    public String keywords;
+    @Column(nullable = false, columnDefinition = "varchar(3072)")
+    public String description;
 
     public String getDisplayPrice() {
         if (salePrice != null) {
@@ -376,6 +433,13 @@ public class Product extends TaobaoObject {
         return this.promoCodeInfo;
     }
 
+    public String getPromotionCodeStrInDetail() {
+        if (promoCodeInfo != null) {
+            return promoCodeInfo.getPromotionCodeStrInDetail();
+        }
+        return null;
+    }
+
     public void setPromoCodeInfo(PromoCodeDto promoCodeInfo) {
         this.promoCodeInfo = promoCodeInfo;
     }
@@ -490,6 +554,22 @@ public class Product extends TaobaoObject {
 
     public void setTargetSalePriceCurrency(String targetSalePriceCurrency) {
         this.targetSalePriceCurrency = targetSalePriceCurrency;
+    }
+
+    public String getProductSmallImageUrlsJson() {
+        return productSmallImageUrlsJson;
+    }
+
+    public void setProductSmallImageUrlsJson(String productSmallImageUrlsJson) {
+        this.productSmallImageUrlsJson = productSmallImageUrlsJson;
+    }
+
+    public String getPromoCodeInfoJson() {
+        return promoCodeInfoJson;
+    }
+
+    public void setPromoCodeInfoJson(String promoCodeInfoJson) {
+        this.promoCodeInfoJson = promoCodeInfoJson;
     }
 
     public class ImageInfo {
