@@ -20,19 +20,21 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * JSON Mapper
- * 
+ *
  * @author jade (originally)
  * @author zhe.yangz imported.
  */
 public class JsonMapper {
 
-    public static final String        DATE_FORMAT = "yyyyMMddHHmmssSSSZ";
-    private static final JsonFactory jf          = new JsonFactory();
+    public static final String DATE_FORMAT = "yyyyMMddHHmmssSSSZ";
+    private static final JsonFactory jf = new JsonFactory();
+
     static {
         jf.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         jf.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
     }
-    private static final ObjectMapper m           = new ObjectMapper(jf);
+
+    private static final ObjectMapper m = new ObjectMapper(jf);
 //    static {
 //        SerializationConfig sf = m.getSerializationConfig();
 //        m.setSerializationConfig(sf.with(Feature.USE_ANNOTATIONS).withDateFormat(new SimpleDateFormat(
@@ -68,7 +70,7 @@ public class JsonMapper {
     }
 
     public static <T> T json2value(Reader reader, Class<T> type) throws IOException, JsonParseException,
-                                                                JsonMappingException {
+            JsonMappingException {
         return m.readValue(reader, type);
     }
 
@@ -109,10 +111,10 @@ public class JsonMapper {
     }
 
     public static void pojo2Json(Object pojo, Writer w) throws JsonGenerationException, JsonMappingException,
-                                                       IOException {
+            IOException {
         JsonGenerator jg = null;
         try {
-            jg = jf.createJsonGenerator(w);
+            jg = jf.createGenerator(w);
             m.writeValue(jg, pojo);
         } finally {
             if (jg != null) {
@@ -128,7 +130,7 @@ public class JsonMapper {
         final StringWriter sw = new StringWriter();
         JsonGenerator jg = null;
         try {
-            jg = jf.createJsonGenerator(sw);
+            jg = jf.createGenerator(sw);
             m.writeValue(jg, pojo);
             return sw.toString();
         } finally {
@@ -145,7 +147,7 @@ public class JsonMapper {
         final StringWriter sw = new StringWriter();
         JsonGenerator jg = null;
         try {
-            jg = jf.createJsonGenerator(sw);
+            jg = jf.createGenerator(sw);
             m.writeTree(jg, node);
             return sw.toString();
         } finally {
@@ -159,10 +161,10 @@ public class JsonMapper {
     }
 
     public static void node2json(JsonNode node, Writer w) throws JsonGenerationException, JsonMappingException,
-                                                         IOException {
+            IOException {
         JsonGenerator jg = null;
         try {
-            jg = jf.createJsonGenerator(w);
+            jg = jf.createGenerator(w);
             m.writeTree(jg, node);
         } finally {
             if (jg != null) {

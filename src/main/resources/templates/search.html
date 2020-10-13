@@ -65,8 +65,8 @@
                     <!-- Search Box Start -->
                     <div class="col-lg-4 col-md-6 ml-auto mr-auto">
                         <div class="search-box-view">
-                            <form action="search.html?pageNo=1" method="get">
-                                <input type="text" class="email" placeholder="Search Your Product" name="product">
+                            <form action="search.html" method="get" target="_blank">
+                                <input type="text" class="email" placeholder="Search Your Product" name="keywords">
                                 <input type="hidden" name="pageNo" value="1" id="pageNo">
                                 <button type="submit" class="submit"></button>
                             </form>
@@ -291,13 +291,13 @@
                         <!-- Toolbar Short Area Start -->
                         <div class="main-toolbar-sorter f-right">
                             <div class="toolbar-sorter">
-                                <label>sort by</label>
-                                <select class="sorter" name="sorter">
-                                    <option value="Position" selected="selected">position</option>
-                                    <option value="Product Name">Product Name</option>
-                                    <option value="Price">Price</option>
-                                </select>
-                                <span><a href="#"><i class="fa fa-arrow-up"></i></a></span>
+                                <label>sort:</label>
+                                <span><a href="#"
+                                         th:href="'search.html?sort=SALE_PRICE_ASC&keywords=' + ${keywords} +'&pageNo='+${trafficProductResultDto.currentPageNo}"><i
+                                        class="fa fa-arrow-up"></i></a></span>
+                                <span><a href="#"
+                                         th:href="'search.html?sort=SALE_PRICE_DESC&keywords=' + ${keywords} +'&pageNo='+${trafficProductResultDto.currentPageNo}"><i
+                                        class="fa fa-arrow-down"></i></a></span>
                             </div>
                         </div>
                         <!-- Toolbar Short Area End -->

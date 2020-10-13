@@ -1,6 +1,7 @@
 package hello;
 
 import hello.api.*;
+import hello.cache.MemCache;
 import hello.dao.ProductRepository;
 import hello.dao.UserRepository;
 import hello.dao.pojo.Notice;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -72,8 +74,14 @@ public class ProductController {
         featuredPromoProductGetAPI.setParamMap(newArrivalMap);
         try {
             String response = featuredPromoProductGetAPI.request();
-            AliexpressAffiliateFeaturedpromoProductsGetResponse aliexpressAffiliateFeaturedpromoProductsGetResponse = FeaturedPromoProductGetAPI.getResult(response);
-            model.addAttribute(result, aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult().getResult().products.product);
+            if (MemCache.getInstance().get(result) != null) {
+                model.addAttribute(result, MemCache.getInstance().get(result));
+            } else {
+                AliexpressAffiliateFeaturedpromoProductsGetResponse aliexpressAffiliateFeaturedpromoProductsGetResponse = FeaturedPromoProductGetAPI.getResult(response);
+                model.addAttribute(result, aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult().getResult().products.product);
+                MemCache.getInstance().put(result, aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult().getResult().products.product);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -145,16 +153,22 @@ public class ProductController {
 
         affProductDetailGetAPI.setParamMap(productParamsMap);
         try {
-            String response = affProductDetailGetAPI.request();
-
-            AliexpressAffiliateProductdetailGetResponse productdetailGetResponse = AFFProductDetailGetAPI.getResult(response);
-            if (productdetailGetResponse != null && productdetailGetResponse.getRespResult() != null && productdetailGetResponse.getRespResult().getRespCode() == 200) {
-                model.addAttribute("product", productdetailGetResponse.getRespResult().getResult().products.product.get(0));
+            if (MemCache.getInstance().get(productId) != null) {
+                model.addAttribute("product", (Product) MemCache.getInstance().get(productId));
             } else {
-                Notice notice = new Notice();
-                notice.message = "Product not found.";
-                model.addAttribute("message", notice);
+                String response = affProductDetailGetAPI.request();
+
+                AliexpressAffiliateProductdetailGetResponse productdetailGetResponse = AFFProductDetailGetAPI.getResult(response);
+                if (productdetailGetResponse != null && productdetailGetResponse.getRespResult() != null && productdetailGetResponse.getRespResult().getRespCode() == 200) {
+                    model.addAttribute("product", productdetailGetResponse.getRespResult().getResult().products.product.get(0));
+                    MemCache.getInstance().put(productId, productdetailGetResponse.getRespResult().getResult().products.product.get(0));
+                } else {
+                    Notice notice = new Notice();
+                    notice.message = "Product not found.";
+                    model.addAttribute("message", notice);
+                }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -179,9 +193,14 @@ public class ProductController {
         smartMatchAPI.setParamMap(sparamMap);
         try {
             String response = smartMatchAPI.request();
-            AliexpressAffiliateProductSmartmatchResponse aliexpressAffiliateProductSmartmatchResponse = SmartMatchAPI.getResult(response);
-            if (aliexpressAffiliateProductSmartmatchResponse != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult() != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult().getRespCode() == 200) {
-                model.addAttribute("smartMatchProductList", aliexpressAffiliateProductSmartmatchResponse.getRespResult().getResult().products.product.subList(0, 16));
+            if (MemCache.getInstance().get("sm" + productId) != null) {
+                model.addAttribute("smartMatchProductList", (List<Product>) MemCache.getInstance().get("sm" + productId));
+            } else {
+                AliexpressAffiliateProductSmartmatchResponse aliexpressAffiliateProductSmartmatchResponse = SmartMatchAPI.getResult(response);
+                if (aliexpressAffiliateProductSmartmatchResponse != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult() != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult().getRespCode() == 200) {
+                    model.addAttribute("smartMatchProductList", aliexpressAffiliateProductSmartmatchResponse.getRespResult().getResult().products.product.subList(0, 16));
+                    MemCache.getInstance().put("sm" + productId, aliexpressAffiliateProductSmartmatchResponse.getRespResult().getResult().products.product.subList(0, 16));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -193,7 +212,7 @@ public class ProductController {
 
 
     @RequestMapping("/search.html")
-    public String queryProductDetailBySearch(@RequestParam String keywords, @RequestParam int pageNo, Model model) {
+    public String queryProductDetailBySearch(@RequestParam String keywords, @RequestParam(defaultValue = "1", required = false) int pageNo, @RequestParam(defaultValue = "", required = false) String sort, Model model) {
         AFFProductQueryAPI affProductQueryAPI = new AFFProductQueryAPI();
         affProductQueryAPI.setIsPostRequest(true);
         affProductQueryAPI.setNeedAopSignature();
@@ -206,9 +225,8 @@ public class ProductController {
         paramMap.put("min_sale_price", "");
         paramMap.put("max_sale_price", "");
         paramMap.put("page_no", pageNo + "");
-        // orignalPriceUp, orignalPriceDown, sellerRateDown, commissionRateUp, commissionRateDown, volumeDown,
-        // validTimeUp, validTimeDown
-        paramMap.put("sort", "");
+        //SALE_PRICE_ASC, SALE_PRICE_DESC, LAST_VOLUME_ASC, LAST_VOLUME_DESC
+        paramMap.put("sort", sort);
         paramMap.put("method", "aliexpress.affiliate.product.query");
         affProductQueryAPI.setParamMap(paramMap);
         try {

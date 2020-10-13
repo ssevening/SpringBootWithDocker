@@ -44,22 +44,9 @@ public class ScheduledTest {
     private MonitorService monitorService;
     private static final Logger logger = LoggerFactory.getLogger(ScheduledTest.class);
 
-    //    @Scheduled(cron = "0 0/2 8-20 * * ?")
-//    public void executeFileDownLoadTask() {
-//
-//        // 间隔2分钟,执行工单上传任务
-//        Thread current = Thread.currentThread();
-//        System.out.println("定时任务1:" + current.getId());
-//        logger.info("ScheduledTest.executeFileDownLoadTask 定时任务1:" + current.getId() + ",name:" + current.getName());
-//
-//    }
     // 每天早八点到晚八点，间隔10分钟执行任务
     @Scheduled(cron = "0 0/10 8-20 * * ?")
     public void executeUploadTask() {
-        Thread current = Thread.currentThread();
-        System.out.println("定时任务2:" + current.getId());
-        logger.info("ScheduledTest.executeUploadTask 定时任务2:" + current.getId() + ",name:" + current.getName());
-
         List<MonitorInfo> monitorInfoList = monitorService.findAll();
         if (monitorInfoList != null && !monitorInfoList.isEmpty()) {
             for (int i = 0; i < monitorInfoList.size(); i++) {
@@ -80,8 +67,6 @@ public class ScheduledTest {
     @Scheduled(cron = "0 0/10 8-20 * * ?")
     public void executeCheckAPIStatusTask() {
         Thread current = Thread.currentThread();
-        System.out.println("executeCheckAPIStatusTask" + current.getId());
-        logger.info("ScheduledTest.executeCheckAPIStatusTask 定时任务2:" + current.getId() + ",name:" + current.getName());
         checkFeaturedProductTask("New Arrival");
         checkProductDetailTask("4001266081726");
         checkSmartMatchTask();
