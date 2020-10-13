@@ -21,7 +21,7 @@ import javax.mail.internet.MimeMultipart;
 public class Mail extends javax.mail.Authenticator {
 
     private String    _user = "282867908@qq.com";
-    private String    _pass = "lecztcdmpovhbihd";
+    private String    _pass = "";
 
     private String[]  _to   = new String[] { "ssevening@163.com" };
     private String    _from = "hello1234";
@@ -51,7 +51,6 @@ public class Mail extends javax.mail.Authenticator {
         // _sport = "465"; // default socketfactory port
 
         _user = "282867908@qq.com"; // username
-        _pass = "lecztcdmpovhbihd"; // password
 
         _from = "282867908@qq.com"; // email sent from
 

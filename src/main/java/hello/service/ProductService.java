@@ -24,6 +24,8 @@ public interface ProductService {
      */
     Page<Product> findByProductTitleContains(String keywords, Pageable pageable);
 
+    Product save(Product product);
+
     /**
      * 查找所有产品
      * @return

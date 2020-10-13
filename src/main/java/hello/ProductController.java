@@ -108,6 +108,8 @@ public class ProductController {
             String result = affProductDetailGetAPI.request();
             AliexpressAffiliateProductdetailGetResponse response = AFFProductDetailGetAPI.getResult(result);
             Product product = response.getRespResult().getResult().products.product.get(0);
+            product.webToDB();
+            productService.save(product);
             model.addAttribute("product", product);
         } catch (Exception e) {
             e.printStackTrace();
@@ -160,8 +162,11 @@ public class ProductController {
 
                 AliexpressAffiliateProductdetailGetResponse productdetailGetResponse = AFFProductDetailGetAPI.getResult(response);
                 if (productdetailGetResponse != null && productdetailGetResponse.getRespResult() != null && productdetailGetResponse.getRespResult().getRespCode() == 200) {
-                    model.addAttribute("product", productdetailGetResponse.getRespResult().getResult().products.product.get(0));
-                    MemCache.getInstance().put(productId, productdetailGetResponse.getRespResult().getResult().products.product.get(0));
+                    Product product = productdetailGetResponse.getRespResult().getResult().products.product.get(0);
+                    model.addAttribute("product", product);
+                    product.webToDB();
+                    productService.save(product);
+                    MemCache.getInstance().put(productId, product);
                 } else {
                     Notice notice = new Notice();
                     notice.message = "Product not found.";

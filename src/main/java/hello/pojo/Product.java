@@ -7,7 +7,6 @@ import hello.utils.JsonMapper;
 
 import javax.persistence.*;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.List;
 
 @Entity
@@ -18,6 +17,8 @@ public class Product extends TaobaoObject {
         try {
             this.promoCodeInfoJson = JsonMapper.pojo2json(promoCodeInfo);
             this.productSmallImageUrlsJson = JsonMapper.pojo2json(productSmallImageUrls);
+            this.description = "test";
+            this.keywords = "keywords";
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,7 +35,7 @@ public class Product extends TaobaoObject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public String id;
+    public int id;
 
     private static final long serialVersionUID = 6897781539788667454L;
 
@@ -123,6 +124,7 @@ public class Product extends TaobaoObject {
     public ImageInfo productSmallImageUrls;
 
     // 数据化持久字段
+    @Column(nullable = true, columnDefinition = "varchar(2048)")
     private String productSmallImageUrlsJson;
     /**
      * 商品标题
@@ -233,9 +235,9 @@ public class Product extends TaobaoObject {
         this.description = description;
     }
 
-    @Column(nullable = false, columnDefinition = "varchar(3072)")
+    @Column(nullable = true, columnDefinition = "varchar(3072)")
     public String keywords;
-    @Column(nullable = false, columnDefinition = "varchar(3072)")
+    @Column(nullable = true, columnDefinition = "varchar(3072)")
     public String description;
 
     public String getDisplayPrice() {
