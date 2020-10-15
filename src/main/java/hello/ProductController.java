@@ -8,6 +8,7 @@ import hello.dao.pojo.Notice;
 import hello.pojo.*;
 import hello.service.BannerService;
 import hello.service.ProductService;
+import hello.utils.KeywordsUtils;
 import hello.utils.MainUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +54,15 @@ public class ProductController {
 
     @RequestMapping("/index.html")
     public String index(Model model) {
+        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("bannerList", bannerService.findAll());
+        buildFeaturedProducts(model, "New Arrival", "newArrivalProducts");
+        buildFeaturedProducts(model, "Hot Product", "hotProducts");
+        return "index";
+    }
+
+    @RequestMapping("/")
+    public String main(Model model) {
         model.addAttribute("users", userRepository.findAll());
         model.addAttribute("bannerList", bannerService.findAll());
         buildFeaturedProducts(model, "New Arrival", "newArrivalProducts");
@@ -153,17 +164,18 @@ public class ProductController {
 
         affProductDetailGetAPI.setParamMap(productParamsMap);
 
-        affProductDetailGetAPI.setParamMap(productParamsMap);
+        Product product = null;
         try {
+
             if (MemCache.getInstance().get(productId) != null) {
-                model.addAttribute("product", (Product) MemCache.getInstance().get(productId));
+                product = (Product) MemCache.getInstance().get(productId);
+
             } else {
                 String response = affProductDetailGetAPI.request();
 
-                AliexpressAffiliateProductdetailGetResponse productdetailGetResponse = AFFProductDetailGetAPI.getResult(response);
-                if (productdetailGetResponse != null && productdetailGetResponse.getRespResult() != null && productdetailGetResponse.getRespResult().getRespCode() == 200) {
-                    Product product = productdetailGetResponse.getRespResult().getResult().products.product.get(0);
-                    model.addAttribute("product", product);
+                AliexpressAffiliateProductdetailGetResponse productDetailGetResponse = AFFProductDetailGetAPI.getResult(response);
+                if (productDetailGetResponse != null && productDetailGetResponse.getRespResult() != null && productDetailGetResponse.getRespResult().getRespCode() == 200) {
+                    product = productDetailGetResponse.getRespResult().getResult().products.product.get(0);
                     product.webToDB();
                     productService.save(product);
                     MemCache.getInstance().put(productId, product);
@@ -173,6 +185,7 @@ public class ProductController {
                     model.addAttribute("message", notice);
                 }
             }
+            model.addAttribute("product", product);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -196,19 +209,31 @@ public class ProductController {
         sparamMap.put("target_currency", "USD");
         sparamMap.put("target_language", "en");
         smartMatchAPI.setParamMap(sparamMap);
+        List<Product> smartMatchProductList = new ArrayList<>();
         try {
-            String response = smartMatchAPI.request();
             if (MemCache.getInstance().get("sm" + productId) != null) {
-                model.addAttribute("smartMatchProductList", (List<Product>) MemCache.getInstance().get("sm" + productId));
+                smartMatchProductList = (List<Product>) MemCache.getInstance().get("sm" + productId);
             } else {
+                String response = smartMatchAPI.request();
                 AliexpressAffiliateProductSmartmatchResponse aliexpressAffiliateProductSmartmatchResponse = SmartMatchAPI.getResult(response);
                 if (aliexpressAffiliateProductSmartmatchResponse != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult() != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult().getRespCode() == 200) {
-                    model.addAttribute("smartMatchProductList", aliexpressAffiliateProductSmartmatchResponse.getRespResult().getResult().products.product.subList(0, 16));
+                    smartMatchProductList = aliexpressAffiliateProductSmartmatchResponse.getRespResult().getResult().products.product.subList(0, 16);
                     MemCache.getInstance().put("sm" + productId, aliexpressAffiliateProductSmartmatchResponse.getRespResult().getResult().products.product.subList(0, 16));
                 }
             }
+            model.addAttribute("smartMatchProductList", smartMatchProductList);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        // build seo info
+        if (product != null) {
+            StringBuffer longText = new StringBuffer();
+            for (int i = 0; i < smartMatchProductList.size(); i++) {
+                Product p = smartMatchProductList.get(i);
+                longText.append(p.getProductTitle()).append(" ");
+            }
+            product.setKeywords(KeywordsUtils.getSEOKeywords(KeywordsUtils.getKeywordsFromLongText(longText.toString())));
         }
 
 

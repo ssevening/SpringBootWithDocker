@@ -24,7 +24,7 @@ group = 'ssevening'
 
 bootJar {
     baseName = 'gs-spring-boot-docker'
-    version = '0.2.8'
+    version = '0.3.3'
 }
 
 //// tag::task[]
@@ -53,7 +53,6 @@ repositories {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
 
@@ -68,8 +67,8 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     // add for url rewrite filter
     compile 'org.tuckey:urlrewritefilter:4.0.4'
-    // add for 网页关键词和详描解析
-    compile 'org.jsoup:jsoup:1.10.2'
+    // // jsoup HTML parser library @ https://jsoup.org/
+    compile 'org.jsoup:jsoup:1.13.1'
     compile group: 'org.apache.logging.log4j', name: 'log4j-1.2-api', version: '2.13.3'
 
     // https://mvnrepository.com/artifact/com.github.dfabulich/sitemapgen4j
@@ -81,7 +80,6 @@ dependencies {
     compile("javax.mail:javax.mail-api:1.5.6")
     compile("com.sun.mail:javax.mail:1.5.6")
     // send mail function end
-
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

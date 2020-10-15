@@ -228,7 +228,21 @@ public class Product extends TaobaoObject {
     }
 
     public String getDescription() {
-        return description;
+        StringBuffer sb = new StringBuffer();
+        sb.append(getDiscount()).append(" OFF NOW").append(" and ");
+        if (getPromoCodeInfo() != null) {
+            sb.append(getPromotionCodeStrInDetail()).append(" and ");
+        }
+        if (getProductVideoUrl() != null) {
+            sb.append("have product video introduction").append(" and ");
+        }
+        if (getEvaluateRate() != null) {
+            sb.append(getEvaluateRate()).append(" good evaluate rate").append(" and ");
+        }
+
+        sb.append(getProductTitle());
+
+        return sb.toString();
     }
 
     public void setDescription(String description) {
