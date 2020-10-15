@@ -233,7 +233,9 @@ public class ProductController {
                 Product p = smartMatchProductList.get(i);
                 longText.append(p.getProductTitle()).append(" ");
             }
-            product.setKeywords(KeywordsUtils.getSEOKeywords(KeywordsUtils.getKeywordsFromLongText(longText.toString())));
+            product.setKeywords(product.getFirstLevelCategoryName() + ","
+                    + product.getSecondLevelCategoryName() + ","
+                    + KeywordsUtils.getSEOKeywords(KeywordsUtils.getKeywordsFromLongText(longText.toString())));
         }
 
 
