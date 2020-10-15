@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>二维码生成</title>
+    <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<form role="form" action="/qrcode/gen.html" method="get">
+    <div class="md-form">
+        <textarea id="content" class="md-textarea form-control" rows="8" name="content"></textarea>
+        <label for="content">Please input content to gen qrcode.</label>
+    </div>
+    <button class="btn btn-default" type="submit" id="btnGen">生成</button>
+</form>
+
+</body>
+</html>
+
+

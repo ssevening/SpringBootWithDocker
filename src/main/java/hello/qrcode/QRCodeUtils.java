@@ -1,227 +1,135 @@
 package hello.qrcode;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import javax.imageio.ImageIO;
-
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.Binarizer;
-import com.google.zxing.BinaryBitmap;
 import com.google.zxing.EncodeHintType;
-import com.google.zxing.LuminanceSource;
-import com.google.zxing.MultiFormatReader;
 import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.NotFoundException;
-import com.google.zxing.Result;
-import com.google.zxing.WriterException;
-import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import com.google.zxing.common.BitMatrix;
-import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Hashtable;
+
 /**
- * 二维码生成解析工具类
- *
- * @data 2018-11-2 10:23:14
+ * 二维码生成工具类
  */
 public class QRCodeUtils {
-
-    // 二维码颜色==黑色
-    private static final int BLACK = 0xFF000000;
-    // 二维码颜色==白色
-    private static final int WHITE = 0xFFFFFFFF;
-    // 二维码图片格式==jpg和png两种
-    private static final List<String> IMAGE_TYPE = new ArrayList<>();
-
-    static {
-        IMAGE_TYPE.add("jpg");
-        IMAGE_TYPE.add("png");
-    }
+    private static final String CHARSET = "utf-8";
+    public static final String FORMAT = "JPG";
+    // 二维码尺寸
+    private static final int QRCODE_SIZE = 300;
+    // LOGO宽度
+    private static final int LOGO_WIDTH = 60;
+    // LOGO高度
+    private static final int LOGO_HEIGHT = 60;
 
     /**
-     * zxing方式生成二维码
-     * 注意：
-     * 1,文本生成二维码的方法独立出来,返回image流的形式,可以输出到页面
-     * 2,设置容错率为最高,一般容错率越高,图片越不清晰, 但是只有将容错率设置高一点才能兼容logo图片
-     * 3,logo图片默认占二维码图片的20%,设置太大会导致无法解析
+     * 生成二维码
      *
-     * @param content  二维码包含的内容，文本或网址
-     * @param path     生成的二维码图片存放位置
-     * @param size     生成的二维码图片尺寸 可以自定义或者默认（250）
-     * @param logoPath logo的存放位置
+     * @param content      二维码内容
+     * @param logoPath     logo地址
+     * @param needCompress 是否压缩logo
+     * @return 图片
+     * @throws Exception
      */
-    public static boolean zxingCodeCreate(String content, String path, Integer size, String logoPath) {
-        try {
-            //图片类型
-            String imageType = "jpg";
-            //获取二维码流的形式，写入到目录文件中
-            BufferedImage image = getBufferedImage(content, size, logoPath);
-            //获得随机数
-            Random random = new Random();
-            //生成二维码存放文件
-            File file = new File(path + random.nextInt(1000) + ".jpg");
-            if (!file.exists()) {
-                file.mkdirs();
+    public static BufferedImage createImage(String content, String logoPath, boolean needCompress) throws Exception {
+        Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
+        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+        hints.put(EncodeHintType.CHARACTER_SET, CHARSET);
+        hints.put(EncodeHintType.MARGIN, 1);
+        BitMatrix bitMatrix = new MultiFormatWriter().encode(content, BarcodeFormat.QR_CODE, QRCODE_SIZE, QRCODE_SIZE,
+                hints);
+        int width = bitMatrix.getWidth();
+        int height = bitMatrix.getHeight();
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                image.setRGB(x, y, bitMatrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
             }
-            ImageIO.write(image, imageType, file);
-            return true;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
         }
-    }
-
-    /**
-     * 二维码流的形式，包含文本内容
-     *
-     * @param content  二维码文本内容
-     * @param size     二维码尺寸
-     * @param logoPath logo的存放位置
-     * @return
-     */
-    public static BufferedImage getBufferedImage(String content, Integer size, String logoPath) {
-        if (size == null || size <= 0) {
-            size = 250;
+        if (logoPath == null || "".equals(logoPath)) {
+            return image;
         }
-        BufferedImage image = null;
-        try {
-            // 设置编码字符集
-            Map<EncodeHintType, Object> hints = new HashMap<>();
-            //设置编码
-            hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-            //设置容错率最高
-            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
-            hints.put(EncodeHintType.MARGIN, 1);
-            // 1、生成二维码
-            MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-            BitMatrix bitMatrix = multiFormatWriter.encode(content, BarcodeFormat.QR_CODE, size, size, hints);
-            // 2、获取二维码宽高
-            int codeWidth = bitMatrix.getWidth();
-            int codeHeight = bitMatrix.getHeight();
-            // 3、将二维码放入缓冲流
-            image = new BufferedImage(codeWidth, codeHeight, BufferedImage.TYPE_INT_RGB);
-            for (int i = 0; i < codeWidth; i++) {
-                for (int j = 0; j < codeHeight; j++) {
-                    // 4、循环将二维码内容定入图片
-                    image.setRGB(i, j, bitMatrix.get(i, j) ? BLACK : WHITE);
-                }
-            }
-            //判断是否写入logo图片
-            if (logoPath != null && !"".equals(logoPath)) {
-                File logoPic = new File(logoPath);
-                if (logoPic.exists()) {
-                    Graphics2D g = image.createGraphics();
-                    BufferedImage logo = ImageIO.read(logoPic);
-                    int widthLogo = logo.getWidth(null) > image.getWidth() * 2 / 10 ? (image.getWidth() * 2 / 10) : logo.getWidth(null);
-                    int heightLogo = logo.getHeight(null) > image.getHeight() * 2 / 10 ? (image.getHeight() * 2 / 10) : logo.getHeight(null);
-                    int x = (image.getWidth() - widthLogo) / 2;
-                    int y = (image.getHeight() - heightLogo) / 2;
-                    // 开始绘制图片
-                    g.drawImage(logo, x, y, widthLogo, heightLogo, null);
-                    g.drawRoundRect(x, y, widthLogo, heightLogo, 15, 15);
-                    //边框宽度
-                    g.setStroke(new BasicStroke(2));
-                    //边框颜色
-                    g.setColor(Color.WHITE);
-                    g.drawRect(x, y, widthLogo, heightLogo);
-                    g.dispose();
-                    logo.flush();
-                    image.flush();
-                }
-            }
-        } catch (WriterException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        // 插入图片
+        insertImage(image, logoPath, needCompress);
         return image;
     }
 
     /**
-     * 给二维码图片添加Logo
+     * 插入LOGO
      *
-     * @param qrPic   二维码图片
-     * @param logoPic logo图片
-     * @param path    合成后的图片存储目录
+     * @param source       二维码图片
+     * @param logoPath     LOGO图片地址
+     * @param needCompress 是否压缩
+     * @throws IOException
      */
-    public static boolean zxingCodeCreate(File qrPic, File logoPic, String path) {
+    private static void insertImage(BufferedImage source, String logoPath, boolean needCompress) throws IOException {
+        InputStream inputStream = null;
         try {
-            String imageType = path.substring(path.lastIndexOf(".") + 1).toLowerCase();
-            if (!IMAGE_TYPE.contains(imageType)) {
-                return false;
+            inputStream = getResourceAsStream(logoPath);
+            Image src = ImageIO.read(inputStream);
+            int width = src.getWidth(null);
+            int height = src.getHeight(null);
+            if (needCompress) { // 压缩LOGO
+                if (width > LOGO_WIDTH) {
+                    width = LOGO_WIDTH;
+                }
+                if (height > LOGO_HEIGHT) {
+                    height = LOGO_HEIGHT;
+                }
+                Image image = src.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                BufferedImage tag = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+                Graphics g = tag.getGraphics();
+                g.drawImage(image, 0, 0, null); // 绘制缩小后的图
+                g.dispose();
+                src = image;
             }
-
-            if (!qrPic.isFile() && !logoPic.isFile()) {
-                return false;
-            }
-
-            //读取二维码图片，并构建绘图对象
-
-            BufferedImage image = ImageIO.read(qrPic);
-            Graphics2D g = image.createGraphics();
-            //读取Logo图片
-            BufferedImage logo = ImageIO.read(logoPic);
-            //设置logo的大小,最多20%0
-            int widthLogo = logo.getWidth(null) > image.getWidth() * 2 / 10 ? (image.getWidth() * 2 / 10) : logo.getWidth(null);
-            int heightLogo = logo.getHeight(null) > image.getHeight() * 2 / 10 ? (image.getHeight() * 2 / 10) : logo.getHeight(null);
-            // 计算图片放置位置，默认在中间
-            int x = (image.getWidth() - widthLogo) / 2;
-            int y = (image.getHeight() - heightLogo) / 2;
-            // 开始绘制图片
-            g.drawImage(logo, x, y, widthLogo, heightLogo, null);
-            g.drawRoundRect(x, y, widthLogo, heightLogo, 15, 15);
-            //边框宽度
-            g.setStroke(new BasicStroke(2));
-            //边框颜色
-            g.setColor(Color.WHITE);
-            g.drawRect(x, y, widthLogo, heightLogo);
-            g.dispose();
-            logo.flush();
-            image.flush();
-            File newFile = new File(path);
-            if (!newFile.exists()) {
-                newFile.mkdirs();
-            }
-            ImageIO.write(image, imageType, newFile);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-    /**
-     * 二维码的解析方法
-     *
-     * @param path 二维码图片目录
-     * @return
-     */
-    public static Result zxingCodeAnalyze(String path) {
-        try {
-            MultiFormatReader formatReader = new MultiFormatReader();
-            File file = new File(path);
-            if (file.exists()) {
-                BufferedImage image = ImageIO.read(file);
-                LuminanceSource source = new BufferedImageLuminanceSource(image);
-                Binarizer binarizer = new HybridBinarizer(source);
-                BinaryBitmap binaryBitmap = new BinaryBitmap(binarizer);
-                Map hints = new HashMap();
-                hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
-                Result result = formatReader.decode(binaryBitmap, hints);
-                return result;
-            }
+            // 插入LOGO
+            Graphics2D graph = source.createGraphics();
+            int x = (QRCODE_SIZE - width) / 2;
+            int y = (QRCODE_SIZE - height) / 2;
+            graph.drawImage(src, x, y, width, height, null);
+            Shape shape = new RoundRectangle2D.Float(x, y, width, width, 6, 6);
+            graph.setStroke(new BasicStroke(3f));
+            graph.draw(shape);
+            graph.dispose();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (NotFoundException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
         }
-        return null;
     }
 
+    /**
+     * 生成二维码(内嵌LOGO)
+     *
+     * @param content      内容
+     * @param logoPath     LOGO地址
+     * @param output       输出流
+     * @param needCompress 是否压缩LOGO
+     * @throws Exception
+     */
+    public static void encode(String content, String logoPath, OutputStream output, boolean needCompress)
+            throws Exception {
+        BufferedImage image = createImage(content, logoPath, needCompress);
+        ImageIO.write(image, FORMAT, output);
+    }
+
+    /**
+     * 获取指定文件的输入流，获取logo
+     *
+     * @param logoPath 文件的路径
+     * @return
+     */
+    public static InputStream getResourceAsStream(String logoPath) {
+        return QRCodeUtils.class.getResourceAsStream(logoPath);
+    }
 }
