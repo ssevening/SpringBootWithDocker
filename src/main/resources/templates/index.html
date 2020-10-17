@@ -125,8 +125,7 @@
                             <nav>
                                 <ul class="middle-menu-list">
                                     <li><a href="index.html">Home</a></li>
-                                    <li><a href="shop.html">Shop</a></li>
-                                    <li><a href="product.html">Product Details</a></li>
+                                    <li><a href="search.html">Shop</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -145,42 +144,6 @@
                                 </li>
                                 <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
                                 <li><a href="#"><i class="fa fa-shopping-basket"></i><span class="cart-counter">2</span></a>
-                                    <ul class="ht-dropdown main-cart-box">
-                                        <li>
-                                            <!-- Cart Box Start -->
-                                            <div class="single-cart-box">
-                                                <div class="cart-img">
-                                                    <a href="#"><img src="img/menu/1.jpg" alt="cart-image"></a>
-                                                </div>
-                                                <div class="cart-content">
-                                                    <h6><a href="product.html">Products Name</a></h6>
-                                                    <span>1 × $399.00</span>
-                                                </div>
-                                                <a class="del-icone" href="#"><i class="fa fa-window-close-o"></i></a>
-                                            </div>
-                                            <!-- Cart Box End -->
-                                            <!-- Cart Box Start -->
-                                            <div class="single-cart-box">
-                                                <div class="cart-img">
-                                                    <a href="#"><img src="img/menu/2.jpg" alt="cart-image"></a>
-                                                </div>
-                                                <div class="cart-content">
-                                                    <h6><a href="product.html">Products Name</a></h6>
-                                                    <span>2 × $299.00</span>
-                                                </div>
-                                                <a class="del-icone" href="#"><i class="fa fa-window-close-o"></i></a>
-                                            </div>
-                                            <!-- Cart Box End -->
-                                            <!-- Cart Footer Inner Start -->
-                                            <div class="cart-footer fix">
-                                                <h5>total :<span class="f-right">$698.00</span></h5>
-                                                <div class="cart-actions">
-                                                    <a class="checkout" href="checkout.html">Checkout</a>
-                                                </div>
-                                            </div>
-                                            <!-- Cart Footer Inner End -->
-                                        </li>
-                                    </ul>
                                 </li>
                             </ul>
                         </div>
@@ -313,6 +276,78 @@
         </div>
     </div>
     <!-- Product Area End -->
+
+
+    <!-- new arrival products title start-->
+    <div class="best-seller-product">
+        <div class="container">
+            <div class="group-title">
+                <h2>Hot Products</h2>
+            </div>
+        </div>
+    </div>
+    <!-- new arrival products title end-->
+    <!-- Product Area Start -->
+    <div class="product-area">
+        <div class="container">
+            <div class="row">
+                <!-- Single Product Start -->
+                <div class="col-lg-3 col-sm-6" th:each="product,status: ${hotProducts}">
+                    <div class="single-product">
+                        <!-- Product Image Start -->
+                        <div class="pro-img">
+                            <a href="product.html" th:href="'product.html?productId=' + ${product.getProductId()}">
+                                <img class="primary-img" th:src="${product.getProductMainImageUrl()}">
+                                <img class="secondary-img" th:alt="${product.getProductTitle()}"
+                                     th:src="${product.getProductMainImageUrl()}"
+                                     src="img/products/2.jpg"
+                                     alt="single-product">
+                            </a>
+                        </div>
+                        <!-- Product Image End -->
+                        <!-- Product Content Start -->
+                        <div class="pro-content">
+                            <div class="product-rating">
+
+                                <i class="fa fa-star"
+                                   th:style="${product.getEvaluateRateIntValue()} gt 0 ? 'color:#f9ba48;':'color:#444;'"></i>
+                                <i class="fa fa-star"
+                                   th:style="${product.getEvaluateRateIntValue()} gt 20 ? 'color:#f9ba48;':'color:#444;'"></i>
+                                <i class="fa fa-star"
+                                   th:style="${product.getEvaluateRateIntValue()} gt 40 ? 'color:#f9ba48;':'color:#444;'"></i>
+                                <i class="fa fa-star"
+                                   th:style="${product.getEvaluateRateIntValue()} gt 60 ? 'color:#f9ba48;':'color:#444;'"></i>
+                                <i class="fa fa-star"
+                                   th:style="${product.getEvaluateRateIntValue()} gt 80 ? 'color:#f9ba48;':'color:#444;'"></i>
+
+                            </div>
+                            <h4><a href="product.html" th:href="'product.html?productId=' + ${product.getProductId()}"
+                                   th:text="${product.getProductTitle()}" target="_blank">Products Name Here</a>
+                            </h4>
+                            <p><span class="price" th:text="${product.getSalePriceWithCurrency()}">$30.00</span>
+                                <del class="prev-price" th:text="${product.getOriginalPriceWithCurrency()}">$32.00</del>
+                            </p>
+                            <div class="pro-actions">
+                                <div class="actions-secondary">
+                                    <a href="#" data-toggle="tooltip" title="Add to Wishlist"><i
+                                            class="fa fa-heart"></i></a>
+                                    <a class="add-cart" href="#" data-toggle="tooltip" title="Add to Cart">Add To
+                                        Cart</a>
+                                    <a href="#" data-toggle="tooltip" title="Add to Compare"><i
+                                            class="fa fa-signal"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product Content End -->
+                        <span class="sticker-new" th:text="${product.getDiscount()}">-30%</span>
+                    </div>
+                </div>
+                <!-- Single Product End -->
+            </div>
+        </div>
+    </div>
+    <!-- Product Area End -->
+
     <!-- Banner Start -->
     <div class="upper-banner banner pb-60">
         <div class="container">

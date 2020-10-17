@@ -9,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -24,12 +23,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public Product save(Product product) {
-        try {
-            System.out.println(JsonMapper.pojo2json(product));
-            System.out.println("save success?");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return productRepository.saveAndFlush(product);
     }
 

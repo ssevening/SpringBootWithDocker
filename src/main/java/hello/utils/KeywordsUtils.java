@@ -8,11 +8,11 @@ public class KeywordsUtils {
 
     public static void main(String[] args) throws IOException {
 
-        String testStr = "Adyce 2020 New Summer Green Bandage Dress Women Sexy Sleeveless Spaghetti Strap Red Club Celebrity Evening Party Dress Vestidos Adyce 2020 New Summer Women Black Lace Bandage Dress Sexy Backless Hollow Out Midi Celebrity Evening Runway Party Dress Vestidos";
-        List<Map.Entry<String, Integer>> list = getKeywordsFromLongText(testStr);
-
-        String seoKeywords = getSEOKeywords(list);
-        System.out.println(seoKeywords);
+//        String testStr = "Adyce 2020 New Summer Green Bandage Dress Women Sexy Sleeveless Spaghetti Strap Red Club Celebrity Evening Party Dress Vestidos Adyce 2020 New Summer Women Black Lace Bandage Dress Sexy Backless Hollow Out Midi Celebrity Evening Runway Party Dress Vestidos";
+//        List<Map.Entry<String, Integer>> list = getKeywordsFromLongText(testStr);
+//
+//        String seoKeywords = getSEOKeywords(list);
+//        System.out.println(seoKeywords);
     }
 
     public static List<Map.Entry<String, Integer>> getKeywordsFromLongText(String longText) {

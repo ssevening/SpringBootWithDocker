@@ -24,9 +24,8 @@ group = 'ssevening'
 
 bootJar {
     baseName = 'gs-spring-boot-docker'
-    version = '0.3.4'
+    version = '0.3.9'
 }
-
 //// tag::task[]
 //task buildDocker(type: Docker, dependsOn: build) {
 //  applicationName = jar.baseName
@@ -90,6 +89,10 @@ dependencies {
     compile("org.apache.poi:poi-ooxml:3.17")
     compile("org.apache.poi:poi-ooxml-schemas:3.17")
     // Excel end
+
+    // https://mvnrepository.com/artifact/com.google.code/sitemapgen4j
+    compile group: 'com.google.code', name: 'sitemapgen4j', version: '1.0.1'
+
 
 
     testCompile('org.springframework.boot:spring-boot-starter-test')

@@ -97,20 +97,20 @@ public class LRUCache<K, V> {
 
 
     public static void main(String[] args) {
-        LRUCache<String, String> cache = new LRUCache<>(3);
-        cache.put("one", "1");
-        cache.put("tow", "2");
-        cache.put("three", "3");
-        System.out.println("first entry: " + cache.first.key);
-        cache.print(cache.hashMap);
-        cache.put("four", "4");
-        System.out.println("============================");
-        System.out.println("first entry: " + cache.first.key);
-        cache.print(cache.hashMap);
-        cache.put("five", "5");
-        System.out.println("============================");
-        System.out.println("first entry: " + cache.first.key);
-        cache.print(cache.hashMap);
+//        LRUCache<String, String> cache = new LRUCache<>(3);
+//        cache.put("one", "1");
+//        cache.put("tow", "2");
+//        cache.put("three", "3");
+//        System.out.println("first entry: " + cache.first.key);
+//        cache.print(cache.hashMap);
+//        cache.put("four", "4");
+//        System.out.println("============================");
+//        System.out.println("first entry: " + cache.first.key);
+//        cache.print(cache.hashMap);
+//        cache.put("five", "5");
+//        System.out.println("============================");
+//        System.out.println("first entry: " + cache.first.key);
+//        cache.print(cache.hashMap);
     }
 }
 
