@@ -190,7 +190,10 @@ public class ProductController {
 
 
     @RequestMapping("/product.html")
-    public String detail(@RequestParam String id, Model model) {
+    public String detail(@RequestParam(required = false) String id, Model model, @RequestParam(required = false) String productId) {
+        if (productId != null) {
+            id = productId;
+        }
         queryProductById(id, model);
         return "product";
     }
