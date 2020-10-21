@@ -68,39 +68,40 @@ public class ScheduledTest {
         }
     }
 
-//    @Scheduled(cron = "0 0/10 8-20 * * ?")
-//    public void executeGetProductData() {
-//        logger.debug("start executeGetProductData.....");
-//        try {
-//            Map<String, Object> resultMap = AFFGetCategoryAPI.getFromNet();
-//            AliexpressAffiliateCategoryGetResponse response = (AliexpressAffiliateCategoryGetResponse) resultMap.get("result");
-//            List<Category> categoryList = response.getRespResult().getResult().getCategories();
-//            for (int i = 0; i < categoryList.size(); i++) {
-//                Category category = categoryList.get(i);
-//                for (int j = 0; j <= 1000; j++) {
-//                    Map<String, Object> downloadResultMap = AFFHotProductDownloadAPI.getFromNet(category.getCategoryId(), "1");
-//                    AliexpressAffiliateHotproductDownloadResponse downloadResponse = (AliexpressAffiliateHotproductDownloadResponse) downloadResultMap.get("result");
-//                    if (downloadResponse.getRespResult() != null && downloadResponse.getRespResult().getResult() != null && downloadResponse.getRespResult().getRespCode() == 200) {
-//                        List<Product> productList = downloadResponse.getRespResult().getResult().getProducts();
-//                        if (productList != null && productList.size() > 0) {
-//                            for (Product product : productList) {
-//                                product.webToDB();
-//                                productService.save(product);
-//                            }
-//                        }
-//                    } else {
-//                        break;
-//                    }
-//                }
-//            }
-//            logger.debug("Category data flush finished!");
-//        } catch (Exception e) {
-//            logger.debug("Category data flush error!");
-//            e.printStackTrace();
-//        }
-//
-//        logger.debug("finished executeGetProductData.....");
-//    }
+    // 每天上午10:00触发
+    @Scheduled(cron = "0 0 22 * * ?")
+    public void executeGetProductData() {
+        logger.debug("start executeGetProductData.....");
+        try {
+            Map<String, Object> resultMap = AFFGetCategoryAPI.getFromNet();
+            AliexpressAffiliateCategoryGetResponse response = (AliexpressAffiliateCategoryGetResponse) resultMap.get("result");
+            List<Category> categoryList = response.getRespResult().getResult().getCategories();
+            for (int i = 0; i < categoryList.size(); i++) {
+                Category category = categoryList.get(i);
+                for (int j = 0; j <= 100; j++) {
+                    Map<String, Object> downloadResultMap = AFFHotProductDownloadAPI.getFromNet(category.getCategoryId(), j + "");
+                    AliexpressAffiliateHotproductDownloadResponse downloadResponse = (AliexpressAffiliateHotproductDownloadResponse) downloadResultMap.get("result");
+                    if (downloadResponse.getRespResult() != null && downloadResponse.getRespResult().getResult() != null && downloadResponse.getRespResult().getRespCode() == 200) {
+                        List<Product> productList = downloadResponse.getRespResult().getResult().getProducts();
+                        if (productList != null && productList.size() > 0) {
+                            for (Product product : productList) {
+                                productService.save(product);
+                            }
+                        }
+                    } else {
+                        logger.debug(category.getCategoryName() + " get product page " + j + " is null");
+                        break;
+                    }
+                }
+                logger.debug("finished :" + category.getCategoryName() + "product data get.");
+            }
+        } catch (Exception e) {
+            logger.debug("executeGetProductData Error!");
+            e.printStackTrace();
+        }
+
+        logger.debug("finished executeGetProductData.....");
+    }
 
 
     // 每天早八点到晚八点，间隔2分钟执行任务

@@ -7,6 +7,8 @@ import hello.utils.JsonMapper;
 
 import javax.persistence.*;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -17,25 +19,28 @@ public class Product extends TaobaoObject {
         try {
             this.promoCodeInfoJson = JsonMapper.pojo2json(promoCodeInfo);
             this.productSmallImageUrlsJson = JsonMapper.pojo2json(productSmallImageUrls);
-            this.description = "test";
-            this.keywords = "keywords";
+            this.description = "de";
+            this.keywords = "ke";
+            this.gmtModified = Calendar.getInstance().getTime();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void dbToWeb() {
-        try {
-            this.promoCodeInfo = JsonMapper.json2pojo(promoCodeInfoJson, PromoCodeDto.class);
-            this.productSmallImageUrls = JsonMapper.json2pojo(productSmallImageUrlsJson, ImageInfo.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    public void dbToWeb() {
+//        try {
+//            this.promoCodeInfo = JsonMapper.json2pojo(promoCodeInfoJson, PromoCodeDto.class);
+//            this.productSmallImageUrls = JsonMapper.json2pojo(productSmallImageUrlsJson, ImageInfo.class);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public int id;
+
+    private Date gmtModified;
 
     private static final long serialVersionUID = 6897781539788667454L;
 
@@ -218,7 +223,6 @@ public class Product extends TaobaoObject {
     @JsonProperty("target_sale_price_currency")
     private String targetSalePriceCurrency;
 
-
     public String getKeywords() {
         return keywords;
     }
@@ -250,7 +254,9 @@ public class Product extends TaobaoObject {
     }
 
     // 不存数据库
+    @Column(columnDefinition = "varchar(255) default ''")
     public String keywords;
+    @Column(columnDefinition = "varchar(255) default ''")
     public String description;
 
     public String getDisplayPrice() {
@@ -594,6 +600,15 @@ public class Product extends TaobaoObject {
     public void setId(int id) {
         this.id = id;
     }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
+    }
+
 
     public class ImageInfo {
         public List<String> string;

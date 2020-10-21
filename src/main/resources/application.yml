@@ -1,10 +1,16 @@
-server:
-  port: 8080
-
 #TODO: figure out why I need this here and in bootstrap.yml
 spring:
   application:
     name: testLatticeApp
+
+http:
+  port: 80
+server:
+  port: 443
+  ssl:
+    key-store: classpath:4627742_www.dealfuns.com.pfx
+    key-store-password: cIEzsCMt
+    keyStoreType: PKCS12
 
 ribbon:
   ServerListRefreshInterval: 1000

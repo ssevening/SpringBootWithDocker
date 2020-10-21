@@ -10,6 +10,8 @@ import hello.service.BannerService;
 import hello.service.CategoryService;
 import hello.service.ProductService;
 import hello.utils.KeywordsUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -188,6 +190,8 @@ public class ProductController {
         return "findByEmail";
     }
 
+    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
+
 
     @RequestMapping("/product.html")
     public String detail(@RequestParam(required = false) String id, Model model, @RequestParam(required = false) String productId) {
@@ -259,7 +263,7 @@ public class ProductController {
         List<Product> smartMatchProductList = new ArrayList<>();
         try {
             if (MemCache.getInstance().get("smartResult_" + productId) != null) {
-                smartMatchProductList = (List<Product>) MemCache.getInstance().get(productId);
+                smartMatchProductList = (List<Product>) MemCache.getInstance().get("smartResult_" + productId);
             } else {
                 String response = smartMatchAPI.request();
                 AliexpressAffiliateProductSmartmatchResponse aliexpressAffiliateProductSmartmatchResponse = AFFSmartMatchAPI.getResult(response);

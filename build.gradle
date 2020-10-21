@@ -24,7 +24,7 @@ group = 'ssevening'
 
 bootJar {
     baseName = 'gs-spring-boot-docker'
-    version = '0.8.7'
+    version = '0.8.8.3'
 }
 //// tag::task[]
 //task buildDocker(type: Docker, dependsOn: build) {

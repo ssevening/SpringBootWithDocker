@@ -29,6 +29,7 @@ public class ProductServiceImpl implements ProductService {
         if (queryProduct != null) {
             product.setId(queryProduct.getId());
         }
+        product.webToDB();
         return productRepository.save(product);
     }
 
