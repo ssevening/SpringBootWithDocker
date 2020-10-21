@@ -1,6 +1,7 @@
 package hello.service.impl;
 
 import hello.dao.ProductRepository;
+import hello.pojo.Category;
 import hello.pojo.Product;
 import hello.service.ProductService;
 import hello.utils.JsonMapper;
@@ -18,12 +19,17 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public Product queryProductDetailByProductId(String productId) {
+    public Product queryProductDetailByProductId(Long productId) {
         return productRepository.queryProductDetailByProductId(productId);
     }
 
+    @Override
     public Product save(Product product) {
-        return productRepository.saveAndFlush(product);
+        Product queryProduct = productRepository.queryProductDetailByProductId(product.getProductId());
+        if (queryProduct != null) {
+            product.setId(queryProduct.getId());
+        }
+        return productRepository.save(product);
     }
 
     @Override

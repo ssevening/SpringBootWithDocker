@@ -41,7 +41,18 @@
     <!-- modernizr js -->
     <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     <!-- adbygoogle -->
-    <script data-ad-client="ca-pub-4710212062461385" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script data-ad-client="ca-pub-4710212062461385" async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-3439789-9');
+
+    </script>
+
 </head>
 
 <body>
@@ -122,9 +133,10 @@
                         <div class="middle-menu pull-right">
                             <nav>
                                 <ul class="middle-menu-list">
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="shop.html">Shop</a></li>
-                                    <li><a href="product.html">Product Details</a></li>
+                                    <li><a href="category.html">Category</a></li>
+                                    <li><a href="smartProducts.html">Editor's Choice</a></li>
+                                    <li><a href="featuredProducts.html?promotionName=New Arrival">New Arrival</a></li>
+                                    <li><a href="featuredProducts.html?promotionName=Best Seller">Best Seller</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -188,9 +200,10 @@
                         <div class="mobile-menu">
                             <nav>
                                 <ul>
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="shop.html">Shop</a></li>
-                                    <li><a href="product.html">Product Details</a></li>
+                                    <li><a href="category.html">Category</a></li>
+                                    <li><a href="smartProducts.html">Editor's Choice</a></li>
+                                    <li><a href="featuredProducts.html?promotionName=New Arrival">New Arrival</a></li>
+                                    <li><a href="featuredProducts.html?promotionName=Best Seller">Best Seller</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -296,7 +309,7 @@
                                             <!-- Product Image Start -->
                                             <div class="pro-img">
                                                 <a href="product.html"
-                                                   th:href="'product.html?productId=' + ${product.getProductId()}"
+                                                   th:href="'product.html?id=' + ${product.getProductId()}"
                                                    target="_blank">
                                                     <img class="primary-img" src="img/products/1.jpg"
                                                          alt="single-product"
@@ -322,7 +335,7 @@
                                                        th:style="${product.getEvaluateRateIntValue()} gt 80 ? 'color:#f9ba48;':'color:#444;'"></i>
 
                                                 </div>
-                                                <h4><a th:href="'product.html?productId=' + ${product.getProductId()}"
+                                                <h4><a th:href="'product.html?id=' + ${product.getProductId()}"
                                                        target="_blank"
                                                        th:text="${product.getProductTitle()}">Products
                                                     Name Here</a></h4>
@@ -331,16 +344,6 @@
                                                          th:text="${product.getOriginalPriceWithCurrency()}">$32.00
                                                     </del>
                                                 </p>
-                                                <div class="pro-actions">
-                                                    <div class="actions-secondary">
-                                                        <a href="wishlist.html" data-toggle="tooltip"
-                                                           title="Add to Wishlist"><i class="fa fa-heart"></i></a>
-                                                        <a class="add-cart" href="cart.html" data-toggle="tooltip"
-                                                           title="Add to Cart">Add To Cart</a>
-                                                        <a href="compare.html" data-toggle="tooltip"
-                                                           title="Add to Compare"><i class="fa fa-signal"></i></a>
-                                                    </div>
-                                                </div>
                                             </div>
                                             <!-- Product Content End -->
                                             <span class="sticker-new" th:text="${product.getDiscount()}">-30%</span>
@@ -356,7 +359,7 @@
                                     <!-- Product Image Start -->
                                     <div class="pro-img">
                                         <a href="product.html"
-                                           th:href="'product.html?productId=' + ${product.getProductId()}"
+                                           th:href="'product.html?id=' + ${product.getProductId()}"
                                            target="_blank">
                                             <img class="primary-img" src="img/products/1.jpg" alt="single-product"
                                                  th:src="${product.getProductMainImageUrl()}">
@@ -380,7 +383,7 @@
                                             <i class="fa fa-star"
                                                th:style="${product.getEvaluateRateIntValue()} gt 80 ? 'color:#f9ba48;':'color:#444;'"></i>
                                         </div>
-                                        <h4><a th:href="'product.html?productId=' + ${product.getProductId()}"
+                                        <h4><a th:href="'product.html?id=' + ${product.getProductId()}"
                                                target="_blank" th:text="${product.getProductTitle()}">Products Name
                                             Here</a></h4>
 
@@ -391,16 +394,6 @@
                                             </del>
                                         </p>
                                         <p>Need to be replace to description.</p>
-                                        <div class="pro-actions">
-                                            <div class="actions-secondary">
-                                                <a href="wishlist.html" data-toggle="tooltip" title="Add to Wishlist"><i
-                                                        class="fa fa-heart"></i></a>
-                                                <a class="add-cart" href="cart.html" data-toggle="tooltip"
-                                                   title="Add to Cart">Add To Cart</a>
-                                                <a href="compare.html" data-toggle="tooltip" title="Add to Compare"><i
-                                                        class="fa fa-signal"></i></a>
-                                            </div>
-                                        </div>
                                     </div>
                                     <!-- Product Content End -->
                                 </div>

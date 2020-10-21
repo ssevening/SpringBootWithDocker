@@ -3,11 +3,11 @@ package hello;
 
 import hello.api.*;
 import hello.dao.pojo.MonitorInfo;
-import hello.pojo.AliexpressAffiliateFeaturedpromoProductsGetResponse;
-import hello.pojo.AliexpressAffiliateProductQueryResponse;
-import hello.pojo.AliexpressAffiliateProductSmartmatchResponse;
-import hello.pojo.AliexpressAffiliateProductdetailGetResponse;
+import hello.pojo.*;
+import hello.service.CategoryService;
 import hello.service.MonitorService;
+import hello.service.ProductService;
+import hello.utils.JsonMapper;
 import hello.utils.MainUtils;
 
 import org.slf4j.Logger;
@@ -26,6 +26,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -44,6 +45,11 @@ public class ScheduledTest {
     private MonitorService monitorService;
     private static final Logger logger = LoggerFactory.getLogger(ScheduledTest.class);
 
+    @Autowired
+    private CategoryService categoryService;
+    @Autowired
+    private ProductService productService;
+
     // 每天早八点到晚八点，间隔10分钟执行任务
     @Scheduled(cron = "0 0/10 8-20 * * ?")
     public void executeUploadTask() {
@@ -56,12 +62,73 @@ public class ScheduledTest {
                     // 正常
                     logger.debug(monitorInfo.getTitle() + monitorInfo.getUrl() + "正常!");
                 } else {
-                    MainUtils.sendmail(monitorInfo.getMailTo(), monitorInfo.getTitle() + "异常", monitorInfo.getUrl() + "访问异常！\r\n返回结果：" + result);
+                    MainUtils.sendmail(new String[]{monitorInfo.getMailTo()}, monitorInfo.getTitle() + "异常", monitorInfo.getUrl() + "访问异常！\r\n返回结果：" + result);
                 }
             }
         }
     }
 
+//    @Scheduled(cron = "0 0/10 8-20 * * ?")
+//    public void executeGetProductData() {
+//        logger.debug("start executeGetProductData.....");
+//        try {
+//            Map<String, Object> resultMap = AFFGetCategoryAPI.getFromNet();
+//            AliexpressAffiliateCategoryGetResponse response = (AliexpressAffiliateCategoryGetResponse) resultMap.get("result");
+//            List<Category> categoryList = response.getRespResult().getResult().getCategories();
+//            for (int i = 0; i < categoryList.size(); i++) {
+//                Category category = categoryList.get(i);
+//                for (int j = 0; j <= 1000; j++) {
+//                    Map<String, Object> downloadResultMap = AFFHotProductDownloadAPI.getFromNet(category.getCategoryId(), "1");
+//                    AliexpressAffiliateHotproductDownloadResponse downloadResponse = (AliexpressAffiliateHotproductDownloadResponse) downloadResultMap.get("result");
+//                    if (downloadResponse.getRespResult() != null && downloadResponse.getRespResult().getResult() != null && downloadResponse.getRespResult().getRespCode() == 200) {
+//                        List<Product> productList = downloadResponse.getRespResult().getResult().getProducts();
+//                        if (productList != null && productList.size() > 0) {
+//                            for (Product product : productList) {
+//                                product.webToDB();
+//                                productService.save(product);
+//                            }
+//                        }
+//                    } else {
+//                        break;
+//                    }
+//                }
+//            }
+//            logger.debug("Category data flush finished!");
+//        } catch (Exception e) {
+//            logger.debug("Category data flush error!");
+//            e.printStackTrace();
+//        }
+//
+//        logger.debug("finished executeGetProductData.....");
+//    }
+
+
+    // 每天早八点到晚八点，间隔2分钟执行任务
+    @Scheduled(cron = "0 0/10 8-20 * * ?")
+    public void executeFlushCategoryData() {
+        try {
+            Map<String, Object> resultMap = AFFGetCategoryAPI.getFromNet();
+            AliexpressAffiliateCategoryGetResponse response = (AliexpressAffiliateCategoryGetResponse) resultMap.get("result");
+            List<Category> categoryList = response.getRespResult().getResult().getCategories();
+            for (int i = 0; i < categoryList.size(); i++) {
+                Category category = categoryList.get(i);
+                Map<String, Object> downloadResultMap = AFFHotProductDownloadAPI.getFromNet(category.getCategoryId(), "1");
+                AliexpressAffiliateHotproductDownloadResponse downloadResponse = (AliexpressAffiliateHotproductDownloadResponse) downloadResultMap.get("result");
+                if (downloadResponse.getRespResult() != null && downloadResponse.getRespResult().getResult() != null && downloadResponse.getRespResult().getRespCode() == 200) {
+                    List<Product> productList = downloadResponse.getRespResult().getResult().getProducts();
+                    if (productList != null && productList.size() >= 3) {
+                        category.setFirstImageUrl(productList.get(0).getProductMainImageUrl());
+                        category.setSecImageUrl(productList.get(1).getProductMainImageUrl());
+                    }
+                    categoryService.save(category);
+                }
+            }
+            logger.debug("Category data flush finished!");
+        } catch (Exception e) {
+            logger.debug("Category data flush error!");
+            e.printStackTrace();
+        }
+    }
 
     // 每天早八点到晚八点，间隔2分钟执行任务
     @Scheduled(cron = "0 0/10 8-20 * * ?")
@@ -71,6 +138,43 @@ public class ScheduledTest {
         checkProductDetailTask("4001266081726");
         checkSmartMatchTask();
         checkProductQuery();
+        checkHotProductQuery();
+        checkHotProductDownload();
+    }
+
+    private void checkHotProductQuery() {
+        Map<String, Object> resultMap = AFFHotProductQueryAPI.getFromNet("mp3", "1", "");
+        AFFHotProductQueryAPI api = (AFFHotProductQueryAPI) resultMap.get("api");
+        AliexpressAffiliateHotproductQueryResponse result = (AliexpressAffiliateHotproductQueryResponse) resultMap.get("result");
+        if (result.getRespResult().getRespCode() != 200) {
+            try {
+                MainUtils.sendmail(new String[]{"chenxing.pancx@alibaba-inc.com", "shuobin.gsb@alibaba-inc.com"}, api.getParamMap().get("method"), api.getFinalRequestUrl() + "\r\n接口调用失败！\r\n 返回结果:\r\n" + JsonMapper.pojo2json(result));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            logger.info(api.getParamMap().get("method") + " task is Ok!");
+        }
+    }
+
+    private void checkHotProductDownload() {
+        try {
+            Map<String, Object> resultMap = AFFHotProductDownloadAPI.getFromNet(new Long(200000212), "1");
+            AFFHotProductDownloadAPI api = (AFFHotProductDownloadAPI) resultMap.get("api");
+            AliexpressAffiliateHotproductDownloadResponse result = (AliexpressAffiliateHotproductDownloadResponse) resultMap.get("result");
+            if (result.getRespResult().getRespCode() != 200) {
+                try {
+                    MainUtils.sendmail(new String[]{"chenxing.pancx@alibaba-inc.com", "shuobin.gsb@alibaba-inc.com"}, api.getParamMap().get("method"), api.getFinalRequestUrl() + "\r\n接口调用失败！\r\n 返回结果:\r\n" + JsonMapper.pojo2json(result));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                logger.info(api.getParamMap().get("method") + " task is Ok!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -90,9 +194,9 @@ public class ScheduledTest {
             String result = affProductDetailGetAPI.request();
             AliexpressAffiliateProductdetailGetResponse response = AFFProductDetailGetAPI.getResult(result);
             if (response.getRespResult().getRespCode() != 200) {
-                MainUtils.sendmail("chenxing.pancx@alibaba-inc.com", paramMap.get("method"), affProductDetailGetAPI.getFinalRequestUrl() + "接口调用失败！");
+                MainUtils.sendmail(new String[]{"chenxing.pancx@alibaba-inc.com", "shuobin.gsb@alibaba-inc.com"}, paramMap.get("method"), affProductDetailGetAPI.getFinalRequestUrl() + "\r\n接口调用失败！\r\n 返回结果:\r\n" + response);
             } else {
-                logger.info(paramMap.get("method") + "task is ok!");
+                logger.info(paramMap.get("method") + " task is Ok!");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,18 +215,18 @@ public class ScheduledTest {
         paramMap.put("page_no", "0");
         paramMap.put("promotion_name", promotionName);
 
-        FeaturedPromoProductGetAPI featuredPromoProductGetAPI = new FeaturedPromoProductGetAPI();
+        AFFFeaturedPromoProductGetAPI featuredPromoProductGetAPI = new AFFFeaturedPromoProductGetAPI();
         featuredPromoProductGetAPI.setIsPostRequest(true);
         featuredPromoProductGetAPI.setNeedAopSignature();
         paramMap.put("method", "aliexpress.affiliate.featuredpromo.products.get");
         featuredPromoProductGetAPI.setParamMap(paramMap);
         try {
             String response = featuredPromoProductGetAPI.request();
-            AliexpressAffiliateFeaturedpromoProductsGetResponse aliexpressAffiliateFeaturedpromoProductsGetResponse = FeaturedPromoProductGetAPI.getResult(response);
+            AliexpressAffiliateFeaturedpromoProductsGetResponse aliexpressAffiliateFeaturedpromoProductsGetResponse = AFFFeaturedPromoProductGetAPI.getResult(response);
             if (aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult().getRespCode() != 200) {
-                MainUtils.sendmail("chenxing.pancx@alibaba-inc.com", paramMap.get("method"), featuredPromoProductGetAPI.getFinalRequestUrl() + "接口调用失败！\r\n返回结果:" + response);
+                MainUtils.sendmail(new String[]{"chenxing.pancx@alibaba-inc.com", "shuobin.gsb@alibaba-inc.com"}, paramMap.get("method"), featuredPromoProductGetAPI.getFinalRequestUrl() + "\r\n接口调用失败！\r\n 返回结果:\r\n" + response);
             } else {
-                logger.info(paramMap.get("method") + "task is ok!");
+                logger.info(paramMap.get("method") + " task is Ok!");
             }
         } catch (
                 Exception e) {
@@ -132,7 +236,7 @@ public class ScheduledTest {
     }
 
     private void checkSmartMatchTask() {
-        SmartMatchAPI smartMatchAPI = new SmartMatchAPI();
+        AFFSmartMatchAPI smartMatchAPI = new AFFSmartMatchAPI();
         smartMatchAPI.setNeedAopSignature();
         smartMatchAPI.setIsPostRequest(true);
 
@@ -152,11 +256,11 @@ public class ScheduledTest {
         smartMatchAPI.setParamMap(paramMap);
         try {
             String response = smartMatchAPI.request();
-            AliexpressAffiliateProductSmartmatchResponse aliexpressAffiliateProductSmartmatchResponse = SmartMatchAPI.getResult(response);
+            AliexpressAffiliateProductSmartmatchResponse aliexpressAffiliateProductSmartmatchResponse = AFFSmartMatchAPI.getResult(response);
             if (aliexpressAffiliateProductSmartmatchResponse.getRespResult().getRespCode() != 200) {
-                MainUtils.sendmail("chenxing.pancx@alibaba-inc.com", paramMap.get("method"), smartMatchAPI.getFinalRequestUrl() + "接口调用失败！\r\n返回结果:" + response);
+                MainUtils.sendmail(new String[]{"chenxing.pancx@alibaba-inc.com", "shuobin.gsb@alibaba-inc.com"}, paramMap.get("method"), smartMatchAPI.getFinalRequestUrl() + "\r\n接口调用失败！\r\n 返回结果:\r\n" + response);
             } else {
-                logger.info(paramMap.get("method") + "task is ok!");
+                logger.info(paramMap.get("method") + " task is Ok!");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -186,9 +290,9 @@ public class ScheduledTest {
             String response = affProductQueryAPI.request();
             AliexpressAffiliateProductQueryResponse aliexpressAffiliateProductQueryResponse = AFFProductQueryAPI.getResult(response);
             if (aliexpressAffiliateProductQueryResponse.getRespResult().getRespCode() != 200) {
-                MainUtils.sendmail("chenxing.pancx@alibaba-inc.com", paramMap.get("method"), affProductQueryAPI.getFinalRequestUrl() + "接口调用失败！\r\n返回结果:" + response);
+                MainUtils.sendmail(new String[]{"chenxing.pancx@alibaba-inc.com", "shuobin.gsb@alibaba-inc.com"}, paramMap.get("method"), affProductQueryAPI.getFinalRequestUrl() + "\r\n接口调用失败！\r\n 返回结果:\r\n" + response);
             } else {
-                logger.info(paramMap.get("method") + "task is ok!");
+                logger.info(paramMap.get("method") + " task is Ok!");
             }
 
         } catch (Exception e) {

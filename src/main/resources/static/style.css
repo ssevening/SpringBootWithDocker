@@ -1141,11 +1141,14 @@ ul.ht-dropdown.dropdown-style-two li {
     border-right: none;
 }
 
+/**
 .single-product:hover .pro-actions {
     opacity: 1;
     visibility: visible;
     bottom: 35px;
 }
+**/
+
 .actions-secondary a {
     display: inline-block;
 }

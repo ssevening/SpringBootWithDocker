@@ -1,5 +1,6 @@
 package hello.dao;
 
+import hello.pojo.Category;
 import hello.pojo.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,7 +14,7 @@ import org.springframework.data.jpa.repository.Query;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query(value = "select * from product where product_id = ?1", nativeQuery = true)
-    Product queryProductDetailByProductId(String productId);
+    Product queryProductDetailByProductId(Long productId);
 
 
     @Query

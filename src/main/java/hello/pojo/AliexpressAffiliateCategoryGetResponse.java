@@ -1,7 +1,6 @@
 package hello.pojo;
 
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,7 +23,7 @@ public class AliexpressAffiliateCategoryGetResponse extends TaobaoResponse {
      */
     @JsonProperty("resp_result")
     private ResponseResult respResult;
-	@JsonProperty("request_id")
+    @JsonProperty("request_id")
     public String request_id;
 
 
@@ -36,59 +35,6 @@ public class AliexpressAffiliateCategoryGetResponse extends TaobaoResponse {
         return this.respResult;
     }
 
-    /**
-     * 类目信息
-     *
-     * @author top auto create
-     * @since 1.0, null
-     */
-	@JsonIgnoreProperties(ignoreUnknown = true)
-    public static class Category extends TaobaoObject {
-
-        private static final long serialVersionUID = 6782345851419552888L;
-
-        /**
-         * 类目ID
-         */
-        @JsonProperty("category_id")
-        private Long categoryId;
-        /**
-         * 类目名称
-         */
-        @JsonProperty("category_name")
-        private String categoryName;
-        /**
-         * 父类目ID
-         */
-        @JsonProperty("parent_category_id")
-        private Long parentCategoryId;
-
-
-        public Long getCategoryId() {
-            return this.categoryId;
-        }
-
-        public void setCategoryId(Long categoryId) {
-            this.categoryId = categoryId;
-        }
-
-        public String getCategoryName() {
-            return this.categoryName;
-        }
-
-        public void setCategoryName(String categoryName) {
-            this.categoryName = categoryName;
-        }
-
-        public Long getParentCategoryId() {
-            return this.parentCategoryId;
-        }
-
-        public void setParentCategoryId(Long parentCategoryId) {
-            this.parentCategoryId = parentCategoryId;
-        }
-
-    }
 
     /**
      * 返回记录结果列表
@@ -96,7 +42,7 @@ public class AliexpressAffiliateCategoryGetResponse extends TaobaoResponse {
      * @author top auto create
      * @since 1.0, null
      */
-	@JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Result extends TaobaoObject {
 
         private static final long serialVersionUID = 8236546376227249367L;
@@ -121,9 +67,16 @@ public class AliexpressAffiliateCategoryGetResponse extends TaobaoResponse {
             this.totalResultCount = totalResultCount;
         }
 
+        public List<Category> getCategories() {
+            return categories.category;
+        }
+
+        public void setCategories(CategoryInfo categories) {
+            this.categories = categories;
+        }
     }
 
-	@JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class CategoryInfo {
         public List<Category> category;
     }
@@ -134,7 +87,7 @@ public class AliexpressAffiliateCategoryGetResponse extends TaobaoResponse {
      * @author top auto create
      * @since 1.0, null
      */
-	@JsonIgnoreProperties(ignoreUnknown = true)
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class ResponseResult extends TaobaoObject {
 
         private static final long serialVersionUID = 1684941384183356267L;

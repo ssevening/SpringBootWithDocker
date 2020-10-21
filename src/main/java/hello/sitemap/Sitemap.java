@@ -17,7 +17,7 @@ public class Sitemap {
         this.ioc = ioc;
     }
 
-    @XmlElement(name = "ioc")
+    @XmlElement(name = "loc")
     public String getIoc() {
         return ioc;
     }

@@ -45,8 +45,6 @@
     <!-- adbygoogle -->
     <script data-ad-client="ca-pub-4710212062461385" async
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-3439789-9"></script>
     <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -57,10 +55,7 @@
 
 
 
-
-
     </script>
-
 </head>
 
 <body>
@@ -151,7 +146,6 @@
                         </div>
                     </div>
                     <!-- Search Box End -->
-
                     <!-- Cartt Box Start -->
                     <div class="col-lg-3 col-sm-7 col-7">
                         <div class="cart-box text-right">
@@ -169,12 +163,11 @@
                             </ul>
                         </div>
                     </div>
-                    <!-- Cart Box End -->
-
+                    <!-- Cartt Box End -->
                     <div class="col-sm-12 d-lg-none">
                         <div class="mobile-menu">
                             <nav>
-                                <ul class="middle-menu-list">
+                                <ul>
                                     <li><a href="category.html">Category</a></li>
                                     <li><a href="smartProducts.html">Editor's Choice</a></li>
                                     <li><a href="featuredProducts.html?promotionName=New Arrival">New Arrival</a></li>
@@ -193,48 +186,11 @@
     </header>
     <!-- Header Area End -->
 
-    <!-- Blog Page Start -->
-    <div class="blog-area">
-        <div class="container">
-            <div class="group-title">
-                <h2>Event Promotion</h2>
-            </div>
-            <!-- Popular Categorie Activation Start -->
-            <div class="blog-active owl-carousel">
-                <!-- Single Blog Start -->
-                <div class="single-blog" th:each="banner : ${bannerList}">
-                    <div class="blog-img">
-                        <a href="blog-details.html" th:href="${banner.getPromotionUrl()}"><img src="img/blog/1.jpg"
-                                                                                               alt="blog-image"
-                                                                                               th:src="${banner.getBannerUrl()}"
-                                                                                               th:alt="${banner.getTitle()}"></a>
-                    </div>
-                    <div class="blog-content">
-                        <h4 class="blog-title"><a href="blog-details.html" th:text="${banner.getTitle()}"
-                                                  th:href="${banner.getPromotionUrl()}">Lorem
-                            i</a></h4>
-                    </div>
-                    <div class="blog-meta">
-                        <ul>
-                            <li><a href="#" th:href="${banner.getPromotionUrl()}" th:text="${banner.getDescription()}">Jantrik,</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Single Blog End -->
-            </div>
-            <!-- Popular Categorie Activation End -->
-        </div>
-        <!-- Container End -->
-    </div>
-    <!-- Blog Page End -->
-
-
     <!-- new arrival products title start-->
     <div class="best-seller-product">
         <div class="container">
             <div class="group-title">
-                <a href="smartProducts.html" target="_blank"><h2>Editor's Choice</h2></a>
+                <h2>Editor's Choice</h2>
             </div>
         </div>
     </div>
@@ -244,7 +200,7 @@
         <div class="container">
             <div class="row">
                 <!-- Single Product Start -->
-                <div class="col-lg-3 col-sm-6" th:each="product,status: ${smartMatchProductList}">
+                <div class="col-lg-3 col-sm-6" th:each="product,status: ${smartProducts}">
                     <div class="single-product">
                         <!-- Product Image Start -->
                         <div class="pro-img">
@@ -290,154 +246,37 @@
     </div>
     <!-- Product Area End -->
 
-    <!-- new arrival products title start-->
     <div class="best-seller-product">
         <div class="container">
-            <div class="group-title">
-                <a href="featuredProducts.html?promotionName=New Arrival" target="_blank"><h2>New Arrival Products</h2>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- new arrival products title end-->
-    <!-- Product Area Start -->
-    <div class="product-area">
-        <div class="container">
-            <div class="row">
-                <!-- Single Product Start -->
-                <div class="col-lg-3 col-sm-6" th:each="product,status: ${newArrivalProducts}">
-                    <div class="single-product">
-                        <!-- Product Image Start -->
-                        <div class="pro-img">
-                            <a href="product.html" th:href="'product.html?id=' + ${product.getProductId()}">
-                                <img class="primary-img" th:src="${product.getProductMainImageUrl()}">
-                                <img class="secondary-img" th:alt="${product.getProductTitle()}"
-                                     th:src="${product.getProductMainImageUrl()}"
-                                     src="img/products/2.jpg"
-                                     alt="single-product">
-                            </a>
-                        </div>
-                        <!-- Product Image End -->
-                        <!-- Product Content Start -->
-                        <div class="pro-content">
-                            <div class="product-rating">
-
-                                <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 0 ? 'color:#f9ba48;':'color:#444;'"></i>
-                                <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 20 ? 'color:#f9ba48;':'color:#444;'"></i>
-                                <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 40 ? 'color:#f9ba48;':'color:#444;'"></i>
-                                <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 60 ? 'color:#f9ba48;':'color:#444;'"></i>
-                                <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 80 ? 'color:#f9ba48;':'color:#444;'"></i>
-
-                            </div>
-                            <h4><a href="product.html" th:href="'product.html?id=' + ${product.getProductId()}"
-                                   th:text="${product.getProductTitle()}" target="_blank">Products Name Here</a>
-                            </h4>
-                            <p><span class="price" th:text="${product.getSalePriceWithCurrency()}">$30.00</span>
-                                <del class="prev-price" th:text="${product.getOriginalPriceWithCurrency()}">$32.00</del>
-                            </p>
-                        </div>
-                        <!-- Product Content End -->
-                        <span class="sticker-new" th:text="${product.getDiscount()}">-30%</span>
-                    </div>
+            <!--Breadcrumb and Page Show Start -->
+            <div class="pagination-box fix">
+                <ul class="blog-pagination ">
+                    <li>
+                        <a th:href="'smartProducts.html?pageNo='+${pageNo - 1}">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                    </li>
+                    <li class="active"><a
+                            th:href="'smartProducts.html?pageNo='+${pageNo}"
+                            th:text="${pageNo}">1</a></li>
+                    <li>
+                        <a th:href="'smartProducts.html?pageNo='+${pageNo + 1}"><i
+                                class="fa fa-angle-right"></i></a></li>
+                </ul>
+                <div class="toolbar-sorter-footer">
+                    <label>show</label>
+                    <select class="sorter" name="sorter">
+                        <option value="pageSize" selected="selected">50</option>
+                    </select>
+                    <span>per page</span>
                 </div>
-                <!-- Single Product End -->
             </div>
+            <!--Breadcrumb and Page Show End -->
         </div>
     </div>
-    <!-- Product Area End -->
 
-
-    <!-- new arrival products title start-->
-    <div class="best-seller-product">
-        <div class="container">
-            <div class="group-title">
-                <a href="featuredProducts.html?promotionName=Hot Product" target="_blank"><h2>Hot Products</h2></a>
-            </div>
-        </div>
-    </div>
-    <!-- new arrival products title end-->
-    <!-- Product Area Start -->
-    <div class="product-area">
-        <div class="container">
-            <div class="row">
-                <!-- Single Product Start -->
-                <div class="col-lg-3 col-sm-6" th:each="product,status: ${hotProducts}">
-                    <div class="single-product">
-                        <!-- Product Image Start -->
-                        <div class="pro-img">
-                            <a href="product.html" th:href="'product.html?id=' + ${product.getProductId()}">
-                                <img class="primary-img" th:src="${product.getProductMainImageUrl()}">
-                                <img class="secondary-img" th:alt="${product.getProductTitle()}"
-                                     th:src="${product.getProductMainImageUrl()}"
-                                     src="img/products/2.jpg"
-                                     alt="single-product">
-                            </a>
-                        </div>
-                        <!-- Product Image End -->
-                        <!-- Product Content Start -->
-                        <div class="pro-content">
-                            <div class="product-rating">
-
-                                <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 0 ? 'color:#f9ba48;':'color:#444;'"></i>
-                                <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 20 ? 'color:#f9ba48;':'color:#444;'"></i>
-                                <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 40 ? 'color:#f9ba48;':'color:#444;'"></i>
-                                <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 60 ? 'color:#f9ba48;':'color:#444;'"></i>
-                                <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 80 ? 'color:#f9ba48;':'color:#444;'"></i>
-
-                            </div>
-                            <h4><a href="product.html" th:href="'product.html?id=' + ${product.getProductId()}"
-                                   th:text="${product.getProductTitle()}" target="_blank">Products Name Here</a>
-                            </h4>
-                            <p><span class="price" th:text="${product.getSalePriceWithCurrency()}">$30.00</span>
-                                <del class="prev-price" th:text="${product.getOriginalPriceWithCurrency()}">$32.00</del>
-                            </p>
-                        </div>
-                        <!-- Product Content End -->
-                        <span class="sticker-new" th:text="${product.getDiscount()}">-30%</span>
-                    </div>
-                </div>
-                <!-- Single Product End -->
-            </div>
-        </div>
-    </div>
-    <!-- Product Area End -->
-
-    <!-- Banner Start -->
-    <div class="upper-banner banner pb-60">
-        <div class="container">
-            <div class="row">
-                <!-- Single Banner Start -->
-                <div class="col-sm-6">
-                    <div class="single-banner zoom">
-                        <a href="#"><img src="img/banner/1.png" alt="slider-banner"></a>
-                    </div>
-                </div>
-                <!-- Single Banner End -->
-                <!-- Single Banner Start -->
-                <div class="col-sm-6">
-                    <div class="single-banner zoom">
-                        <a href="#"><img src="img/banner/2.png" alt="slider-banner"></a>
-                    </div>
-                </div>
-                <!-- Single Banner End -->
-            </div>
-            <!-- Row End -->
-        </div>
-        <!-- Container End -->
-    </div>
-    <!-- Banner End -->
     <!-- Company Policy Start -->
-    <div class="company-policy pb-60">
+    <div class="company-policy pb-60 pt-60">
         <div class="container">
             <div class="row">
                 <!-- Single Policy Start -->

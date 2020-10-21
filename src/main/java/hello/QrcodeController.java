@@ -31,13 +31,10 @@ public class QrcodeController {
         }
     }
 
-
-    @RequestMapping("/create.html")
+    @RequestMapping(value = {"/create.html", "/"})
     public String index(Model model) {
         return "createQRCode";
     }
-
-
 
 
 }

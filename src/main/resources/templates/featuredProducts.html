@@ -1,40 +1,394 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+﻿<!doctype html >
+<html class="no-js" lang="en-US" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8"/>
-    <title th:text="${featureInfo.seoTitle}">Product Title</title>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Super Deals In China - Spend less money but buy more from AliExpress Online Shopping.</title>
     <meta name="keywords"
-          th:content="${featureInfo.seoKeywords}"
-          content="keywords"/>
-    <meta name="description" th:content="${featureInfo.seoDescription}" content="description"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+          content='AliExpress, Online shopping, Automotive, Phones, Accessories, Computers, Electronics, Fashion, Beauty, Health, Home, Garden, Toys, Sports, Weddings'/>
+    <meta name="description"
+          content="Help you to get aliexpress price history and find more deals and coupons in AliExpress, include 50% OFF product,Sale product, discount, and best selling product">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- place favicon.ico in the root directory -->
+    <link rel="shortcut icon" type="image/x-icon" href="img/icon/favicon.png">
+    <!-- Google Font css -->
+    <link href="https://fonts.googleapis.com/css?family=Lily+Script+One" rel="stylesheet">
 
-    <meta property="og:title" th:content="${featureInfo.seoTitle}"
-          content="og:title"/>
-    <meta property="og:type" content="product"/>
-    <meta property="og:description" th:content="${featureInfo.seoDescription}"
-          content="description"/>
-    <meta property="og:site_name" content="dealfuns.com"/>
+    <!-- mobile menu css -->
+    <link rel="stylesheet" href="css/meanmenu.min.css">
+    <!-- animate css -->
+    <link rel="stylesheet" href="css/animate.css">
+    <!-- nivo slider css -->
+    <link rel="stylesheet" href="css/nivo-slider.css">
+    <!-- owl carousel css -->
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <!-- slick css -->
+    <link rel="stylesheet" href="css/slick.css">
+    <!-- price slider css -->
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <!-- fontawesome css -->
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <!-- fancybox css -->
+    <link rel="stylesheet" href="css/jquery.fancybox.css">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <!-- default css  -->
+    <link rel="stylesheet" href="css/default.css">
+    <!-- style css -->
+    <link rel="stylesheet" href="style.css">
+    <!-- responsive css -->
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <!-- modernizr js -->
+    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <!-- adbygoogle -->
+    <script data-ad-client="ca-pub-4710212062461385" async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-3439789-9');
+
+
+    </script>
 </head>
+
 <body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a
+        href="https://support.microsoft.com/zh-cn/help/17621/internet-explorer-downloads">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+<!-- Wrapper Start -->
+<div class="wrapper homepage">
+    <!-- Header Area Start -->
+    <header>
+        <!-- Header Top Start -->
+        <div class="header-top">
+            <div class="container">
+                <div class="row">
+                    <!-- Header Top left Start -->
+                    <div class="col-lg-4 col-md-12 d-center">
+                        <div class="header-top-left">
+                            <img src="img/icon/call.png" alt="">Call Us : XXX
+                        </div>
+                    </div>
+                    <!-- Header Top left End -->
+                    <!-- Search Box Start -->
+                    <div class="col-lg-4 col-md-6 ml-auto mr-auto">
+                        <div class="search-box-view">
+                            <form action="search.html" method="get" target="_blank">
+                                <input type="text" class="email" placeholder="Search Your Product" name="keywords">
+                                <input type="hidden" name="pageNo" value="1" id="pageNo">
+                                <button type="submit" class="submit"></button>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- Search Box End -->
+                    <!-- Header Top Right Start -->
+                    <div class="col-lg-4 col-md-12">
+                        <div class="header-top-right">
+                            <ul class="header-list-menu f-right">
+                                <!-- Language Start -->
+                                <li><a href="#">Language: English <i class="fa fa-angle-down"></i></a>
+                                    <ul class="ht-dropdown">
+                                        <li><a href="#">Spanish</a></li>
+                                        <li><a href="#">Bengali</a></li>
+                                        <li><a href="#">Russian</a></li>
+                                    </ul>
+                                </li>
+                                <!-- Language End -->
+                                <!-- Currency Start -->
+                                <li><a href="#">Currency: USD <i class="fa fa-angle-down"></i></a>
+                                    <ul class="ht-dropdown">
+                                        <li><a href="#">USD</a></li>
+                                        <li><a href="#">GBP</a></li>
+                                        <li><a href="#">EUR</a></li>
+                                    </ul>
+                                </li>
+                                <!-- Currency End -->
+                            </ul>
+                            <!-- Header-list-menu End -->
+                        </div>
+                    </div>
+                    <!-- Header Top Right End -->
+                </div>
+            </div>
+            <!-- Container End -->
+        </div>
+        <!-- Header Top End -->
+        <!-- Header Bottom Start -->
+        <div class="header-bottom header-sticky">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-2 col-sm-5 col-5">
+                        <div class="logo">
+                            <a href="index.html"><img src="img/logo/logo.png" alt="logo-image"></a>
+                        </div>
+                    </div>
+                    <!-- Primary Vertical-Menu End -->
+                    <!-- Search Box Start -->
+                    <div class="col-xl-6 col-lg-7 d-none d-lg-block">
+                        <div class="middle-menu pull-right">
+                            <nav>
+                                <ul class="middle-menu-list">
+                                    <ul class="middle-menu-list">
+                                        <li><a href="category.html">Category</a></li>
+                                        <li><a href="smartProducts.html">Editor's Choice</a></li>
+                                        <li><a href="featuredProducts.html?promotionName=New Arrival">New Arrival</a></li>
+                                        <li><a href="featuredProducts.html?promotionName=Best Seller">Best Seller</a></li>
+                                    </ul>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <!-- Search Box End -->
+                    <!-- Cartt Box Start -->
+                    <div class="col-lg-3 col-sm-7 col-7">
+                        <div class="cart-box text-right">
+                            <ul>
+                                <li><a href="#"><i class="fa fa-cog"></i></a>
+                                    <ul class="ht-dropdown">
+                                        <li><a href="login.html">Login</a></li>
+                                        <li><a href="register.html">Register</a></li>
+                                        <li><a href="account.html">Account</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#"><i class="fa fa-heart-o"></i></a></li>
+                                <li><a href="#"><i class="fa fa-shopping-basket"></i><span class="cart-counter">2</span></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Cartt Box End -->
+                    <div class="col-sm-12 d-lg-none">
+                        <div class="mobile-menu">
+                            <nav>
+                                <ul>
+                                    <ul class="middle-menu-list">
+                                        <li><a href="category.html">Category</a></li>
+                                        <li><a href="smartProducts.html">Editor's Choice</a></li>
+                                        <li><a href="featuredProducts.html?promotionName=New Arrival">New Arrival</a></li>
+                                        <li><a href="featuredProducts.html?promotionName=Best Seller">Best Seller</a></li>
+                                    </ul>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <!-- Mobile Menu  End -->
+                </div>
+                <!-- Row End -->
+            </div>
+            <!-- Container End -->
+        </div>
+        <!-- Header Bottom End -->
+    </header>
+    <!-- Header Area End -->
 
+    <!-- new arrival products title start-->
+    <div class="best-seller-product">
+        <div class="container">
+            <div class="group-title">
+                <h2 th:text="${promotionName}">New Arrival Products</h2>
+            </div>
+        </div>
+    </div>
+    <!-- new arrival products title end-->
+    <!-- Product Area Start -->
+    <div class="product-area">
+        <div class="container">
+            <div class="row">
+                <!-- Single Product Start -->
+                <div class="col-lg-3 col-sm-6" th:each="product,status: ${promotionProductList}">
+                    <div class="single-product">
+                        <!-- Product Image Start -->
+                        <div class="pro-img">
+                            <a href="product.html" th:href="'product.html?id=' + ${product.getProductId()}">
+                                <img class="primary-img" th:src="${product.getProductMainImageUrl()}">
+                                <img class="secondary-img" th:alt="${product.getProductTitle()}"
+                                     th:src="${product.getProductMainImageUrl()}"
+                                     src="img/products/2.jpg"
+                                     alt="single-product">
+                            </a>
+                        </div>
+                        <!-- Product Image End -->
+                        <!-- Product Content Start -->
+                        <div class="pro-content">
+                            <div class="product-rating">
 
-<h1 th:text="${featureInfo.seoTitle}"></h1>
+                                <i class="fa fa-star"
+                                   th:style="${product.getEvaluateRateIntValue()} gt 0 ? 'color:#f9ba48;':'color:#444;'"></i>
+                                <i class="fa fa-star"
+                                   th:style="${product.getEvaluateRateIntValue()} gt 20 ? 'color:#f9ba48;':'color:#444;'"></i>
+                                <i class="fa fa-star"
+                                   th:style="${product.getEvaluateRateIntValue()} gt 40 ? 'color:#f9ba48;':'color:#444;'"></i>
+                                <i class="fa fa-star"
+                                   th:style="${product.getEvaluateRateIntValue()} gt 60 ? 'color:#f9ba48;':'color:#444;'"></i>
+                                <i class="fa fa-star"
+                                   th:style="${product.getEvaluateRateIntValue()} gt 80 ? 'color:#f9ba48;':'color:#444;'"></i>
 
-<table>
+                            </div>
+                            <h4><a href="product.html" th:href="'product.html?id=' + ${product.getProductId()}"
+                                   th:text="${product.getProductTitle()}" target="_blank">Products Name Here</a>
+                            </h4>
+                            <p><span class="price" th:text="${product.getSalePriceWithCurrency()}">$30.00</span>
+                                <del class="prev-price" th:text="${product.getOriginalPriceWithCurrency()}">$32.00</del>
+                            </p>
+                        </div>
+                        <!-- Product Content End -->
+                        <span class="sticker-new" th:text="${product.getDiscount()}">-30%</span>
+                    </div>
+                </div>
+                <!-- Single Product End -->
+            </div>
+        </div>
+    </div>
+    <!-- Product Area End -->
 
-    <tr th:each="product,productStat:${featuredProductsList.products}">
-        <td>
+    <div class="best-seller-product">
+        <div class="container">
+            <!--Breadcrumb and Page Show Start -->
+            <div class="pagination-box fix">
+                <ul class="blog-pagination ">
+                    <li>
+                        <a th:href="'featuredProducts.html?promotionName='+${promotionName}+'&pageNo='+${pageNo-1}">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                    </li>
+                    <li class="active"><a
+                            th:href="'featuredProducts.html?promotionName='+${promotionName}+'&pageNo='+${pageNo}"
+                            th:text="${pageNo}">1</a></li>
+                    <li>
+                        <a th:href="'featuredProducts.html?promotionName='+${promotionName}+'&pageNo='+${pageNo+1}"><i
+                                class="fa fa-angle-right"></i></a></li>
+                </ul>
+                <div class="toolbar-sorter-footer">
+                    <label>show</label>
+                    <select class="sorter" name="sorter">
+                        <option value="pageSize" selected="selected">50</option>
+                    </select>
+                    <span>per page</span>
+                </div>
+            </div>
+            <!--Breadcrumb and Page Show End -->
+        </div>
+    </div>
 
-            <img th:src="${product.imageUrl}" th:alt="${product.productTitle}" src="" width="200px"
-                 height="200px"/><br/>
-            <span th:text="${product.productTitle}"></span><br/>
-            <span th:text="${product.salePrice}"></span><br/>
+    <!-- Company Policy Start -->
+    <div class="company-policy pb-60 pt-60">
+        <div class="container">
+            <div class="row">
+                <!-- Single Policy Start -->
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-policy">
+                        <div class="icone-img">
+                            <img src="img/icon/1.png" alt="">
+                        </div>
+                        <div class="policy-desc">
+                            <h3>Free Delivery</h3>
+                            <p>Free shipping on all order</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Single Policy End -->
+                <!-- Single Policy Start -->
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-policy">
+                        <div class="icone-img">
+                            <img src="img/icon/2.png" alt="">
+                        </div>
+                        <div class="policy-desc">
+                            <h3>Online Support 24/7</h3>
+                            <p>Support online 24 hours</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Single Policy End -->
+                <!-- Single Policy Start -->
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-policy">
+                        <div class="icone-img">
+                            <img src="img/icon/3.png" alt="">
+                        </div>
+                        <div class="policy-desc">
+                            <h3>Money Return</h3>
+                            <p>Back guarantee under 7 days</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Single Policy End -->
+                <!-- Single Policy Start -->
+                <div class="col-lg-3 col-sm-6">
+                    <div class="single-policy">
+                        <div class="icone-img">
+                            <img src="img/icon/4.png" alt="">
+                        </div>
+                        <div class="policy-desc">
+                            <h3>Member Discount</h3>
+                            <p>Onevery order over $30.00</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Single Policy End -->
+            </div>
+        </div>
+    </div>
+    <!-- Company Policy End -->
 
-        </td>
-    </tr>
-
-</table>
-
+    <footer class="off-white-bg">
+        <!-- Footer Bottom Start -->
+        <div class="footer-bottom off-white-bg2">
+            <div class="container">
+                <div class="footer-bottom-content">
+                    <p class="copy-right-text">Copyright &copy; 2020.Company name All rights reserved.</p>
+                    <div class="footer-social-content">
+                        <ul class="social-content-list">
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-wifi"></i></a></li>
+                            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Container End -->
+        </div>
+        <!-- Footer Bottom End -->
+    </footer>
+    <!-- Footer End -->
+</div>
+<!-- Wrapper End -->
+<!-- jquery 3.12.4 -->
+<script src="js/vendor/jquery-1.12.4.min.js"></script>
+<!-- mobile menu js  -->
+<script src="js/jquery.meanmenu.min.js"></script>
+<!-- scroll-up js -->
+<script src="js/jquery.scrollUp.js"></script>
+<!-- owl-carousel js -->
+<script src="js/owl.carousel.min.js"></script>
+<!-- slick js -->
+<script src="js/slick.min.js"></script>
+<!-- wow js -->
+<script src="js/wow.min.js"></script>
+<!-- price slider js -->
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/jquery.countdown.min.js"></script>
+<!-- nivo slider js -->
+<script src="js/jquery.nivo.slider.js"></script>
+<!-- fancybox js -->
+<script src="js/jquery.fancybox.min.js"></script>
+<!-- bootstrap -->
+<script src="js/bootstrap.min.js"></script>
+<!-- popper -->
+<script src="js/popper.js"></script>
+<!-- plugins -->
+<script src="js/plugins.js"></script>
+<!-- main js -->
+<script src="js/main.js"></script>
 </body>
+
 </html>

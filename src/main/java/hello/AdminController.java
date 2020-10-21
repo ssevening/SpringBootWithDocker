@@ -4,7 +4,9 @@ import hello.dao.BannerRepository;
 import hello.dao.ProductRepository;
 import hello.dao.UserRepository;
 import hello.dao.pojo.BannerInfo;
+import hello.dao.pojo.KeywordsInfo;
 import hello.dao.pojo.User;
+import hello.service.KeywordsInfoService;
 import hello.utils.ExcelUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -39,6 +41,10 @@ public class AdminController {
 
     @Autowired
     private BannerRepository bannerRepository;
+
+    @Autowired
+    private KeywordsInfoService keywordsInfoService;
+
 
     @GetMapping(path = "/addNewBanner") // Map ONLY GET Requests
     public @ResponseBody
@@ -142,6 +148,17 @@ public class AdminController {
         wb.close();
         outputStream.close();
         return "";
+    }
+
+
+    @GetMapping(path = "/addKeywords") // Map ONLY GET Requests
+    public @ResponseBody
+    String addKeywordsInfo(@RequestParam String keywords) {
+        KeywordsInfo keywordsInfo = new KeywordsInfo();
+        keywordsInfo.setKeywords(keywords);
+        keywordsInfo.setGmtCreate(Calendar.getInstance().getTime());
+        keywordsInfoService.save(keywordsInfo);
+        return "200";
     }
 
 

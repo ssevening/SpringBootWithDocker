@@ -4,6 +4,7 @@ import hello.pojo.Product;
 import org.springframework.util.ResourceUtils;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileUtils {
@@ -86,6 +87,54 @@ public class FileUtils {
         pathStr = pathStr.replace("\\target\\classes", "");
 
         return pathStr;
+    }
+
+    public static List<String> readFile(String path) {
+        List<String> fileStrList = new ArrayList<>();
+        File file = new File(path);
+        FileReader fr;
+        try {
+            fr = new FileReader(file);
+            java.io.BufferedReader br = new BufferedReader(fr);
+            String line = null;
+            StringBuffer sb = new StringBuffer();
+
+            while ((line = br.readLine()) != null) {
+                fileStrList.add(line.trim());
+            }
+            br.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fileStrList;
+    }
+
+    public static List<String> readCSVFile(String path) {
+        List<String> productIds = new ArrayList<>();
+        File file = new File(path);
+        FileReader fr;
+        try {
+            fr = new FileReader(file);
+            java.io.BufferedReader br = new BufferedReader(fr);
+            String line = null;
+            StringBuffer sb = new StringBuffer();
+            int i = 0;
+            while ((line = br.readLine()) != null) {
+                if (line.contains("aff_product")) {
+                    String[] arr = line.split(",");
+                    productIds.add(arr[0].replace("\"", ""));
+                }
+            }
+            br.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return productIds;
     }
 }
 

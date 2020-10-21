@@ -2,26 +2,20 @@ package hello;
 
 import hello.api.*;
 import hello.cache.MemCache;
-import hello.dao.ProductRepository;
 import hello.dao.UserRepository;
+import hello.dao.pojo.BannerInfo;
 import hello.dao.pojo.Notice;
 import hello.pojo.*;
 import hello.service.BannerService;
+import hello.service.CategoryService;
 import hello.service.ProductService;
-import hello.sitemap.SiteMapGen;
-import hello.utils.FileUtils;
 import hello.utils.KeywordsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,6 +38,9 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CategoryService categoryService;
+
     @RequestMapping("/greeting")
     public String greeting(@RequestParam(value = "name", required = false, defaultValue = "World") String name, Model model) {
         model.addAttribute("name", name);
@@ -57,40 +54,93 @@ public class ProductController {
         return "greetingall";
     }
 
-    @RequestMapping("/index.html")
+    @RequestMapping(value = {"/index.html", "/"})
     public String index(Model model) {
-        model.addAttribute("bannerList", bannerService.findAll());
-        buildFeaturedProducts(model, "New Arrival", "newArrivalProducts");
-        buildFeaturedProducts(model, "Hot Product", "hotProducts");
+        List<BannerInfo> bannerInfoList = (List<BannerInfo>) MemCache.getInstance().get("bannerList");
+        if (bannerInfoList == null) {
+            bannerInfoList = bannerService.findAll();
+            MemCache.getInstance().put("bannerList", bannerInfoList);
+        }
+
+        model.addAttribute("bannerList", bannerInfoList);
+
+        buildFeaturedProducts(model, "New Arrival", "newArrivalProducts", "0");
+        buildFeaturedProducts(model, "Hot Product", "hotProducts", "0");
+
+        AFFSmartMatchAPI smartMatchAPI = new AFFSmartMatchAPI();
+        smartMatchAPI.setIsPostRequest(true);
+        smartMatchAPI.setNeedAopSignature();
+        HashMap<String, String> sparamMap = new HashMap<String, String>();
+        sparamMap.put("method", "aliexpress.affiliate.product.smartmatch");
+        // Must have filed
+        sparamMap.put("device_id", "null");
+        sparamMap.put("tracking_id", AFFBaseAPI.TRACKING_ID);
+        // can be empty
+        sparamMap.put("product_id", "");
+        sparamMap.put("device", "{}");
+        sparamMap.put("site", "{}");
+        sparamMap.put("app", "{}");
+        sparamMap.put("user", "{}");
+        sparamMap.put("target_currency", "USD");
+        sparamMap.put("target_language", "en");
+        smartMatchAPI.setParamMap(sparamMap);
+        List<Product> smartMatchProductList = new ArrayList<>();
+        try {
+            String response = smartMatchAPI.request();
+            AliexpressAffiliateProductSmartmatchResponse aliexpressAffiliateProductSmartmatchResponse = AFFSmartMatchAPI.getResult(response);
+            if (aliexpressAffiliateProductSmartmatchResponse != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult() != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult().getRespCode() == 200) {
+                smartMatchProductList = aliexpressAffiliateProductSmartmatchResponse.getRespResult().getResult().getProducts();
+            }
+            model.addAttribute("smartMatchProductList", smartMatchProductList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return "index";
     }
 
-    @RequestMapping("/")
-    public String main(Model model) {
-        model.addAttribute("users", userRepository.findAll());
-        model.addAttribute("bannerList", bannerService.findAll());
-        buildFeaturedProducts(model, "New Arrival", "newArrivalProducts");
-        buildFeaturedProducts(model, "Hot Product", "hotProducts");
-        return "index";
+
+    @RequestMapping("/featuredProducts.html")
+    public String FeaturedProducts(Model model, String promotionName, @RequestParam(defaultValue = "1", required = false) int pageNo) {
+        buildFeaturedProducts(model, promotionName, "promotionProductList", pageNo + "");
+        model.addAttribute("promotionName", promotionName);
+        model.addAttribute("pageNo", pageNo);
+        return "featuredProducts";
     }
 
 
-    private void buildFeaturedProducts(Model model, String promotionName, String result) {
+    @RequestMapping("/smartProducts.html")
+    public String smartProducts(Model model, @RequestParam(defaultValue = "1", required = false) int pageNo) {
+        try {
+            Map<String, Object> resultMap = AFFSmartMatchAPI.getFromNet("", pageNo);
+            AliexpressAffiliateProductSmartmatchResponse response = (AliexpressAffiliateProductSmartmatchResponse) resultMap.get("result");
+            if (response != null && response.getRespResult() != null && response.getRespResult().getRespCode() == 200) {
+                model.addAttribute("smartProducts", response.getRespResult().getResult().getProducts());
+                model.addAttribute("pageNo", pageNo);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "smartProducts";
+    }
+
+
+    private void buildFeaturedProducts(Model model, String promotionName, String result, String pageNo) {
         HashMap<String, String> newArrivalMap = new HashMap<>();
         newArrivalMap.put("target_language", "en");
         newArrivalMap.put("target_currency", "usd");
-        newArrivalMap.put("page_no", "0");
+        newArrivalMap.put("page_no", pageNo);
         newArrivalMap.put("promotion_name", promotionName);
 
-        FeaturedPromoProductGetAPI featuredPromoProductGetAPI = new FeaturedPromoProductGetAPI();
+        AFFFeaturedPromoProductGetAPI featuredPromoProductGetAPI = new AFFFeaturedPromoProductGetAPI();
         featuredPromoProductGetAPI.setIsPostRequest(true);
         featuredPromoProductGetAPI.setNeedAopSignature();
         newArrivalMap.put("method", "aliexpress.affiliate.featuredpromo.products.get");
         featuredPromoProductGetAPI.setParamMap(newArrivalMap);
         try {
             String response = featuredPromoProductGetAPI.request();
-            AliexpressAffiliateFeaturedpromoProductsGetResponse aliexpressAffiliateFeaturedpromoProductsGetResponse = FeaturedPromoProductGetAPI.getResult(response);
-            model.addAttribute(result, aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult().getResult().products.product);
+            AliexpressAffiliateFeaturedpromoProductsGetResponse aliexpressAffiliateFeaturedpromoProductsGetResponse = AFFFeaturedPromoProductGetAPI.getResult(response);
+            model.addAttribute(result, aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult().getResult().getProducts().subList(0, 20));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -105,18 +155,18 @@ public class ProductController {
 
 
     @RequestMapping("/getProduct")
-    public String getProduct(@RequestParam String productId, Model model) {
+    public String getProduct(@RequestParam String id, Model model) {
         AFFProductDetailGetAPI affProductDetailGetAPI = new AFFProductDetailGetAPI();
         affProductDetailGetAPI.setIsPostRequest(true);
         HashMap<String, String> paramMap = new HashMap<>();
         paramMap.put("method", "aliexpress.affiliate.productdetail.get");
-        paramMap.put("product_ids", productId);
+        paramMap.put("product_ids", id);
         paramMap.put("fields", "productId,productTitle,productUrl,imageUrl,originalPrice,salePrice,discount,evaluateScore,30daysCommission,volume,packageType,lotNum,validTime,storeName,storeUrl,allImageUrls");
         affProductDetailGetAPI.setParamMap(paramMap);
         try {
             String result = affProductDetailGetAPI.request();
             AliexpressAffiliateProductdetailGetResponse response = AFFProductDetailGetAPI.getResult(result);
-            Product product = response.getRespResult().getResult().products.product.get(0);
+            Product product = response.getRespResult().getResult().getProducts().get(0);
             model.addAttribute("product", product);
         } catch (Exception e) {
             e.printStackTrace();
@@ -140,8 +190,8 @@ public class ProductController {
 
 
     @RequestMapping("/product.html")
-    public String detail(@RequestParam String productId, Model model) {
-        queryProductById(productId, model);
+    public String detail(@RequestParam String id, Model model) {
+        queryProductById(id, model);
         return "product";
     }
 
@@ -162,23 +212,31 @@ public class ProductController {
 
         Product product = null;
         try {
-            String response = affProductDetailGetAPI.request();
-
-            AliexpressAffiliateProductdetailGetResponse productDetailGetResponse = AFFProductDetailGetAPI.getResult(response);
-            if (productDetailGetResponse != null && productDetailGetResponse.getRespResult() != null && productDetailGetResponse.getRespResult().getRespCode() == 200) {
-                product = productDetailGetResponse.getRespResult().getResult().products.product.get(0);
+            if (MemCache.getInstance().get(productId) != null) {
+                product = (Product) MemCache.getInstance().get(productId);
             } else {
-                Notice notice = new Notice();
-                notice.message = "Product not found.";
-                model.addAttribute("message", notice);
+                String response = affProductDetailGetAPI.request();
+                AliexpressAffiliateProductdetailGetResponse productDetailGetResponse = AFFProductDetailGetAPI.getResult(response);
+                if (productDetailGetResponse != null && productDetailGetResponse.getRespResult() != null && productDetailGetResponse.getRespResult().getRespCode() == 200) {
+                    product = productDetailGetResponse.getRespResult().getResult().getProducts().get(0);
+                    if (product != null) {
+                        MemCache.getInstance().put(productId, product);
+                    }
+                } else {
+                    Notice notice = new Notice();
+                    notice.message = "Product not found.";
+                    model.addAttribute("message", notice);
+                    return "notice";
+                }
             }
+
             model.addAttribute("product", product);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
 
-        SmartMatchAPI smartMatchAPI = new SmartMatchAPI();
+        AFFSmartMatchAPI smartMatchAPI = new AFFSmartMatchAPI();
         smartMatchAPI.setIsPostRequest(true);
         smartMatchAPI.setNeedAopSignature();
         HashMap<String, String> sparamMap = new HashMap<String, String>();
@@ -197,11 +255,15 @@ public class ProductController {
         smartMatchAPI.setParamMap(sparamMap);
         List<Product> smartMatchProductList = new ArrayList<>();
         try {
-
-            String response = smartMatchAPI.request();
-            AliexpressAffiliateProductSmartmatchResponse aliexpressAffiliateProductSmartmatchResponse = SmartMatchAPI.getResult(response);
-            if (aliexpressAffiliateProductSmartmatchResponse != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult() != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult().getRespCode() == 200) {
-                smartMatchProductList = aliexpressAffiliateProductSmartmatchResponse.getRespResult().getResult().products.product.subList(0, 16);
+            if (MemCache.getInstance().get("smartResult_" + productId) != null) {
+                smartMatchProductList = (List<Product>) MemCache.getInstance().get(productId);
+            } else {
+                String response = smartMatchAPI.request();
+                AliexpressAffiliateProductSmartmatchResponse aliexpressAffiliateProductSmartmatchResponse = AFFSmartMatchAPI.getResult(response);
+                if (aliexpressAffiliateProductSmartmatchResponse != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult() != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult().getRespCode() == 200) {
+                    smartMatchProductList = aliexpressAffiliateProductSmartmatchResponse.getRespResult().getResult().getProducts().subList(0, 16);
+                    MemCache.getInstance().put("smartResult_" + productId, smartMatchProductList);
+                }
             }
             model.addAttribute("smartMatchProductList", smartMatchProductList);
         } catch (Exception e) {
@@ -219,48 +281,53 @@ public class ProductController {
                     + product.getSecondLevelCategoryName() + ","
                     + KeywordsUtils.getSEOKeywords(KeywordsUtils.getKeywordsFromLongText(longText.toString())));
         }
-
         return null;
     }
 
-
     @RequestMapping("/search.html")
     public String queryProductDetailBySearch(@RequestParam String keywords, @RequestParam(defaultValue = "1", required = false) int pageNo, @RequestParam(defaultValue = "", required = false) String sort, Model model) {
-        AFFProductQueryAPI affProductQueryAPI = new AFFProductQueryAPI();
-        affProductQueryAPI.setIsPostRequest(true);
-        affProductQueryAPI.setNeedAopSignature();
-        HashMap<String, String> paramMap = new HashMap<String, String>();
-        paramMap.put("fields",
-                "totalResults,lotNum,packageType,imageUrl,volume,productId,discount,validTime,originalPrice,productTitle,productUrl,salePrice,commission");
-        paramMap.put("keywords", keywords);
-        // 类目
-        paramMap.put("category_ids", "");
-        paramMap.put("min_sale_price", "");
-        paramMap.put("max_sale_price", "");
-        paramMap.put("page_no", pageNo + "");
-        //SALE_PRICE_ASC, SALE_PRICE_DESC, LAST_VOLUME_ASC, LAST_VOLUME_DESC
-        paramMap.put("sort", sort);
-        paramMap.put("method", "aliexpress.affiliate.product.query");
-        affProductQueryAPI.setParamMap(paramMap);
         try {
-            String response = affProductQueryAPI.request();
-            AliexpressAffiliateProductQueryResponse aliexpressAffiliateProductQueryResponse = AFFProductQueryAPI.getResult(response);
-
+            AliexpressAffiliateProductQueryResponse aliexpressAffiliateProductQueryResponse = AFFProductQueryAPI.getFromNet(keywords, pageNo + "", sort);
             model.addAttribute("trafficProductResultDto", aliexpressAffiliateProductQueryResponse.getRespResult().getResult());
             model.addAttribute("keywords", keywords);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return "search";
     }
 
-    @GetMapping(value = {"sitemap.xml", "sitemap"})
-    public void getSiteMap(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        SiteMapGen siteMapGen = new SiteMapGen();
-        siteMapGen.createSiteMap(request.getSession().getServletContext().getRealPath("/"));
-
+    // 展示类目导航页
+    @RequestMapping("/category.html")
+    public String category(Model model) {
+        try {
+            List<Category> categoryList;
+            if (MemCache.getInstance().get("categoryList") != null) {
+                categoryList = (List<Category>) MemCache.getInstance().get("categoryList");
+            } else {
+                categoryList = categoryService.findAll();
+                MemCache.getInstance().put("categoryList", categoryList);
+            }
+            model.addAttribute("categoryList", categoryList);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "category";
     }
 
+    // 展示类目导航页
+    @RequestMapping("/categoryItem.html")
+    public String categoryItems(@RequestParam Long categoryId, @RequestParam(defaultValue = "1", required = false) int pageNo, @RequestParam(defaultValue = "", required = false) String categoryName, Model model) {
+        try {
+            Map<String, Object> resultMap = AFFHotProductDownloadAPI.getFromNet(categoryId, pageNo + "");
+            model.addAttribute("categoryProductList", ((AliexpressAffiliateHotproductDownloadResponse) resultMap.get("result")).getRespResult().getResult().getProducts());
+            model.addAttribute("categoryId", categoryId);
+            model.addAttribute("pageNo", pageNo);
+            model.addAttribute("categoryName", categoryName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "categoryItem";
+    }
 
 }

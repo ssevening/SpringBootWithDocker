@@ -249,9 +249,8 @@ public class Product extends TaobaoObject {
         this.description = description;
     }
 
-    @Column(nullable = true, columnDefinition = "varchar(3072)")
+    // 不存数据库
     public String keywords;
-    @Column(nullable = true, columnDefinition = "varchar(3072)")
     public String description;
 
     public String getDisplayPrice() {
@@ -586,6 +585,14 @@ public class Product extends TaobaoObject {
 
     public void setPromoCodeInfoJson(String promoCodeInfoJson) {
         this.promoCodeInfoJson = promoCodeInfoJson;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public class ImageInfo {

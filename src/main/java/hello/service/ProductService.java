@@ -14,7 +14,7 @@ public interface ProductService {
      * @param productId
      * @return
      */
-    Product queryProductDetailByProductId(String productId);
+    Product queryProductDetailByProductId(Long productId);
 
     /**
      * 通过标题来搜索产品
