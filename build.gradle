@@ -23,8 +23,8 @@ apply plugin: 'io.spring.dependency-management'
 group = 'ssevening'
 
 bootJar {
-    baseName = 'gs-spring-boot-docker'
-    version = '0.8.8.3'
+    archiveBaseName = 'gs-spring-boot-docker'
+    archiveVersion = '0.8.8.6'
 }
 //// tag::task[]
 //task buildDocker(type: Docker, dependsOn: build) {
@@ -92,8 +92,6 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.google.code/sitemapgen4j
     compile group: 'com.google.code', name: 'sitemapgen4j', version: '1.0.1'
-
-
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

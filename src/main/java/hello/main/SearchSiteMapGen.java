@@ -23,7 +23,7 @@ public class SearchSiteMapGen {
 
     public static String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
-    public static String KEYWORDS_PATH = "/Users/panchenxing/work/keywords.txt";
+    public static String KEYWORDS_PATH = "/Users/panchenxing/Downloads/k.txt";
 
     public static String SITEMAP_ROOT_PATH = "/Users/panchenxing/map/";
 
@@ -56,7 +56,7 @@ public class SearchSiteMapGen {
             for (KeywordsInfo keywordsInfo : cList) {
                 //start ======================================================================
                 String url = "http://www.dealfuns.com/search.html?keywords=" + keywordsInfo.getKeywords();//文章详情页的url地址
-                WebSitemapUrl sitemapUrl = new WebSitemapUrl.Options(url).lastMod(formatDate(Calendar.getInstance().getTime(), DATE_FORMAT)).priority(0.9).changeFreq(ChangeFreq.MONTHLY).build();
+                WebSitemapUrl sitemapUrl = new WebSitemapUrl.Options(url).lastMod(formatDate(Calendar.getInstance().getTime(), DATE_FORMAT)).priority(0.9).changeFreq(ChangeFreq.WEEKLY).build();
                 sitemapGenerator.addUrl(sitemapUrl);
             }
             sitemapGenerator.write();

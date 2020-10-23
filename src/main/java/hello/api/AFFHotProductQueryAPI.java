@@ -17,8 +17,7 @@ public class AFFHotProductQueryAPI extends AFFBaseAPI {
 
     }
 
-
-    public static String responseString = "aliexpress.affiliate.hotproduct.query";
+    public static String responseString = "aliexpress_affiliate_hotproduct_query_response";
 
     public static AliexpressAffiliateHotproductQueryResponse getResult(String response) throws IOException {
         JsonNode jsonNode = JsonMapper.json2node(response).get(responseString);
@@ -36,7 +35,7 @@ public class AFFHotProductQueryAPI extends AFFBaseAPI {
         affHotProductQueryAPI.setNeedAopSignature();
         HashMap<String, String> paramMap = new HashMap<String, String>();
 
-        paramMap.put("method", responseString);
+        paramMap.put("method", "aliexpress.affiliate.hotproduct.query");
         paramMap.put("fields",
                 "totalResults,lotNum,packageType,imageUrl,volume,productId,discount,validTime,originalPrice,productTitle,productUrl,salePrice,commission");
         paramMap.put("keywords", keywords);
@@ -47,7 +46,6 @@ public class AFFHotProductQueryAPI extends AFFBaseAPI {
         affHotProductQueryAPI.setParamMap(paramMap);
         paramMap.put("sort", sort);
         paramMap.put("page_no", pageNo);
-        // System.out.println(affHotProductQueryAPI.getFinalRequestUrl());
         try {
             String response = affHotProductQueryAPI.request();
             aliexpressAffiliateHotproductQueryResponse = getResult(response);

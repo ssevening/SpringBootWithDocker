@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -268,7 +269,7 @@ public class ProductController {
                 String response = smartMatchAPI.request();
                 AliexpressAffiliateProductSmartmatchResponse aliexpressAffiliateProductSmartmatchResponse = AFFSmartMatchAPI.getResult(response);
                 if (aliexpressAffiliateProductSmartmatchResponse != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult() != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult().getRespCode() == 200) {
-                    smartMatchProductList = aliexpressAffiliateProductSmartmatchResponse.getRespResult().getResult().getProducts().subList(0, 16);
+                    smartMatchProductList = aliexpressAffiliateProductSmartmatchResponse.getRespResult().getResult().getProducts();
                     MemCache.getInstance().put("smartResult_" + productId, smartMatchProductList);
                 }
             }
@@ -336,5 +337,42 @@ public class ProductController {
 
         return "categoryItem";
     }
+
+
+    // 测试专用
+//    @RequestMapping("/idata")
+//    public @ResponseBody
+//    String importProductData(Model model) {
+//        System.out.println("start executeGetProductData.....");
+//        try {
+//            Map<String, Object> resultMap = AFFGetCategoryAPI.getFromNet();
+//            AliexpressAffiliateCategoryGetResponse response = (AliexpressAffiliateCategoryGetResponse) resultMap.get("result");
+//            List<Category> categoryList = response.getRespResult().getResult().getCategories();
+//            for (int i = 0; i < categoryList.size(); i++) {
+//                Category category = categoryList.get(i);
+//                System.out.println(category.getCategoryName() + " data is getting.....");
+//                for (int j = 0; j <= 100; j++) {
+//                    Map<String, Object> downloadResultMap = AFFHotProductDownloadAPI.getFromNet(category.getCategoryId(), j + "");
+//                    AliexpressAffiliateHotproductDownloadResponse downloadResponse = (AliexpressAffiliateHotproductDownloadResponse) downloadResultMap.get("result");
+//                    if (downloadResponse.getRespResult() != null && downloadResponse.getRespResult().getResult() != null && downloadResponse.getRespResult().getRespCode() == 200) {
+//                        List<Product> productList = downloadResponse.getRespResult().getResult().getProducts();
+//                        if (productList != null && productList.size() > 0) {
+//                            for (Product product : productList) {
+//                                productService.save(product);
+//                            }
+//                        }
+//                    } else {
+//                        System.out.println(category.getCategoryName() + " get product list page:" + j + " is null");
+//                        break;
+//                    }
+//                }
+//                System.out.println("finished :" + category.getCategoryName() + " product data.");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return "succ";
+//    }
 
 }
