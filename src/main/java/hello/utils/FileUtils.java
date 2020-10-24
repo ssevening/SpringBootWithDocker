@@ -136,5 +136,34 @@ public class FileUtils {
         }
         return productIds;
     }
+
+
+    public static List<String> readXmlFiles(String dirPath) {
+        List<String> productUrlList = new ArrayList<>();
+        File mapDir = new File(dirPath);
+        File[] files = mapDir.listFiles();
+        for (File file : files) {
+            FileReader fr;
+            try {
+                fr = new FileReader(file);
+                java.io.BufferedReader br = new BufferedReader(fr);
+                String line = null;
+                StringBuffer sb = new StringBuffer();
+                int i = 0;
+                while ((line = br.readLine()) != null) {
+                    if (line.contains("product.html")) {
+                        productUrlList.add(line.replace("<loc>", "").replace("</loc>", ""));
+                    }
+                }
+                br.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return productUrlList;
+    }
 }
 

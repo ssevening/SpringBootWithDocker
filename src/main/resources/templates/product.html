@@ -61,6 +61,11 @@
   gtag('js', new Date());
 
   gtag('config', 'UA-3439789-9');
+
+    </script>
+
+    <script type="application/ld+json" th:utext="${product.convertToIdJson()}">
+
     </script>
 </head>
 
@@ -316,6 +321,11 @@
                                 <i class="fa fa-star"
                                    th:style="${product.getEvaluateRateIntValue()} gt 80 ? 'color:#f9ba48;':'color:#444;'"></i>
                             </div>
+                        </div>
+                        <div class="pro-price mb-10">
+                            <p><span class="price"
+                                     th:text="${product.getLastestVolume() + ' Sold'}"></span>
+                            </p>
                         </div>
                         <div class="pro-price mb-10">
                             <p><span class="price"

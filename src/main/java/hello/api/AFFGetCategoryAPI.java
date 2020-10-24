@@ -32,7 +32,7 @@ public class AFFGetCategoryAPI extends AFFBaseAPI {
         HashMap<String, String> paramMap = new HashMap<>();
         paramMap.put("method", "aliexpress.affiliate.category.get");
         affGetCategoryAPI.setParamMap(paramMap);
-        // System.out.println(affGetCategoryAPI.getFinalRequestUrl());
+        System.out.println(affGetCategoryAPI.getFinalRequestUrl());
     }
 
     public static Map<String, Object> getFromNet() {

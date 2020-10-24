@@ -22,7 +22,6 @@ public class ProductSiteMapGen {
 
     public static String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ";
 
-    public static String KEYWORDS_PATH = "/Users/panchenxing/work/keywords.txt";
 
     public static String SITEMAP_ROOT_PATH = "/Users/panchenxing/map/";
 
@@ -45,31 +44,23 @@ public class ProductSiteMapGen {
             String WEBSITE = "http://www.dealfuns.com";
             /** 存储位置,实际应用项目中，需要指到网站的根目录 request.getSession().getServletContext().getRealPath("/") **/
 
-            List<KeywordsInfo> cList = findKeywordsInfoByFile();
-            if (cList == null || cList.size() < 1) {
-                return;
-            }
+
             List<String> siteMapList = new ArrayList<>();
 
             /** 查询每个分类下对应的文章 **/
 
-            List<String> aList = FileUtils.readCSVFile("/Users/panchenxing/us_aliexpress.csv");
+            List<String> aList = FileUtils.readXmlFiles("/Users/panchenxing/map/src_sitemap/");
             if (aList.size() > 0) {
                 //start ======================================================================
-                int dirNo = 1;
-                String path = realPath + "/sitemap/" + "1";
+                String path = realPath + "/sitemap/" + "product";
                 fileExists(path);//判断文件夹是否存在，不存在则创建
-                WebSitemapGenerator sitemapGenerator = WebSitemapGenerator.builder(WEBSITE, new File(path)).gzip(true).build();
-                int i = 0;
-                for (String productId : aList) { //遍历取出来的文章
-                    i++;
-                    String url = "http://www.dealfuns.com/product.html?id=" + productId;//文章详情页的url地址
-                    WebSitemapUrl sitemapUrl = new WebSitemapUrl.Options(url).lastMod(formatDate(Calendar.getInstance().getTime(), DATE_FORMAT)).priority(0.8).changeFreq(ChangeFreq.MONTHLY).build();
+                WebSitemapGenerator sitemapGenerator = WebSitemapGenerator.builder(WEBSITE, new File(path)).maxUrls(2000).gzip(true).build();
+                for (String productUrl : aList) { //遍历取出来的文章
+                    WebSitemapUrl sitemapUrl = new WebSitemapUrl.Options(productUrl).lastMod(formatDate(Calendar.getInstance().getTime(), DATE_FORMAT)).priority(0.8).changeFreq(ChangeFreq.MONTHLY).build();
                     sitemapGenerator.addUrl(sitemapUrl);
                 }
                 sitemapGenerator.write();
                 // end ======================================================================
-
             }
 
 
@@ -82,7 +73,7 @@ public class ProductSiteMapGen {
                 for (String url : siteMapList) {
                     s.add(new Sitemap(url));
                 }
-                Writer wt = new PrintWriter(new File(realPath + "/category_sitemap.xml"));
+                Writer wt = new PrintWriter(new File(realPath + "/product_sitemap_index.xml"));
                 SiteMapUtils.writeSitemapIndex(wt, s.iterator());
                 wt.close();
             }
@@ -93,22 +84,6 @@ public class ProductSiteMapGen {
         }
     }
 
-    /**
-     * 查询分类信息
-     */
-    public List<KeywordsInfo> findKeywordsInfoByFile() {
-        List<KeywordsInfo> keywordsInfos = new ArrayList<>();
-        List<String> list = FileUtils.readFile(KEYWORDS_PATH);
-        for (int i = 0; i < list.size(); i++) {
-            KeywordsInfo keywordsInfo = new KeywordsInfo();
-            keywordsInfo.setGmtCreate(Calendar.getInstance().getTime());
-            keywordsInfo.setKeywords(list.get(i));
-            keywordsInfo.setId(new Long(i));
-            keywordsInfos.add(keywordsInfo);
-
-        }
-        return keywordsInfos;
-    }
 
     private static Random random = new Random(System.currentTimeMillis());
 

@@ -53,6 +53,8 @@
   gtag('js', new Date());
 
   gtag('config', 'UA-3439789-9');
+
+
     </script>
 </head>
 
@@ -206,24 +208,24 @@
         <div class="container">
             <div class="row">
                 <!-- Single Product Start -->
-                <div class="col-lg-2 col-sm-6" th:each="category,status: ${categoryList}">
+                <div class="col-lg-2 col-sm-6" th:each="category,status: ${displayCategory}">
                     <div class="single-product" style="margin-bottom:0px">
                         <!-- Product Image Start -->
                         <div class="pro-img">
                             <a href="product.html"
-                               th:href="'categoryItem.html?categoryId=' + ${category.getCategoryId()}+'&categoryName=' + ${category.getCategoryName()}">
-                                <img class="primary-img" th:src="${category.getFirstImageUrl()}">
-                                <img class="secondary-img" th:alt="${category.getCategoryName()}"
-                                     th:src="${category.getSecImageUrl()}"
-                                     src="img/products/2.jpg"
-                                     alt="single-product">
+                               th:href="${category.getParentCategoryId()!=null} ? 'categoryItem.html?categoryId=' + ${category.getCategoryId()}+'&categoryName=' + ${category.getCategoryName()} : 'category.html?pid=' + ${category.getCategoryId()}">
+                            <img class="primary-img" th:src="${category.getFirstImageUrl()}">
+                            <img class="secondary-img" th:alt="${category.getCategoryName()}"
+                                 th:src="${category.getSecImageUrl()}"
+                                 src="img/products/2.jpg"
+                                 alt="single-product">
                             </a>
                         </div>
                         <!-- Product Image End -->
                         <!-- Product Content Start -->
                         <div class="pro-content">
                             <h4><a href="product.html"
-                                   th:href="'categoryItem.html?categoryId=' + ${category.getCategoryId()}+'&categoryName=' + ${category.getCategoryName()}"
+                                   th:href="${category.getParentCategoryId()!=null} ? 'categoryItem.html?categoryId=' + ${category.getCategoryId()}+'&categoryName=' + ${category.getCategoryName()} : 'category.html?pid=' + ${category.getCategoryId()}"
                                    th:text="${category.getCategoryName()}" target="_blank">Products Name Here</a>
                             </h4>
                         </div>

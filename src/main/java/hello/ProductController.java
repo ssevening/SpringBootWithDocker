@@ -15,10 +15,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +61,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = {"/index.html", "/"})
-    public String index(Model model) {
+    public String index(Model model, @CookieValue(value = "sPid", required = false) String sPid) {
         List<BannerInfo> bannerInfoList = (List<BannerInfo>) MemCache.getInstance().get("bannerList");
         if (bannerInfoList == null) {
             bannerInfoList = bannerService.findAll();
@@ -79,7 +82,10 @@ public class ProductController {
         sparamMap.put("device_id", "null");
         sparamMap.put("tracking_id", AFFBaseAPI.TRACKING_ID);
         // can be empty
-        sparamMap.put("product_id", "");
+        if (sPid != null) {
+            sparamMap.put("product_id", sPid);
+        }
+
         sparamMap.put("device", "{}");
         sparamMap.put("site", "{}");
         sparamMap.put("app", "{}");
@@ -113,7 +119,7 @@ public class ProductController {
 
 
     @RequestMapping("/smartProducts.html")
-    public String smartProducts(Model model, @RequestParam(defaultValue = "1", required = false) int pageNo) {
+    public String smartProducts(Model model, @RequestParam(defaultValue = "1", required = false) int pageNo, @CookieValue(value = "sPid", required = false) String sPid) {
         try {
             Map<String, Object> resultMap = AFFSmartMatchAPI.getFromNet("", pageNo);
             AliexpressAffiliateProductSmartmatchResponse response = (AliexpressAffiliateProductSmartmatchResponse) resultMap.get("result");
@@ -195,10 +201,14 @@ public class ProductController {
 
 
     @RequestMapping("/product.html")
-    public String detail(@RequestParam(required = false) String id, Model model, @RequestParam(required = false) String productId) {
+    public String detail(@RequestParam(required = false) String id, Model model, @RequestParam(required = false) String productId, HttpServletResponse response) {
         if (productId != null) {
             id = productId;
         }
+        Cookie cookie = new Cookie("sPid", id);
+        // 1小时，单位是秒
+        cookie.setMaxAge(60 * 60);
+        response.addCookie(cookie);
         queryProductById(id, model);
         return "product";
     }
@@ -218,7 +228,7 @@ public class ProductController {
 
         affProductDetailGetAPI.setParamMap(productParamsMap);
 
-        Product product = null;
+        Product product = new Product();
         try {
             if (MemCache.getInstance().get(productId) != null) {
                 product = (Product) MemCache.getInstance().get(productId);
@@ -229,6 +239,8 @@ public class ProductController {
                     product = productDetailGetResponse.getRespResult().getResult().getProducts().get(0);
                     if (product != null) {
                         MemCache.getInstance().put(productId, product);
+                    } else {
+                        logger.debug("product return null" + response);
                     }
                 } else {
                     Notice notice = new Notice();
@@ -306,7 +318,7 @@ public class ProductController {
 
     // 展示类目导航页
     @RequestMapping("/category.html")
-    public String category(Model model) {
+    public String category(Model model, @RequestParam(required = false) Long pid) {
         try {
             List<Category> categoryList;
             if (MemCache.getInstance().get("categoryList") != null) {
@@ -315,7 +327,28 @@ public class ProductController {
                 categoryList = categoryService.findAll();
                 MemCache.getInstance().put("categoryList", categoryList);
             }
-            model.addAttribute("categoryList", categoryList);
+
+            List<Category> displayCategory = new ArrayList<>();
+            // 这里处理显示的类目
+            if (pid == null) {
+                // 一级类目
+                for (int i = 0; i < categoryList.size(); i++) {
+                    Category c = categoryList.get(i);
+                    if (c.getParentCategoryId() == null) {
+                        displayCategory.add(c);
+                    }
+                }
+            } else {
+
+                for (int i = 0; i < categoryList.size(); i++) {
+                    Category c = categoryList.get(i);
+                    if (c.getParentCategoryId() != null && c.getParentCategoryId().equals(pid)) {
+                        displayCategory.add(c);
+                    }
+                }
+            }
+
+            model.addAttribute("displayCategory", displayCategory);
         } catch (Exception e) {
             e.printStackTrace();
         }

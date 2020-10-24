@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>http://www.dealfuns.com/</loc>
+        <loc>https://www.dealfuns.com/</loc>
         <lastmod>2020-10-20T16:25:40+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0000</priority>
     </url>
     <url>
-        <loc>http://www.dealfuns.com/category.html</loc>
+        <loc>https://www.dealfuns.com/category.html</loc>
         <lastmod>2020-10-20T16:25:40+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8000</priority>
     </url>
     <url>
-        <loc>http://www.dealfuns.com/smartProducts.html</loc>
+        <loc>https://www.dealfuns.com/smartProducts.html</loc>
         <lastmod>2020-10-20T16:25:40+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8000</priority>
     </url>
     <url>
-        <loc>http://www.dealfuns.com/featuredProducts.html?promotionName=New%20Arrival</loc>
+        <loc>https://www.dealfuns.com/featuredProducts.html?promotionName=New%20Arrival</loc>
         <lastmod>2020-10-20T16:25:40+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8000</priority>
     </url>
     <url>
-        <loc>http://www.dealfuns.com/featuredProducts.html?promotionName=Hot%20Product</loc>
+        <loc>https://www.dealfuns.com/featuredProducts.html?promotionName=Hot%20Product</loc>
         <lastmod>2020-10-20T16:25:40+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8000</priority>
     </url>
     <url>
-        <loc>http://www.dealfuns.com/featuredProducts.html?promotionName=Best%20Seller</loc>
+        <loc>https://www.dealfuns.com/featuredProducts.html?promotionName=Best%20Seller</loc>
         <lastmod>2020-10-20T16:25:40+00:00</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.8000</priority>
