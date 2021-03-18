@@ -4,19 +4,10 @@ import com.redfin.sitemapgenerator.ChangeFreq;
 import com.redfin.sitemapgenerator.WebSitemapGenerator;
 import com.redfin.sitemapgenerator.WebSitemapUrl;
 import hello.api.AFFGetCategoryAPI;
-import hello.api.AFFProductQueryAPI;
-import hello.dao.pojo.KeywordsInfo;
 import hello.pojo.AliexpressAffiliateCategoryGetResponse;
-import hello.pojo.AliexpressAffiliateProductQueryResponse;
 import hello.pojo.Category;
-import hello.pojo.Product;
-import hello.sitemap.SiteMapUtils;
-import hello.sitemap.Sitemap;
-import hello.utils.FileUtils;
 
 import java.io.File;
-import java.io.PrintWriter;
-import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -43,7 +34,7 @@ public class CategorySiteMapGen {
         try {
             System.out.println(realPath);
             long start = System.currentTimeMillis();
-            String WEBSITE = "http://www.dealfuns.com";
+            String WEBSITE = "https://www.dealfuns.com";
             /** 存储位置,实际应用项目中，需要指到网站的根目录 request.getSession().getServletContext().getRealPath("/") **/
 
             List<String> siteMapList = new ArrayList<>();
@@ -54,20 +45,20 @@ public class CategorySiteMapGen {
             List<Category> categoryInfos = aliexpressAffiliateCategoryGetResponse.getRespResult().getResult().getCategories();
             if (categoryInfos.size() > 0) {
                 //start ======================================================================
-                String path = realPath + "/sitemap/" + "1";
+                String path = realPath + "/sitemap/" + "category";
                 fileExists(path);//判断文件夹是否存在，不存在则创建
                 WebSitemapGenerator sitemapGenerator = WebSitemapGenerator.builder(WEBSITE, new File(path)).gzip(false).build();
 
-                String indexUrl = "http://www.dealfuns.com/";
+                String indexUrl = "https://www.dealfuns.com/";
                 WebSitemapUrl indexSiteMapUrl = new WebSitemapUrl.Options(indexUrl).lastMod(formatDate(Calendar.getInstance().getTime(), DATE_FORMAT)).priority(1.0).changeFreq(ChangeFreq.DAILY).build();
                 sitemapGenerator.addUrl(indexSiteMapUrl);
 
-                String smartUrl = "http://www.dealfuns.com/smartProducts.html";
+                String smartUrl = "https://www.dealfuns.com/smartProducts.html";
                 WebSitemapUrl smartSiteMapUrl = new WebSitemapUrl.Options(smartUrl).lastMod(formatDate(Calendar.getInstance().getTime(), DATE_FORMAT)).priority(0.9).changeFreq(ChangeFreq.DAILY).build();
                 sitemapGenerator.addUrl(smartSiteMapUrl);
 
                 for (Category category : categoryInfos) { //遍历取出来的文章
-                    String url = "http://www.dealfuns.com/categoryItem.html?categoryId=" + category.getCategoryId() + "&categoryName=" + category.getCategoryName();//文章详情页的url地址
+                    String url = "https://www.dealfuns.com" + category.getDealFunWebItemsUrl();
                     WebSitemapUrl sitemapUrl = new WebSitemapUrl.Options(url).lastMod(formatDate(Calendar.getInstance().getTime(), DATE_FORMAT)).priority(0.9).changeFreq(ChangeFreq.WEEKLY).build();
                     sitemapGenerator.addUrl(sitemapUrl);
                 }
@@ -81,15 +72,15 @@ public class CategorySiteMapGen {
             //其实分类 - list 页 url也应该存一个sitemap，看自己吧，如果也想告诉搜索引擎，我的list列表页也很重要，那么就做
 
             /** 生成主索引文件 **/
-            if (siteMapList != null && siteMapList.size() > 0) {
-                Collection<Sitemap> s = new ArrayList();
-                for (String url : siteMapList) {
-                    s.add(new Sitemap(url));
-                }
-                Writer wt = new PrintWriter(new File(realPath + "/category_sitemap.xml"));
-                SiteMapUtils.writeSitemapIndex(wt, s.iterator());
-                wt.close();
-            }
+//            if (siteMapList != null && siteMapList.size() > 0) {
+//                Collection<SiteMap> s = new ArrayList();
+//                for (String url : siteMapList) {
+//                    s.add(new SiteMap(url));
+//                }
+//                Writer wt = new PrintWriter(new File(realPath + "/category_sitemap.xml"));
+//                SiteMapUtils.writeSitemapIndex(wt, s.iterator());
+//                wt.close();
+//            }
             long end = System.currentTimeMillis();
             System.out.println("生成Sitemap完毕, 共耗时：" + (end - start));
         } catch (Exception e) {

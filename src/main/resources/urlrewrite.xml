@@ -4,9 +4,30 @@
 <urlrewrite>
     <rule>
         <!--拦截页面以/_开头的数据,作为转发给前端使用-->
-        <from>^/item/(\d+).html$</from>
+        <from>^/item/(\d+)/(\S+).html$</from>
         <!-- to: 真实的URL -->
-        <to type="forward">/product?productId=$1</to>
+        <to type="forward">/product.html?id=$1</to>
+    </rule>
+
+    <rule>
+        <!--拦截页面以/_开头的数据,作为转发给前端使用-->
+        <from>^/list/(\w+).html$</from>
+        <!-- to: 真实的URL -->
+        <to type="forward">/search.html?keywords=$1</to>
+    </rule>
+
+    <rule>
+        <!--拦截页面以/_开头的数据,作为转发给前端使用-->
+        <from>^/category/(\d+)/(\S+).html$</from>
+        <!-- to: 真实的URL -->
+        <to type="forward">/category.html?pid=$1&amp;pName=$2</to>
+    </rule>
+
+    <rule>
+        <!--类目列表页-->
+        <from>^/items/(\d+)/(\S+).html$</from>
+        <!-- to: 真实的URL -->
+        <to type="forward">/categoryItem.html?categoryId=$1&amp;categoryName=$2</to>
     </rule>
 
 </urlrewrite>

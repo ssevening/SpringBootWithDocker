@@ -6,10 +6,16 @@ import hello.pojo.Product;
 import hello.service.ProductService;
 import hello.utils.JsonMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -31,6 +37,13 @@ public class ProductServiceImpl implements ProductService {
         }
         product.webToDB();
         return productRepository.save(product);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Product> getProductsByPageNo(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.ASC, "id"));
+        Page<Product> products = productRepository.findAll(pageable);
+        return products;
     }
 
     @Override

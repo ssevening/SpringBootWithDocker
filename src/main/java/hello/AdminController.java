@@ -12,6 +12,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -49,23 +52,44 @@ public class AdminController {
     @GetMapping(path = "/addNewBanner") // Map ONLY GET Requests
     public @ResponseBody
     String addNewBanner(@RequestParam String title
-            , @RequestParam String description, @RequestParam String bannerUrl, @RequestParam String promotionUrl) {
-        BannerInfo bannerInfo = new BannerInfo();
-        bannerInfo.setTitle(title);
-        bannerInfo.setDescription(description);
-        bannerInfo.setBannerUrl(bannerUrl);
-        bannerInfo.setPromotionUrl(promotionUrl);
-        bannerInfo.setGmtCreate(Calendar.getInstance().getTime());
-        bannerInfo.setStatus("online");
-        bannerRepository.saveAndFlush(bannerInfo);
+            , @RequestParam String description, @RequestParam String bannerUrl, @RequestParam String promotionUrl, HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        String loginStatus = (String) session.getAttribute("loginStatus");
+        if (loginStatus.equals("true")) {
+            BannerInfo bannerInfo = new BannerInfo();
+            bannerInfo.setTitle(title);
+            bannerInfo.setDescription(description);
+            bannerInfo.setBannerUrl(bannerUrl);
+            bannerInfo.setPromotionUrl(promotionUrl);
+            bannerInfo.setGmtCreate(Calendar.getInstance().getTime());
+            bannerInfo.setStatus("online");
+            bannerRepository.saveAndFlush(bannerInfo);
+        } else {
+            return "pls login.";
+        }
+
 
         return "200";
     }
 
     @GetMapping(path = "/addBanner.html")
-    public String checkIfCanAddBanner() {
+    public String checkIfCanAddBanner(HttpServletRequest httpServletRequest) {
         // checkLogin
         return "addBanner";
+    }
+
+
+    @GetMapping(path = "/login.html")
+    public String login(HttpServletRequest httpServletRequest, @RequestParam String userName
+            , @RequestParam String pass) {
+        // if (userName.equals("admin") & pass.equals("Hello")) {
+        HttpSession session = httpServletRequest.getSession(true);
+        session.setAttribute("loginStatus", "true");
+        session.setAttribute("userId", "ssevening");
+
+        // checkLogin
+        return "login";
     }
 
     @GetMapping(path = "/listAllBanners") // Map ONLY GET Requests

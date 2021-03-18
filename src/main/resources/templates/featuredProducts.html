@@ -16,32 +16,32 @@
     <link href="https://fonts.googleapis.com/css?family=Lily+Script+One" rel="stylesheet">
 
     <!-- mobile menu css -->
-    <link rel="stylesheet" href="css/meanmenu.min.css">
+    <link rel="stylesheet" href="/css/meanmenu.min.css">
     <!-- animate css -->
-    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="/css/animate.css">
     <!-- nivo slider css -->
-    <link rel="stylesheet" href="css/nivo-slider.css">
+    <link rel="stylesheet" href="/css/nivo-slider.css">
     <!-- owl carousel css -->
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css">
     <!-- slick css -->
-    <link rel="stylesheet" href="css/slick.css">
+    <link rel="stylesheet" href="/css/slick.css">
     <!-- price slider css -->
-    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" href="/css/jquery-ui.min.css">
     <!-- fontawesome css -->
-    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
     <!-- fancybox css -->
-    <link rel="stylesheet" href="css/jquery.fancybox.css">
+    <link rel="stylesheet" href="/css/jquery.fancybox.css">
     <!-- bootstrap css -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <!-- default css  -->
-    <link rel="stylesheet" href="css/default.css">
+    <link rel="stylesheet" href="/css/default.css">
     <!-- style css -->
     <link rel="stylesheet" href="style.css">
     <!-- responsive css -->
-    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="/css/responsive.css">
 
     <!-- modernizr js -->
-    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
     <!-- adbygoogle -->
     <script data-ad-client="ca-pub-4710212062461385" async
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -54,9 +54,22 @@
 
   gtag('config', 'UA-3439789-9');
     </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PGB5P4T');</script>
+    <!-- End Google Tag Manager -->
+
 </head>
 
 <body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PGB5P4T"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <!--[if lt IE 8]>
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a
         href="https://support.microsoft.com/zh-cn/help/17621/internet-explorer-downloads">upgrade
@@ -73,7 +86,7 @@
                     <!-- Header Top left Start -->
                     <div class="col-lg-4 col-md-12 d-center">
                         <div class="header-top-left">
-                            <img src="img/icon/call.png" alt="">Call Us : XXX
+                            <img src="/img/icon/call.png" alt="">Call Us : XXX
                         </div>
                     </div>
                     <!-- Header Top left End -->
@@ -126,7 +139,7 @@
                 <div class="row">
                     <div class="col-xl-3 col-lg-2 col-sm-5 col-5">
                         <div class="logo">
-                            <a href="index.html"><img src="img/logo/logo.png" alt="logo-image"></a>
+                            <a href="/index.html"><img src="/img/logo/logo.png" alt="logo-image"></a>
                         </div>
                     </div>
                     <!-- Primary Vertical-Menu End -->
@@ -136,10 +149,9 @@
                             <nav>
                                 <ul class="middle-menu-list">
                                     <ul class="middle-menu-list">
-                                        <li><a href="category.html">Category</a></li>
-                                        <li><a href="smartProducts.html">Editor's Choice</a></li>
-                                        <li><a href="featuredProducts.html?promotionName=New Arrival">New Arrival</a></li>
-                                        <li><a href="featuredProducts.html?promotionName=Best Seller">Best Seller</a></li>
+                                        <li><a href="/category.html">Category</a></li>
+                                        <li><a href="/smartProducts.html">Editor's Choice</a></li>
+                                        <li><a href="/featuredProducts.html?promotionName=Best Seller">Best Seller</a></li>
                                     </ul>
                                 </ul>
                             </nav>
@@ -169,10 +181,9 @@
                             <nav>
                                 <ul>
                                     <ul class="middle-menu-list">
-                                        <li><a href="category.html">Category</a></li>
-                                        <li><a href="smartProducts.html">Editor's Choice</a></li>
-                                        <li><a href="featuredProducts.html?promotionName=New Arrival">New Arrival</a></li>
-                                        <li><a href="featuredProducts.html?promotionName=Best Seller">Best Seller</a></li>
+                                        <li><a href="/category.html">Category</a></li>
+                                        <li><a href="/smartProducts.html">Editor's Choice</a></li>
+                                        <li><a href="/featuredProducts.html?promotionName=Best Seller">Best Seller</a></li>
                                     </ul>
                                 </ul>
                             </nav>
@@ -206,11 +217,11 @@
                     <div class="single-product">
                         <!-- Product Image Start -->
                         <div class="pro-img">
-                            <a href="product.html" th:href="'product.html?id=' + ${product.getProductId()}">
+                            <a th:href="${product.getDealFunWebUrl()}">
                                 <img class="primary-img" th:src="${product.getProductMainImageUrl()}">
                                 <img class="secondary-img" th:alt="${product.getProductTitle()}"
                                      th:src="${product.getProductMainImageUrl()}"
-                                     src="img/products/2.jpg"
+                                     src="/img/products/2.jpg"
                                      alt="single-product">
                             </a>
                         </div>
@@ -229,9 +240,8 @@
                                    th:style="${product.getEvaluateRateIntValue()} gt 60 ? 'color:#f9ba48;':'color:#444;'"></i>
                                 <i class="fa fa-star"
                                    th:style="${product.getEvaluateRateIntValue()} gt 80 ? 'color:#f9ba48;':'color:#444;'"></i>
-
                             </div>
-                            <h4><a href="product.html" th:href="'product.html?id=' + ${product.getProductId()}"
+                            <h4><a th:href="${product.getDealFunWebUrl()}"
                                    th:text="${product.getProductTitle()}" target="_blank">Products Name Here</a>
                             </h4>
                             <p><span class="price" th:text="${product.getSalePriceWithCurrency()}">$30.00</span>
@@ -285,7 +295,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="single-policy">
                         <div class="icone-img">
-                            <img src="img/icon/1.png" alt="">
+                            <img src="/img/icon/1.png" alt="">
                         </div>
                         <div class="policy-desc">
                             <h3>Free Delivery</h3>
@@ -298,7 +308,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="single-policy">
                         <div class="icone-img">
-                            <img src="img/icon/2.png" alt="">
+                            <img src="/img/icon/2.png" alt="">
                         </div>
                         <div class="policy-desc">
                             <h3>Online Support 24/7</h3>
@@ -311,7 +321,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="single-policy">
                         <div class="icone-img">
-                            <img src="img/icon/3.png" alt="">
+                            <img src="/img/icon/3.png" alt="">
                         </div>
                         <div class="policy-desc">
                             <h3>Money Return</h3>
@@ -324,7 +334,7 @@
                 <div class="col-lg-3 col-sm-6">
                     <div class="single-policy">
                         <div class="icone-img">
-                            <img src="img/icon/4.png" alt="">
+                            <img src="/img/icon/4.png" alt="">
                         </div>
                         <div class="policy-desc">
                             <h3>Member Discount</h3>
@@ -363,32 +373,32 @@
 </div>
 <!-- Wrapper End -->
 <!-- jquery 3.12.4 -->
-<script src="js/vendor/jquery-1.12.4.min.js"></script>
+<script src="/js/vendor/jquery-1.12.4.min.js"></script>
 <!-- mobile menu js  -->
-<script src="js/jquery.meanmenu.min.js"></script>
+<script src="/js/jquery.meanmenu.min.js"></script>
 <!-- scroll-up js -->
-<script src="js/jquery.scrollUp.js"></script>
+<script src="/js/jquery.scrollUp.js"></script>
 <!-- owl-carousel js -->
-<script src="js/owl.carousel.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
 <!-- slick js -->
-<script src="js/slick.min.js"></script>
+<script src="/js/slick.min.js"></script>
 <!-- wow js -->
-<script src="js/wow.min.js"></script>
+<script src="/js/wow.min.js"></script>
 <!-- price slider js -->
-<script src="js/jquery-ui.min.js"></script>
-<script src="js/jquery.countdown.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/jquery.countdown.min.js"></script>
 <!-- nivo slider js -->
-<script src="js/jquery.nivo.slider.js"></script>
+<script src="/js/jquery.nivo.slider.js"></script>
 <!-- fancybox js -->
-<script src="js/jquery.fancybox.min.js"></script>
+<script src="/js/jquery.fancybox.min.js"></script>
 <!-- bootstrap -->
-<script src="js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 <!-- popper -->
-<script src="js/popper.js"></script>
+<script src="/js/popper.js"></script>
 <!-- plugins -->
-<script src="js/plugins.js"></script>
+<script src="/js/plugins.js"></script>
 <!-- main js -->
-<script src="js/main.js"></script>
+<script src="/js/main.js"></script>
 </body>
 
 </html>

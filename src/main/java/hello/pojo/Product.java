@@ -3,10 +3,13 @@ package hello.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import hello.utils.AliYunOSSUtils;
 import hello.utils.JsonFormatUtils;
 import hello.utils.JsonMapper;
+import hello.utils.StringUtil;
 
 import javax.persistence.*;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -22,9 +25,39 @@ public class Product extends TaobaoObject {
             this.description = "de";
             this.keywords = "ke";
             this.gmtModified = Calendar.getInstance().getTime();
+
+            Map<String, String> priceHistory = new HashMap<>();
+            priceHistory.put("date", simpleDateFormat.format(Calendar.getInstance().getTime()));
+            priceHistory.put("currency", getOriginalPriceCurrency());
+            priceHistory.put("price", getLowerPrice());
+            boolean alreadyAdded = false;
+            List<Map<String, String>> priceHistories = new ArrayList<>();
+            if (AliYunOSSUtils.checkFileExist(getPriceHistoryPath())) {
+                // 已存在
+                String priceJson = AliYunOSSUtils.readFileContent(getPriceHistoryPath());
+                priceHistories = JsonMapper.json2pojo(priceJson, ArrayList.class);
+
+                for (int i = 0; i < priceHistories.size(); i++) {
+                    Map<String, String> p = priceHistories.get(i);
+                    if (p.get("date").equals(priceHistory.get("date"))) {
+                        alreadyAdded = true;
+                    }
+                }
+            }
+
+            if (!alreadyAdded) {
+                priceHistories.add(priceHistory);
+            }
+
+            AliYunOSSUtils.uploadString(getPriceHistoryPath(), JsonMapper.pojo2json(priceHistories));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getPriceHistoryPath() {
+        return "PriceHistory" + File.separator + getProductId() + ".txt";
     }
 
 //    public void dbToWeb() {
@@ -131,6 +164,7 @@ public class Product extends TaobaoObject {
     // 数据化持久字段
     @Column(nullable = true, columnDefinition = "varchar(2048)")
     private String productSmallImageUrlsJson;
+
     /**
      * 商品标题
      */
@@ -262,6 +296,11 @@ public class Product extends TaobaoObject {
     @Column(columnDefinition = "varchar(255) default ''")
     public String description;
 
+    public String getDealFunWebUrl() {
+        return "/item/" + getProductId() + "/" + StringUtil.formatStringInUrl(getProductTitle()) + ".html";
+    }
+
+
     public String getDisplayPrice() {
         if (salePrice != null) {
             return getSalePriceWithCurrency();
@@ -275,69 +314,77 @@ public class Product extends TaobaoObject {
     public String getLowerPrice() {
         if (salePrice != null) {
             return salePrice;
-        } else {
+        }
+
+        if (originalPrice != null) {
             return originalPrice;
         }
+
+        if (appSalePrice != null) {
+            return appSalePrice;
+        }
+        return "0";
     }
 
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public String convertToIdJson() {
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("@context", "https://schema.org/");
-        resultMap.put("@type", "Product");
-        resultMap.put("name", getProductTitle());
-        resultMap.put("image", getProductSmallImageUrls());
-        resultMap.put("description", getDescription());
-        resultMap.put("mpn", getProductId());
-        resultMap.put("sku", getProductId());
-
-        HashMap<String, String> brandMap = new HashMap<>();
-        brandMap.put("@type", "Brand");
-        brandMap.put("name", "Made In China");
-        resultMap.put("brand", brandMap);
-
-        HashMap<String, Object> reviewMap = new HashMap<>();
-        reviewMap.put("@type", "Review");
-
-        HashMap<String, String> reviewRatingMap = new HashMap<>();
-        reviewRatingMap.put("@type", "Rating");
-        reviewRatingMap.put("ratingValue", getEvaluateRate5IntValue() + "");
-        reviewRatingMap.put("bestRating", "5");
-        reviewMap.put("reviewRating", reviewRatingMap);
-
-        HashMap<String, String> authorMap = new HashMap<>();
-        authorMap.put("@type", "Person");
-        authorMap.put("name", "Super Deals In China");
-        reviewMap.put("author", authorMap);
-
-        resultMap.put("review", reviewMap);
-
-        HashMap<String, Object> aggregateRatingMap = new HashMap<>();
-        aggregateRatingMap.put("@type", "AggregateRating");
-        aggregateRatingMap.put("ratingValue", getEvaluateRate5IntValue() + "");
-        aggregateRatingMap.put("reviewCount", getLastestVolume() + "");
-        resultMap.put("aggregateRating", aggregateRatingMap);
-
-
-        HashMap<String, Object> offersMap = new HashMap<>();
-        offersMap.put("@type", "Offer");
-        offersMap.put("url", "https://www.dealfuns.com/product.html?id=" + getProductId());
-        offersMap.put("priceCurrency", getOriginalPriceCurrency());
-        offersMap.put("price", getLowerPrice());
-
-        Calendar ca = Calendar.getInstance();
-        ca.add(Calendar.DAY_OF_YEAR, 14);
-        offersMap.put("priceValidUntil", simpleDateFormat.format(ca.getTime()));
-        offersMap.put("itemCondition", "https://schema.org/UsedCondition");
-        offersMap.put("availability", "https://schema.org/InStock");
-
-        resultMap.put("offers", offersMap);
-
         try {
+            Map<String, Object> resultMap = new HashMap<>();
+            resultMap.put("@context", "https://schema.org/");
+            resultMap.put("@type", "Product");
+            resultMap.put("name", getProductTitle());
+            resultMap.put("image", getProductSmallImageUrls());
+            resultMap.put("description", getDescription());
+            resultMap.put("mpn", getProductId());
+            resultMap.put("sku", getProductId());
+
+            HashMap<String, String> brandMap = new HashMap<>();
+            brandMap.put("@type", "Brand");
+            brandMap.put("name", "Made In China");
+            resultMap.put("brand", brandMap);
+
+            HashMap<String, Object> reviewMap = new HashMap<>();
+            reviewMap.put("@type", "Review");
+
+            HashMap<String, String> reviewRatingMap = new HashMap<>();
+            reviewRatingMap.put("@type", "Rating");
+            reviewRatingMap.put("ratingValue", getEvaluateRate5IntValue() + "");
+            reviewRatingMap.put("bestRating", "5");
+            reviewMap.put("reviewRating", reviewRatingMap);
+
+            HashMap<String, String> authorMap = new HashMap<>();
+            authorMap.put("@type", "Person");
+            authorMap.put("name", "Super Deals In China");
+            reviewMap.put("author", authorMap);
+
+            resultMap.put("review", reviewMap);
+
+            HashMap<String, Object> aggregateRatingMap = new HashMap<>();
+            aggregateRatingMap.put("@type", "AggregateRating");
+            aggregateRatingMap.put("ratingValue", getEvaluateRate5IntValue() + "");
+            aggregateRatingMap.put("reviewCount", getLastestVolume() + 1 + "");
+            resultMap.put("aggregateRating", aggregateRatingMap);
+
+
+            HashMap<String, Object> offersMap = new HashMap<>();
+            offersMap.put("@type", "Offer");
+            offersMap.put("url", "https://www.dealfuns.com" + getDealFunWebUrl());
+            offersMap.put("priceCurrency", getOriginalPriceCurrency());
+            offersMap.put("price", getLowerPrice());
+
+            Calendar ca = Calendar.getInstance();
+            ca.add(Calendar.DAY_OF_YEAR, 14);
+            offersMap.put("priceValidUntil", simpleDateFormat.format(ca.getTime()));
+            offersMap.put("itemCondition", "https://schema.org/UsedCondition");
+            offersMap.put("availability", "https://schema.org/InStock");
+
+            resultMap.put("offers", offersMap);
+
+
             return "\r\n" + JsonFormatUtils.formatJson(JsonMapper.pojo2json(resultMap)) + "\r\n";
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+
         }
         return "";
     }
@@ -505,8 +552,14 @@ public class Product extends TaobaoObject {
 
     public List<String> getProductSmallImageUrls() {
         List<String> httpUrlList = new ArrayList<>();
-        for (int i = 0; i < productSmallImageUrls.string.size(); i++) {
-            httpUrlList.add("https:" + productSmallImageUrls.string.get(i));
+        if (productSmallImageUrls != null) {
+            for (int i = 0; i < productSmallImageUrls.string.size(); i++) {
+                if (productSmallImageUrls.string.get(i).startsWith("//")) {
+                    httpUrlList.add("https:" + productSmallImageUrls.string.get(i));
+                } else {
+                    httpUrlList.add(productSmallImageUrls.string.get(i));
+                }
+            }
         }
         return httpUrlList;
     }

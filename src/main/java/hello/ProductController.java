@@ -9,19 +9,21 @@ import hello.pojo.*;
 import hello.service.BannerService;
 import hello.service.CategoryService;
 import hello.service.ProductService;
+import hello.sitemap.SiteMapIndexUtils;
+import hello.sitemap.SiteMapUtils;
 import hello.utils.KeywordsUtils;
+import hello.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,6 +62,12 @@ public class ProductController {
         return "greetingall";
     }
 
+    @RequestMapping(value = {"/gtm.html"})
+    // 为 GTM 测试添加的页面
+    public String gtm(Model model) {
+        return "gtm";
+    }
+
     @RequestMapping(value = {"/index.html", "/"})
     public String index(Model model, @CookieValue(value = "sPid", required = false) String sPid) {
         List<BannerInfo> bannerInfoList = (List<BannerInfo>) MemCache.getInstance().get("bannerList");
@@ -70,7 +78,6 @@ public class ProductController {
 
         model.addAttribute("bannerList", bannerInfoList);
 
-        buildFeaturedProducts(model, "New Arrival", "newArrivalProducts", "0");
         buildFeaturedProducts(model, "Hot Product", "hotProducts", "0");
 
         AFFSmartMatchAPI smartMatchAPI = new AFFSmartMatchAPI();
@@ -105,6 +112,7 @@ public class ProductController {
             e.printStackTrace();
         }
 
+        model.addAttribute("userId", "ssevening");
         return "index";
     }
 
@@ -149,7 +157,9 @@ public class ProductController {
         try {
             String response = featuredPromoProductGetAPI.request();
             AliexpressAffiliateFeaturedpromoProductsGetResponse aliexpressAffiliateFeaturedpromoProductsGetResponse = AFFFeaturedPromoProductGetAPI.getResult(response);
-            model.addAttribute(result, aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult().getResult().getProducts().subList(0, 20));
+            if (aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult() != null && aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult().getResult() != null && aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult().getResult().getProducts() != null) {
+                model.addAttribute(result, aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult().getResult().getProducts().subList(0, 20));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -235,18 +245,13 @@ public class ProductController {
             } else {
                 String response = affProductDetailGetAPI.request();
                 AliexpressAffiliateProductdetailGetResponse productDetailGetResponse = AFFProductDetailGetAPI.getResult(response);
-                if (productDetailGetResponse != null && productDetailGetResponse.getRespResult() != null && productDetailGetResponse.getRespResult().getRespCode() == 200) {
+                if (productDetailGetResponse != null && productDetailGetResponse.getRespResult() != null && productDetailGetResponse.getRespResult().getRespCode() == 200 && productDetailGetResponse.getRespResult().getResult() != null && productDetailGetResponse.getRespResult().getResult().getProducts() != null) {
                     product = productDetailGetResponse.getRespResult().getResult().getProducts().get(0);
                     if (product != null) {
                         MemCache.getInstance().put(productId, product);
                     } else {
                         logger.debug("product return null" + response);
                     }
-                } else {
-                    Notice notice = new Notice();
-                    notice.message = "Product not found.";
-                    model.addAttribute("message", notice);
-                    return "notice";
                 }
             }
 
@@ -310,6 +315,23 @@ public class ProductController {
             AliexpressAffiliateProductQueryResponse aliexpressAffiliateProductQueryResponse = AFFProductQueryAPI.getFromNet(keywords, pageNo + "", sort);
             model.addAttribute("trafficProductResultDto", aliexpressAffiliateProductQueryResponse.getRespResult().getResult());
             model.addAttribute("keywords", keywords);
+
+            if (aliexpressAffiliateProductQueryResponse.getRespResult() != null && aliexpressAffiliateProductQueryResponse.getRespResult().getResult() != null) {
+                StringBuffer longText = new StringBuffer();
+                List<Product> productList = aliexpressAffiliateProductQueryResponse.getRespResult().getResult().getProducts();
+                for (int i = 0; i < productList.size(); i++) {
+                    Product p = productList.get(i);
+                    longText.append(p.getProductTitle()).append(" ");
+                }
+
+
+                model.addAttribute("seoKeywords", keywords + ","
+                        + KeywordsUtils.getSEOKeywords(KeywordsUtils.getKeywordsFromLongText(longText.toString())));
+
+                model.addAttribute("seoDescription", "");
+            }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -318,7 +340,7 @@ public class ProductController {
 
     // 展示类目导航页
     @RequestMapping("/category.html")
-    public String category(Model model, @RequestParam(required = false) Long pid) {
+    public String category(Model model, @RequestParam(required = false) Long pid, @RequestParam(required = false) String pName) {
         try {
             List<Category> categoryList;
             if (MemCache.getInstance().get("categoryList") != null) {
@@ -339,7 +361,6 @@ public class ProductController {
                     }
                 }
             } else {
-
                 for (int i = 0; i < categoryList.size(); i++) {
                     Category c = categoryList.get(i);
                     if (c.getParentCategoryId() != null && c.getParentCategoryId().equals(pid)) {
@@ -349,6 +370,7 @@ public class ProductController {
             }
 
             model.addAttribute("displayCategory", displayCategory);
+            model.addAttribute("pName", pName);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -363,12 +385,48 @@ public class ProductController {
             model.addAttribute("categoryProductList", ((AliexpressAffiliateHotproductDownloadResponse) resultMap.get("result")).getRespResult().getResult().getProducts());
             model.addAttribute("categoryId", categoryId);
             model.addAttribute("pageNo", pageNo);
-            model.addAttribute("categoryName", categoryName);
+            model.addAttribute("categoryName", StringUtil.formatStringInUrl(categoryName));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return "categoryItem";
+    }
+
+    @Autowired
+    SiteMapUtils siteMapUtils;
+    @Autowired
+    SiteMapIndexUtils siteMapIndexUtils;
+
+    @GetMapping(value = "/{path}/{pageNo}/sitemap.xml", produces = MediaType.APPLICATION_XML_VALUE)
+    public @ResponseBody
+    String getSiteMap(@PathVariable("path") String path, HttpServletResponse response, @PathVariable("pageNo") int pageNo) {
+        switch (path) {
+            case "product": {
+                response.setCharacterEncoding("UTF-8");
+                response.setContentType(MediaType.APPLICATION_XML_VALUE);
+                return siteMapUtils.getProductSiteMap(pageNo);
+            }
+            default: {
+                return "";
+            }
+        }
+    }
+
+
+    @GetMapping(value = "/{path}/{indexNo}/sitemap_index.xml", produces = MediaType.APPLICATION_XML_VALUE)
+    public @ResponseBody
+    String getSiteMapIndex(@PathVariable("path") String path, HttpServletResponse response, @PathVariable("indexNo") int indexNo) {
+        switch (path) {
+            case "product": {
+                response.setCharacterEncoding("UTF-8");
+                response.setContentType(MediaType.APPLICATION_XML_VALUE);
+                return siteMapIndexUtils.getProductSiteMapIndex(indexNo);
+            }
+            default: {
+                return "";
+            }
+        }
     }
 
 

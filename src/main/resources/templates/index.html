@@ -65,9 +65,25 @@
   gtag('config', 'UA-3439789-9');
     </script>
 
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PGB5P4T');</script>
+    <!-- End Google Tag Manager -->
 </head>
 
 <body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PGB5P4T"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<script>
+  window.dataLayer.push({'_event':'add_to_cart'});
+</script>
 <!--[if lt IE 8]>
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a
         href="https://support.microsoft.com/zh-cn/help/17621/internet-explorer-downloads">upgrade
@@ -148,7 +164,6 @@
                                 <ul class="middle-menu-list">
                                     <li><a href="category.html">Category</a></li>
                                     <li><a href="smartProducts.html">Editor's Choice</a></li>
-                                    <li><a href="featuredProducts.html?promotionName=New Arrival">New Arrival</a></li>
                                     <li><a href="featuredProducts.html?promotionName=Best Seller">Best Seller</a></li>
                                 </ul>
                             </nav>
@@ -181,7 +196,6 @@
                                 <ul class="middle-menu-list">
                                     <li><a href="category.html">Category</a></li>
                                     <li><a href="smartProducts.html">Editor's Choice</a></li>
-                                    <li><a href="featuredProducts.html?promotionName=New Arrival">New Arrival</a></li>
                                     <li><a href="featuredProducts.html?promotionName=Best Seller">Best Seller</a></li>
                                 </ul>
                             </nav>
@@ -252,7 +266,7 @@
                     <div class="single-product">
                         <!-- Product Image Start -->
                         <div class="pro-img">
-                            <a href="product.html" th:href="'product.html?id=' + ${product.getProductId()}">
+                            <a th:href="${product.getDealFunWebUrl()}">
                                 <img class="primary-img" th:src="${product.getProductMainImageUrl()}">
                                 <img class="secondary-img" th:alt="${product.getProductTitle()}"
                                      th:src="${product.getProductMainImageUrl()}"
@@ -277,68 +291,7 @@
                                    th:style="${product.getEvaluateRateIntValue()} gt 80 ? 'color:#f9ba48;':'color:#444;'"></i>
 
                             </div>
-                            <h4><a href="product.html" th:href="'product.html?id=' + ${product.getProductId()}"
-                                   th:text="${product.getProductTitle()}" target="_blank">Products Name Here</a>
-                            </h4>
-                            <p><span class="price" th:text="${product.getSalePriceWithCurrency()}">$30.00</span>
-                                <del class="prev-price" th:text="${product.getOriginalPriceWithCurrency()}">$32.00</del>
-                            </p>
-                        </div>
-                        <!-- Product Content End -->
-                        <span class="sticker-new" th:text="${product.getDiscount()}">-30%</span>
-                    </div>
-                </div>
-                <!-- Single Product End -->
-            </div>
-        </div>
-    </div>
-    <!-- Product Area End -->
-
-    <!-- new arrival products title start-->
-    <div class="best-seller-product">
-        <div class="container">
-            <div class="group-title">
-                <a href="featuredProducts.html?promotionName=New Arrival" target="_blank"><h2>New Arrival Products</h2>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- new arrival products title end-->
-    <!-- Product Area Start -->
-    <div class="product-area">
-        <div class="container">
-            <div class="row">
-                <!-- Single Product Start -->
-                <div class="col-lg-3 col-sm-6" th:each="product,status: ${newArrivalProducts}">
-                    <div class="single-product">
-                        <!-- Product Image Start -->
-                        <div class="pro-img">
-                            <a href="product.html" th:href="'product.html?id=' + ${product.getProductId()}">
-                                <img class="primary-img" th:src="${product.getProductMainImageUrl()}">
-                                <img class="secondary-img" th:alt="${product.getProductTitle()}"
-                                     th:src="${product.getProductMainImageUrl()}"
-                                     src="img/products/2.jpg"
-                                     alt="single-product">
-                            </a>
-                        </div>
-                        <!-- Product Image End -->
-                        <!-- Product Content Start -->
-                        <div class="pro-content">
-                            <div class="product-rating">
-
-                                <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 0 ? 'color:#f9ba48;':'color:#444;'"></i>
-                                <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 20 ? 'color:#f9ba48;':'color:#444;'"></i>
-                                <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 40 ? 'color:#f9ba48;':'color:#444;'"></i>
-                                <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 60 ? 'color:#f9ba48;':'color:#444;'"></i>
-                                <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 80 ? 'color:#f9ba48;':'color:#444;'"></i>
-
-                            </div>
-                            <h4><a href="product.html" th:href="'product.html?id=' + ${product.getProductId()}"
+                            <h4><a th:href="${product.getDealFunWebUrl()}"
                                    th:text="${product.getProductTitle()}" target="_blank">Products Name Here</a>
                             </h4>
                             <p><span class="price" th:text="${product.getSalePriceWithCurrency()}">$30.00</span>
@@ -374,7 +327,7 @@
                     <div class="single-product">
                         <!-- Product Image Start -->
                         <div class="pro-img">
-                            <a href="product.html" th:href="'product.html?id=' + ${product.getProductId()}">
+                            <a th:href="${product.getDealFunWebUrl()}">
                                 <img class="primary-img" th:src="${product.getProductMainImageUrl()}">
                                 <img class="secondary-img" th:alt="${product.getProductTitle()}"
                                      th:src="${product.getProductMainImageUrl()}"
@@ -399,7 +352,7 @@
                                    th:style="${product.getEvaluateRateIntValue()} gt 80 ? 'color:#f9ba48;':'color:#444;'"></i>
 
                             </div>
-                            <h4><a href="product.html" th:href="'product.html?id=' + ${product.getProductId()}"
+                            <h4><a th:href="${product.getDealFunWebUrl()}"
                                    th:text="${product.getProductTitle()}" target="_blank">Products Name Here</a>
                             </h4>
                             <p><span class="price" th:text="${product.getSalePriceWithCurrency()}">$30.00</span>

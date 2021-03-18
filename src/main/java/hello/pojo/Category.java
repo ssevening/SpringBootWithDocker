@@ -2,6 +2,8 @@ package hello.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import hello.utils.StringUtil;
+
 import javax.persistence.*;
 
 import javax.persistence.Entity;
@@ -40,6 +42,15 @@ public class Category extends TaobaoObject {
     private String firstImageUrl;
 
     private String secImageUrl;
+
+
+    public String getDealFunWebItemsUrl() {
+        return "/items/" + getCategoryId() + "/" + StringUtil.formatStringInUrl(getCategoryName()) + ".html";
+    }
+
+    public String getDealFunWebCategoryListUrl() {
+        return "/category/" + getCategoryId() + "/" + StringUtil.formatStringInUrl(getCategoryName()) + ".html";
+    }
 
 
     public Long getCategoryId() {

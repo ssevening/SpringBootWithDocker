@@ -60,7 +60,7 @@ public class AFFHotProductDownloadAPI extends AFFBaseAPI {
 
     public static void main(String[] args) throws IOException {
         try {
-            Map<String, Object> downloadResultMap = getFromNet(new Long(200000212), "5000");
+            Map<String, Object> downloadResultMap = getFromNet(new Long(200000346), "1");
             AliexpressAffiliateHotproductDownloadResponse aliexpressAffiliateHotproductDownloadResponse = (AliexpressAffiliateHotproductDownloadResponse) downloadResultMap.get("result");
             if (aliexpressAffiliateHotproductDownloadResponse != null && aliexpressAffiliateHotproductDownloadResponse.getRespResult() != null && aliexpressAffiliateHotproductDownloadResponse.getRespResult().getRespCode() == 200) {
                 List<Product> productList = aliexpressAffiliateHotproductDownloadResponse.getRespResult().getResult().getProducts();

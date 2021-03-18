@@ -1,12 +1,7 @@
 package hello.main;
 
 
-import hello.sitemap.SiteMapUtils;
-import hello.sitemap.Sitemap;
-
 import java.io.File;
-import java.io.PrintWriter;
-import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -42,16 +37,16 @@ public class ProductSiteMapIndexGen {
                 siteMapList.add(WEBSITE + "/sitemap/sitemap" + i + ".xml");//主索引文件需要这个路径
             }
 
-            /** 生成主索引文件 **/
-            if (siteMapList != null && siteMapList.size() > 0) {
-                Collection<Sitemap> s = new ArrayList();
-                for (String url : siteMapList) {
-                    s.add(new Sitemap(url));
-                }
-                Writer wt = new PrintWriter(new File(realPath + "/category_sitemap.xml"));
-                SiteMapUtils.writeSitemapIndex(wt, s.iterator());
-                wt.close();
-            }
+//            /** 生成主索引文件 **/
+//            if (siteMapList != null && siteMapList.size() > 0) {
+//                Collection<SiteMap> s = new ArrayList();
+//                for (String url : siteMapList) {
+//                    s.add(new SiteMap(url));
+//                }
+//                Writer wt = new PrintWriter(new File(realPath + "/category_sitemap.xml"));
+//                SiteMapUtils.writeSitemapIndex(wt, s.iterator());
+//                wt.close();
+//            }
             long end = System.currentTimeMillis();
             System.out.println("生成Sitemap完毕, 共耗时：" + (end - start));
         } catch (Exception e) {

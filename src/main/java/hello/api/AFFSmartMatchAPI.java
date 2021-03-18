@@ -43,6 +43,7 @@ public class AFFSmartMatchAPI extends AFFBaseAPI {
         smartMatchAPI.setParamMap(sparamMap);
         String response = null;
         try {
+            // System.out.println(smartMatchAPI.getFinalRequestUrl());
             response = smartMatchAPI.request();
             AliexpressAffiliateProductSmartmatchResponse aliexpressAffiliateProductSmartmatchResponse = AFFSmartMatchAPI.getResult(response);
             resultMap.put("result", aliexpressAffiliateProductSmartmatchResponse);
@@ -51,6 +52,9 @@ public class AFFSmartMatchAPI extends AFFBaseAPI {
             e.printStackTrace();
         }
         return resultMap;
+    }
 
+    public static void main(String[] args) {
+        getFromNet("4001210186787",1);
     }
 }

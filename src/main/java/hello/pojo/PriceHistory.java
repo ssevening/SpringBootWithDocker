@@ -1,24 +1,37 @@
 package hello.pojo;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class PriceHistory extends TaobaoObject {
-    // 日期
-    private String d;
+
+    private String date;
     // 价格
-    private String p;
+    private String price;
+    // 币种
+    private String currency;
 
-    public String getD() {
-        return d;
+    public String getDate() {
+        return date;
     }
 
-    public void setD(String d) {
-        this.d = d;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getP() {
-        return p;
+    public String getPrice() {
+        return price;
     }
 
-    public void setP(String p) {
-        this.p = p;
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

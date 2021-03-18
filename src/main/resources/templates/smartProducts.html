@@ -16,32 +16,32 @@
     <link href="https://fonts.googleapis.com/css?family=Lily+Script+One" rel="stylesheet">
 
     <!-- mobile menu css -->
-    <link rel="stylesheet" href="css/meanmenu.min.css">
+    <link rel="stylesheet" href="/css/meanmenu.min.css">
     <!-- animate css -->
-    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="/css/animate.css">
     <!-- nivo slider css -->
-    <link rel="stylesheet" href="css/nivo-slider.css">
+    <link rel="stylesheet" href="/css/nivo-slider.css">
     <!-- owl carousel css -->
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css">
     <!-- slick css -->
-    <link rel="stylesheet" href="css/slick.css">
+    <link rel="stylesheet" href="/css/slick.css">
     <!-- price slider css -->
-    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" href="/css/jquery-ui.min.css">
     <!-- fontawesome css -->
-    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
     <!-- fancybox css -->
-    <link rel="stylesheet" href="css/jquery.fancybox.css">
+    <link rel="stylesheet" href="/css/jquery.fancybox.css">
     <!-- bootstrap css -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <!-- default css  -->
-    <link rel="stylesheet" href="css/default.css">
+    <link rel="stylesheet" href="/css/default.css">
     <!-- style css -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
     <!-- responsive css -->
-    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="/css/responsive.css">
 
     <!-- modernizr js -->
-    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
     <!-- adbygoogle -->
     <script data-ad-client="ca-pub-4710212062461385" async
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -54,9 +54,22 @@
 
   gtag('config', 'UA-3439789-9');
     </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PGB5P4T');</script>
+    <!-- End Google Tag Manager -->
+
 </head>
 
 <body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PGB5P4T"
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <!--[if lt IE 8]>
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a
         href="https://support.microsoft.com/zh-cn/help/17621/internet-explorer-downloads">upgrade
@@ -80,7 +93,7 @@
                     <!-- Search Box Start -->
                     <div class="col-lg-4 col-md-6 ml-auto mr-auto">
                         <div class="search-box-view">
-                            <form action="search.html" method="get" target="_blank">
+                            <form action="/search.html" method="get" target="_blank">
                                 <input type="text" class="email" placeholder="Search Your Product" name="keywords">
                                 <input type="hidden" name="pageNo" value="1" id="pageNo">
                                 <button type="submit" class="submit"></button>
@@ -135,10 +148,9 @@
                         <div class="middle-menu pull-right">
                             <nav>
                                 <ul class="middle-menu-list">
-                                    <li><a href="category.html">Category</a></li>
-                                    <li><a href="smartProducts.html">Editor's Choice</a></li>
-                                    <li><a href="featuredProducts.html?promotionName=New Arrival">New Arrival</a></li>
-                                    <li><a href="featuredProducts.html?promotionName=Best Seller">Best Seller</a></li>
+                                    <li><a href="/category.html">Category</a></li>
+                                    <li><a href="/smartProducts.html">Editor's Choice</a></li>
+                                    <li><a href="/featuredProducts.html?promotionName=Best Seller">Best Seller</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -166,10 +178,9 @@
                         <div class="mobile-menu">
                             <nav>
                                 <ul>
-                                    <li><a href="category.html">Category</a></li>
-                                    <li><a href="smartProducts.html">Editor's Choice</a></li>
-                                    <li><a href="featuredProducts.html?promotionName=New Arrival">New Arrival</a></li>
-                                    <li><a href="featuredProducts.html?promotionName=Best Seller">Best Seller</a></li>
+                                    <li><a href="/category.html">Category</a></li>
+                                    <li><a href="/smartProducts.html">Editor's Choice</a></li>
+                                    <li><a href="/featuredProducts.html?promotionName=Best Seller">Best Seller</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -202,7 +213,7 @@
                     <div class="single-product">
                         <!-- Product Image Start -->
                         <div class="pro-img">
-                            <a href="product.html" th:href="'product.html?id=' + ${product.getProductId()}">
+                            <a th:href="${product.getDealFunWebUrl()}">
                                 <img class="primary-img" th:src="${product.getProductMainImageUrl()}">
                                 <img class="secondary-img" th:alt="${product.getProductTitle()}"
                                      th:src="${product.getProductMainImageUrl()}"
@@ -227,7 +238,7 @@
                                    th:style="${product.getEvaluateRateIntValue()} gt 80 ? 'color:#f9ba48;':'color:#444;'"></i>
 
                             </div>
-                            <h4><a href="product.html" th:href="'product.html?id=' + ${product.getProductId()}"
+                            <h4><a th:href="${product.getDealFunWebUrl()}"
                                    th:text="${product.getProductTitle()}" target="_blank">Products Name Here</a>
                             </h4>
                             <p><span class="price" th:text="${product.getSalePriceWithCurrency()}">$30.00</span>
@@ -359,32 +370,32 @@
 </div>
 <!-- Wrapper End -->
 <!-- jquery 3.12.4 -->
-<script src="js/vendor/jquery-1.12.4.min.js"></script>
+<script src="/js/vendor/jquery-1.12.4.min.js"></script>
 <!-- mobile menu js  -->
-<script src="js/jquery.meanmenu.min.js"></script>
+<script src="/js/jquery.meanmenu.min.js"></script>
 <!-- scroll-up js -->
-<script src="js/jquery.scrollUp.js"></script>
+<script src="/js/jquery.scrollUp.js"></script>
 <!-- owl-carousel js -->
-<script src="js/owl.carousel.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
 <!-- slick js -->
-<script src="js/slick.min.js"></script>
+<script src="/js/slick.min.js"></script>
 <!-- wow js -->
-<script src="js/wow.min.js"></script>
+<script src="/js/wow.min.js"></script>
 <!-- price slider js -->
-<script src="js/jquery-ui.min.js"></script>
-<script src="js/jquery.countdown.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/jquery.countdown.min.js"></script>
 <!-- nivo slider js -->
-<script src="js/jquery.nivo.slider.js"></script>
+<script src="/js/jquery.nivo.slider.js"></script>
 <!-- fancybox js -->
-<script src="js/jquery.fancybox.min.js"></script>
+<script src="/js/jquery.fancybox.min.js"></script>
 <!-- bootstrap -->
-<script src="js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 <!-- popper -->
-<script src="js/popper.js"></script>
+<script src="/js/popper.js"></script>
 <!-- plugins -->
-<script src="js/plugins.js"></script>
+<script src="/js/plugins.js"></script>
 <!-- main js -->
-<script src="js/main.js"></script>
+<script src="/js/main.js"></script>
 </body>
 
 </html>

@@ -4,9 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title th:text="${product.getProductTitle()}">Single Product</title>
-    <meta name="description" th:content="${product.getDescription()}">
-    <meta name="keywords" content="" th:content="${product.getKeywords()}"/>
+    <title th:text="${product?.getProductTitle()}">Single Product</title>
+    <meta name="description" th:content="${product?.getDescription()}">
+    <meta name="keywords" content="" th:content="${product?.getKeywords()}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- place favicon.ico in the root directory -->
     <link rel="shortcut icon" type="image/x-icon" href="img/icon/favicon.png">
@@ -14,40 +14,40 @@
     <link href="https://fonts.googleapis.com/css?family=Lily+Script+One" rel="stylesheet">
 
     <meta property="og:url" content=""
-          th:content="'http://www.dealfuns.com/product.html?id='+${product.getProductId()}"/>
-    <meta property="og:title" content="" th:content="${product.getProductTitle()}"/>
+          th:content="'http://www.dealfuns.com/'+${product?.getDealFunWebUrl()}"/>
+    <meta property="og:title" content="" th:content="${product?.getProductTitle()}"/>
     <meta property="og:type" content="product"/>
-    <meta property="og:image" content="" th:content="${product.getProductMainImageUrl()}"/>
-    <meta property="og:description" content="" th:content="${product.getDescription()}"/>
+    <meta property="og:image" content="" th:content="${product?.getProductMainImageUrl()}"/>
+    <meta property="og:description" content="" th:content="${product?.getDescription()}"/>
     <meta property="og:site_name" content="Super Deals In China"/>
 
     <!-- mobile menu css -->
-    <link rel="stylesheet" href="css/meanmenu.min.css">
+    <link rel="stylesheet" href="/css/meanmenu.min.css">
     <!-- animate css -->
-    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="/css/animate.css">
     <!-- nivo slider css -->
-    <link rel="stylesheet" href="css/nivo-slider.css">
+    <link rel="stylesheet" href="/css/nivo-slider.css">
     <!-- owl carousel css -->
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css">
     <!-- slick css -->
-    <link rel="stylesheet" href="css/slick.css">
+    <link rel="stylesheet" href="/css/slick.css">
     <!-- price slider css -->
-    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" href="/css/jquery-ui.min.css">
     <!-- fontawesome css -->
-    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
     <!-- fancybox css -->
-    <link rel="stylesheet" href="css/jquery.fancybox.css">
+    <link rel="stylesheet" href="/css/jquery.fancybox.css">
     <!-- bootstrap css -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <!-- default css  -->
-    <link rel="stylesheet" href="css/default.css">
+    <link rel="stylesheet" href="/css/default.css">
     <!-- style css -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
     <!-- responsive css -->
-    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="/css/responsive.css">
 
     <!-- modernizr js -->
-    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <script src="/js/vendor/modernizr-2.8.3.min.js"></script>
 
 
     <!-- adbygoogle -->
@@ -62,14 +62,31 @@
 
   gtag('config', 'UA-3439789-9');
 
-    </script>
-
-    <script type="application/ld+json" th:utext="${product.convertToIdJson()}">
 
     </script>
+
+    <script type="application/ld+json" th:utext="${product?.convertToIdJson()}">
+
+    </script>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PGB5P4T');
+    </script>
+    <!-- End Google Tag Manager -->
+
 </head>
 
 <body>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PGB5P4T"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
 <!--[if lt IE 8]>
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
     your browser</a> to improve your experience.</p>
@@ -85,14 +102,14 @@
                     <!-- Header Top left Start -->
                     <div class="col-lg-4 col-md-12 d-center">
                         <div class="header-top-left">
-                            <img src="img/icon/call.png" alt="">Call Us : XXX
+                            <img src="/img/icon/call.png" alt="">Call Us : XXX
                         </div>
                     </div>
                     <!-- Header Top left End -->
                     <!-- Search Box Start -->
                     <div class="col-lg-4 col-md-6 ml-auto mr-auto">
                         <div class="search-box-view">
-                            <form action="search.html" method="get" target="_blank">
+                            <form action="/search.html" method="get" target="_blank">
                                 <input type="text" class="email" placeholder="Search Your Product" name="keywords">
                                 <input
                                         type="hidden" name="pageNo" value="1" id="pageNo">
@@ -139,7 +156,7 @@
                 <div class="row">
                     <div class="col-xl-3 col-lg-2 col-sm-5 col-5">
                         <div class="logo">
-                            <a href="index.html"><img src="img/logo/logo.png" alt="logo-image"></a>
+                            <a href="/index.html"><img src="/img/logo/logo.png" alt="logo-image"></a>
                         </div>
                     </div>
                     <!-- Primary Vertical-Menu End -->
@@ -148,10 +165,9 @@
                         <div class="middle-menu pull-right">
                             <nav>
                                 <ul class="middle-menu-list">
-                                    <li><a href="category.html">Category</a></li>
-                                    <li><a href="smartProducts.html">Editor's Choice</a></li>
-                                    <li><a href="featuredProducts.html?promotionName=New Arrival">New Arrival</a></li>
-                                    <li><a href="featuredProducts.html?promotionName=Best Seller">Best Seller</a></li>
+                                    <li><a href="/category.html">Category</a></li>
+                                    <li><a href="/smartProducts.html">Editor's Choice</a></li>
+                                    <li><a href="/featuredProducts.html?promotionName=Best Seller">Best Seller</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -171,40 +187,6 @@
                                 <li><a href="wishlist.html"><i class="fa fa-heart-o"></i></a></li>
                                 <li><a href="#"><i class="fa fa-shopping-basket"></i><span class="cart-counter">2</span></a>
                                     <ul class="ht-dropdown main-cart-box">
-                                        <li>
-                                            <!-- Cart Box Start -->
-                                            <div class="single-cart-box">
-                                                <div class="cart-img">
-                                                    <a href="#"><img src="img/menu/1.jpg" alt="cart-image"></a>
-                                                </div>
-                                                <div class="cart-content">
-                                                    <h6><a href="product.html">Products Name</a></h6>
-                                                    <span>1 × $399.00</span>
-                                                </div>
-                                                <a class="del-icone" href="#"><i class="fa fa-window-close-o"></i></a>
-                                            </div>
-                                            <!-- Cart Box End -->
-                                            <!-- Cart Box Start -->
-                                            <div class="single-cart-box">
-                                                <div class="cart-img">
-                                                    <a href="#"><img src="img/menu/2.jpg" alt="cart-image"></a>
-                                                </div>
-                                                <div class="cart-content">
-                                                    <h6><a href="product.html">Products Name</a></h6>
-                                                    <span>2 × $299.00</span>
-                                                </div>
-                                                <a class="del-icone" href="#"><i class="fa fa-window-close-o"></i></a>
-                                            </div>
-                                            <!-- Cart Box End -->
-                                            <!-- Cart Footer Inner Start -->
-                                            <div class="cart-footer fix">
-                                                <h5>total :<span class="f-right">$698.00</span></h5>
-                                                <div class="cart-actions">
-                                                    <a class="checkout" href="checkout.html">Checkout</a>
-                                                </div>
-                                            </div>
-                                            <!-- Cart Footer Inner End -->
-                                        </li>
                                     </ul>
                                 </li>
                             </ul>
@@ -215,10 +197,9 @@
                         <div class="mobile-menu">
                             <nav>
                                 <ul>
-                                    <li><a href="category.html">Category</a></li>
-                                    <li><a href="smartProducts.html">Editor's Choice</a></li>
-                                    <li><a href="featuredProducts.html?promotionName=New Arrival">New Arrival</a></li>
-                                    <li><a href="featuredProducts.html?promotionName=Best Seller">Best Seller</a></li>
+                                    <li><a href="/category.html">Category</a></li>
+                                    <li><a href="/smartProducts.html">Editor's Choice</a></li>
+                                    <li><a href="/featuredProducts.html?promotionName=Best Seller">Best Seller</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -237,7 +218,7 @@
         <div class="container">
             <div class="breadcrumb">
                 <ul>
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="/index.html">Home</a></li>
                 </ul>
             </div>
         </div>
@@ -253,34 +234,34 @@
                     <!-- Thumbnail Large Image start -->
                     <div class="tab-content">
                         <div id="thumb1" class="tab-pane active">
-                            <a data-fancybox="images" th:href="${product.getProductImageByIndex(0)}"
-                               href="img/products/1.jpg"><img src="img/products/1.jpg"
+                            <a data-fancybox="images" th:href="${product?.getProductImageByIndex(0)}"
+                               href="img/products/1.jpg"><img src="/img/products/1.jpg"
                                                               alt="product-view"
-                                                              th:src="${product.getProductImageByIndex(0)}"></a>
+                                                              th:src="${product?.getProductImageByIndex(0)}"></a>
                         </div>
                         <div id="thumb2" class="tab-pane">
                             <a data-fancybox="images" href="img/products/2.jpg"
-                               th:href="${product.getProductImageByIndex(1)}"><img src="img/products/2.jpg"
-                                                                                   alt="product-view"
-                                                                                   th:src="${product.getProductImageByIndex(1)}"></a>
+                               th:href="${product?.getProductImageByIndex(1)}"><img src="/img/products/2.jpg"
+                                                                                    alt="product-view"
+                                                                                    th:src="${product?.getProductImageByIndex(1)}"></a>
                         </div>
                         <div id="thumb3" class="tab-pane">
                             <a data-fancybox="images" href="img/products/3.jpg"
-                               th:href="${product.getProductImageByIndex(2)}"><img src="img/products/3.jpg"
-                                                                                   alt="product-view"
-                                                                                   th:src="${product.getProductImageByIndex(2)}"></a>
+                               th:href="${product?.getProductImageByIndex(2)}"><img src="/img/products/3.jpg"
+                                                                                    alt="product-view"
+                                                                                    th:src="${product?.getProductImageByIndex(2)}"></a>
                         </div>
                         <div id="thumb4" class="tab-pane">
                             <a data-fancybox="images" href="img/products/4.jpg"
-                               th:href="${product.getProductImageByIndex(3)}"><img src="img/products/4.jpg"
-                                                                                   alt="product-view"
-                                                                                   th:src="${product.getProductImageByIndex(3)}"></a>
+                               th:href="${product?.getProductImageByIndex(3)}"><img src="/img/products/4.jpg"
+                                                                                    alt="product-view"
+                                                                                    th:src="${product?.getProductImageByIndex(3)}"></a>
                         </div>
                         <div id="thumb5" class="tab-pane">
                             <a data-fancybox="images" href="img/products/4.jpg"
-                               th:href="${product.getProductImageByIndex(4)}"><img src="img/products/4.jpg"
-                                                                                   alt="product-view"
-                                                                                   th:src="${product.getProductImageByIndex(4)}"></a>
+                               th:href="${product?.getProductImageByIndex(4)}"><img src="/img/products/4.jpg"
+                                                                                    alt="product-view"
+                                                                                    th:src="${product?.getProductImageByIndex(4)}"></a>
                         </div>
                     </div>
                     <!-- Thumbnail Large Image End -->
@@ -288,17 +269,17 @@
                     <!-- Thumbnail Image End -->
                     <div class="product-thumbnail">
                         <div class="thumb-menu nav">
-                            <a class="active" data-toggle="tab" href="#thumb1"> <img src="img/products/1.jpg"
+                            <a class="active" data-toggle="tab" href="#thumb1"> <img src="/img/products/1.jpg"
                                                                                      alt="product-thumbnail"
-                                                                                     th:src="${product.getProductImageByIndex(0)}"></a>
-                            <a data-toggle="tab" href="#thumb2"> <img src="img/products/2.jpg" alt="product-thumbnail"
-                                                                      th:src="${product.getProductImageByIndex(1)}"></a>
-                            <a data-toggle="tab" href="#thumb3"> <img src="img/products/3.jpg" alt="product-thumbnail"
-                                                                      th:src="${product.getProductImageByIndex(2)}"></a>
-                            <a data-toggle="tab" href="#thumb4"> <img src="img/products/4.jpg" alt="product-thumbnail"
-                                                                      th:src="${product.getProductImageByIndex(3)}"></a>
-                            <a data-toggle="tab" href="#thumb5"> <img src="img/products/4.jpg" alt="product-thumbnail"
-                                                                      th:src="${product.getProductImageByIndex(4)}"></a>
+                                                                                     th:src="${product?.getProductImageByIndex(0)}"></a>
+                            <a data-toggle="tab" href="#thumb2"> <img src="/img/products/2.jpg" alt="product-thumbnail"
+                                                                      th:src="${product?.getProductImageByIndex(1)}"></a>
+                            <a data-toggle="tab" href="#thumb3"> <img src="/img/products/3.jpg" alt="product-thumbnail"
+                                                                      th:src="${product?.getProductImageByIndex(2)}"></a>
+                            <a data-toggle="tab" href="#thumb4"> <img src="/img/products/4.jpg" alt="product-thumbnail"
+                                                                      th:src="${product?.getProductImageByIndex(3)}"></a>
+                            <a data-toggle="tab" href="#thumb5"> <img src="/img/products/4.jpg" alt="product-thumbnail"
+                                                                      th:src="${product?.getProductImageByIndex(4)}"></a>
                         </div>
                     </div>
                     <!-- Thumbnail image end -->
@@ -307,39 +288,39 @@
                 <!-- Thumbnail Description Start -->
                 <div class=" col-lg-7">
                     <div class="thubnail-desc fix">
-                        <h3 class="product-header" th:text="${product.getProductTitle()}"></h3>
+                        <h3 class="product-header" th:text="${product?.getProductTitle()}"></h3>
                         <div class="rating-summary fix mtb-10">
-                            <div class="rating f-left">
+                            <div class="rating f-left" th:if="${product!=null}">
                                 <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 0 ? 'color:#f9ba48;':'color:#444;'"></i>
+                                   th:style="${product?.getEvaluateRateIntValue()} gt 0 ? 'color:#f9ba48;':'color:#444;'"></i>
                                 <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 20 ? 'color:#f9ba48;':'color:#444;'"></i>
+                                   th:style="${product?.getEvaluateRateIntValue()} gt 20 ? 'color:#f9ba48;':'color:#444;'"></i>
                                 <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 40 ? 'color:#f9ba48;':'color:#444;'"></i>
+                                   th:style="${product?.getEvaluateRateIntValue()} gt 40 ? 'color:#f9ba48;':'color:#444;'"></i>
                                 <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 60 ? 'color:#f9ba48;':'color:#444;'"></i>
+                                   th:style="${product?.getEvaluateRateIntValue()} gt 60 ? 'color:#f9ba48;':'color:#444;'"></i>
                                 <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 80 ? 'color:#f9ba48;':'color:#444;'"></i>
+                                   th:style="${product?.getEvaluateRateIntValue()} gt 80 ? 'color:#f9ba48;':'color:#444;'"></i>
                             </div>
                         </div>
                         <div class="pro-price mb-10">
                             <p><span class="price"
-                                     th:text="${product.getLastestVolume() + ' Sold'}"></span>
+                                     th:text="${product?.getLastestVolume() + ' Sold'}"></span>
                             </p>
                         </div>
                         <div class="pro-price mb-10">
                             <p><span class="price"
-                                     th:text="${product.getSalePriceWithCurrency()}">$30.00</span>
+                                     th:text="${product?.getSalePriceWithCurrency()}">$30.00</span>
                                 <del class="prev-price"
-                                     th:text="${product.getOriginalPriceWithCurrency()}">$32.00
+                                     th:text="${product?.getOriginalPriceWithCurrency()}">$32.00
                                 </del>
                             </p>
                         </div>
                         <div class="pro-ref mb-15">
 
                             <p><span class="in-stock"
-                                     th:text="${product.getPromotionCodeStrInDetail()}"
-                                     th:if="${product.getPromotionCodeStrInDetail()} !=null"
+                                     th:text="${product?.getPromotionCodeStrInDetail()}"
+                                     th:if="${product?.getPromotionCodeStrInDetail()} !=null"
                                      style="background-color: #fff4e5;border-radius: 3px;padding: 4px 6px;color: #f60;font-weight: 600;">
                                 US $3.00 off, use EAM1010
                             </span>
@@ -348,7 +329,7 @@
                         <div class="box-quantity">
                             <form action="#">
                                 <input class="number" id="numeric" type="number" min="1" value="1">
-                                <a class="add-cart" th:href="${product.getPromotionLink()}" target="_blank">Buy it
+                                <a class="add-cart" th:href="${product?.getPromotionLink()}" target="_blank">Buy it
                                     Now</a>
                             </form>
                         </div>
@@ -381,14 +362,14 @@
                     <!-- Product Thumbnail Tab Content Start -->
                     <div class="tab-content thumb-content border-default">
                         <div id="dtail" class="tab-pane in active">
-                            <video th:if="${product.getProductVideoUrl()}!=null"
-                                   th:src="${product.getProductVideoUrl()}" src="movie.ogg"
+                            <video th:if="${product?.getProductVideoUrl()}!=null"
+                                   th:src="${product?.getProductVideoUrl()}"
                                    controls="controls" style="width:90%">
                                 您的浏览器不支持 video 标签。
                             </video>
 
-                            <div th:each="image : ${product.getProductSmallImageUrls()}">
-                                <img th:src="${image}" th:alt="${product.getProductTitle()}"
+                            <div th:each="image : ${product?.getProductSmallImageUrls()}">
+                                <img th:src="${image}" th:alt="${product?.getProductTitle()}"
                                      style="width:90%"/><br/>
                             </div>
 
@@ -420,12 +401,12 @@
                     <div class="single-product">
                         <!-- Product Image Start -->
                         <div class="pro-img">
-                            <a href="product.html" th:href="'product.html?id=' + ${product.getProductId()}">
-                                <img class="primary-img" th:src="${product.getProductMainImageUrl()}"
-                                     th:alt="${product.getProductTitle()}">
-                                <img class="secondary-img" th:alt="${product.getProductTitle()}"
-                                     th:src="${product.getProductMainImageUrl()}"
-                                     src="img/products/2.jpg"
+                            <a th:href="${product?.getDealFunWebUrl()}">
+                                <img class="primary-img" th:src="${product?.getProductMainImageUrl()}"
+                                     th:alt="${product?.getProductTitle()}">
+                                <img class="secondary-img" th:alt="${product?.getProductTitle()}"
+                                     th:src="${product?.getProductMainImageUrl()}"
+                                     src="/img/products/2.jpg"
                                      alt="single-product">
                             </a>
                         </div>
@@ -435,22 +416,23 @@
                             <div class="product-rating">
 
                                 <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 0 ? 'color:#f9ba48;':'color:#444;'"></i>
+                                   th:style="${product?.getEvaluateRateIntValue()} gt 0 ? 'color:#f9ba48;':'color:#444;'"></i>
                                 <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 20 ? 'color:#f9ba48;':'color:#444;'"></i>
+                                   th:style="${product?.getEvaluateRateIntValue()} gt 20 ? 'color:#f9ba48;':'color:#444;'"></i>
                                 <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 40 ? 'color:#f9ba48;':'color:#444;'"></i>
+                                   th:style="${product?.getEvaluateRateIntValue()} gt 40 ? 'color:#f9ba48;':'color:#444;'"></i>
                                 <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 60 ? 'color:#f9ba48;':'color:#444;'"></i>
+                                   th:style="${product?.getEvaluateRateIntValue()} gt 60 ? 'color:#f9ba48;':'color:#444;'"></i>
                                 <i class="fa fa-star"
-                                   th:style="${product.getEvaluateRateIntValue()} gt 80 ? 'color:#f9ba48;':'color:#444;'"></i>
+                                   th:style="${product?.getEvaluateRateIntValue()} gt 80 ? 'color:#f9ba48;':'color:#444;'"></i>
 
                             </div>
-                            <h4><a href="product.html" th:href="'product.html?id=' + ${product.getProductId()}"
-                                   target="_blank" th:text="${product.getProductTitle()}">Products Name Here</a>
+                            <h4><a th:href="${product?.getDealFunWebUrl()}"
+                                   target="_blank" th:text="${product?.getProductTitle()}">Products Name Here</a>
                             </h4>
-                            <p><span class="price" th:text="${product.getSalePriceWithCurrency()}">$30.00</span>
-                                <del class="prev-price" th:text="${product.getOriginalPriceWithCurrency()}">$32.00</del>
+                            <p><span class="price" th:text="${product?.getSalePriceWithCurrency()}">$30.00</span>
+                                <del class="prev-price" th:text="${product?.getOriginalPriceWithCurrency()}">$32.00
+                                </del>
                             </p>
                             <div class="pro-actions">
                                 <div class="actions-secondary">
@@ -464,7 +446,7 @@
                             </div>
                         </div>
                         <!-- Product Content End -->
-                        <span class="sticker-new" th:text="${product.getDiscount()}">-30%</span>
+                        <span class="sticker-new" th:text="${product?.getDiscount()}">-30%</span>
                     </div>
                 </div>
                 <!-- Single Product End -->
@@ -477,34 +459,34 @@
             <!-- Brand Banner Start -->
             <div class="brand-banner owl-carousel">
                 <div class="single-brand">
-                    <a href="#"><img class="img" src="img/brand/1.png" alt="brand-image"></a>
+                    <a href="#"><img class="img" src="/img/brand/1.png" alt="brand-image"></a>
                 </div>
                 <div class="single-brand">
-                    <a href="#"><img src="img/brand/2.png" alt="brand-image"></a>
+                    <a href="#"><img src="/img/brand/2.png" alt="brand-image"></a>
                 </div>
                 <div class="single-brand">
-                    <a href="#"><img src="img/brand/3.png" alt="brand-image"></a>
+                    <a href="#"><img src="/img/brand/3.png" alt="brand-image"></a>
                 </div>
                 <div class="single-brand">
-                    <a href="#"><img src="img/brand/4.png" alt="brand-image"></a>
+                    <a href="#"><img src="/img/brand/4.png" alt="brand-image"></a>
                 </div>
                 <div class="single-brand">
-                    <a href="#"><img src="img/brand/5.png" alt="brand-image"></a>
+                    <a href="#"><img src="/img/brand/5.png" alt="brand-image"></a>
                 </div>
                 <div class="single-brand">
-                    <a href="#"><img class="img" src="img/brand/1.png" alt="brand-image"></a>
+                    <a href="#"><img class="img" src="/img/brand/1.png" alt="brand-image"></a>
                 </div>
                 <div class="single-brand">
-                    <a href="#"><img src="img/brand/2.png" alt="brand-image"></a>
+                    <a href="#"><img src="/img/brand/2.png" alt="brand-image"></a>
                 </div>
                 <div class="single-brand">
-                    <a href="#"><img src="img/brand/3.png" alt="brand-image"></a>
+                    <a href="#"><img src="/img/brand/3.png" alt="brand-image"></a>
                 </div>
                 <div class="single-brand">
-                    <a href="#"><img src="img/brand/4.png" alt="brand-image"></a>
+                    <a href="#"><img src="/img/brand/4.png" alt="brand-image"></a>
                 </div>
                 <div class="single-brand">
-                    <a href="#"><img src="img/brand/5.png" alt="brand-image"></a>
+                    <a href="#"><img src="/img/brand/5.png" alt="brand-image"></a>
                 </div>
             </div>
             <!-- Brand Banner End -->
@@ -538,32 +520,32 @@
 </div>
 <!-- Wrapper End -->
 <!-- jquery 3.12.4 -->
-<script src="js/vendor/jquery-1.12.4.min.js"></script>
+<script src="/js/vendor/jquery-1.12.4.min.js"></script>
 <!-- mobile menu js  -->
-<script src="js/jquery.meanmenu.min.js"></script>
+<script src="/js/jquery.meanmenu.min.js"></script>
 <!-- scroll-up js -->
-<script src="js/jquery.scrollUp.js"></script>
+<script src="/js/jquery.scrollUp.js"></script>
 <!-- owl-carousel js -->
-<script src="js/owl.carousel.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
 <!-- slick js -->
-<script src="js/slick.min.js"></script>
+<script src="/js/slick.min.js"></script>
 <!-- wow js -->
-<script src="js/wow.min.js"></script>
+<script src="/js/wow.min.js"></script>
 <!-- price slider js -->
-<script src="js/jquery-ui.min.js"></script>
-<script src="js/jquery.countdown.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/jquery.countdown.min.js"></script>
 <!-- nivo slider js -->
-<script src="js/jquery.nivo.slider.js"></script>
+<script src="/js/jquery.nivo.slider.js"></script>
 <!-- fancybox js -->
-<script src="js/jquery.fancybox.min.js"></script>
+<script src="/js/jquery.fancybox.min.js"></script>
 <!-- bootstrap -->
-<script src="js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 <!-- popper -->
-<script src="js/popper.js"></script>
+<script src="/js/popper.js"></script>
 <!-- plugins -->
-<script src="js/plugins.js"></script>
+<script src="/js/plugins.js"></script>
 <!-- main js -->
-<script src="js/main.js"></script>
+<script src="/js/main.js"></script>
 </body>
 
 </html>

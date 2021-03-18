@@ -11,10 +11,9 @@ import java.util.Calendar;
 import java.util.List;
 
 @Component
-public class SiteMapUtils {
-
-    public final static String BEGIN_DOC = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\r\n";
-    public final static String END_DOC = "</urlset>";
+public class SiteMapIndexUtils {
+    public final static String BEGIN_DOC = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\r\n";
+    public final static String END_DOC = "</sitemapindex>";
     public final static String CHANGEFREQ_ALWAYS = "always";
     public final static String CHANGEFREQ_HOURLY = "hourly";
     public final static String CHANGEFREQ_DAILY = "daily";
@@ -28,16 +27,15 @@ public class SiteMapUtils {
     @Autowired
     private ProductService productService;
 
-    public String getProductSiteMap(int pageNo) {
+    public String getProductSiteMapIndex(int indexNo) {
         StringBuffer sb = new StringBuffer();
         sb.append(BEGIN_DOC);
-        Page<Product> productPage = productService.getProductsByPageNo(pageNo, 500);
 
-        List<Product> productList = productPage.getContent();
-        int i = 0;
-        for (Product product : productList) {
-            sb.append(new SiteMapp("https://www.dealfuns.com" + product.getDealFunWebUrl(), Calendar.getInstance().getTime(), CHANGEFREQ_WEEKLY, "0.8"));
+
+        for (int i = indexNo; i < indexNo + 200; i++) {
+            sb.append(new SiteMapIndex("https://www.dealfuns.com/product/" + i + "/sitemap.xml", Calendar.getInstance().getTime()));
         }
+
         sb.append(END_DOC);
         return sb.toString();
     }

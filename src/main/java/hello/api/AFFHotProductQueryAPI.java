@@ -61,7 +61,6 @@ public class AFFHotProductQueryAPI extends AFFBaseAPI {
 
     public static void main(String[] args) {
         getFromNet("mp3", "1", "");
-        System.out.println();
     }
 
 }

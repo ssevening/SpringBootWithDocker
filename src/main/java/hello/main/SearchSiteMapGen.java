@@ -1,8 +1,6 @@
 package hello.main;
 
 import java.io.File;
-import java.io.PrintWriter;
-import java.io.Writer;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -15,9 +13,8 @@ import hello.api.AFFProductQueryAPI;
 import hello.dao.pojo.KeywordsInfo;
 import hello.pojo.AliexpressAffiliateProductQueryResponse;
 import hello.pojo.Product;
-import hello.sitemap.SiteMapUtils;
-import hello.sitemap.Sitemap;
 import hello.utils.FileUtils;
+import hello.utils.StringUtil;
 
 public class SearchSiteMapGen {
 
@@ -43,7 +40,7 @@ public class SearchSiteMapGen {
         try {
             System.out.println(realPath);
             long start = System.currentTimeMillis();
-            String WEBSITE = "http://www.dealfuns.com";
+            String WEBSITE = "https://www.dealfuns.com";
             /** 存储位置,实际应用项目中，需要指到网站的根目录 request.getSession().getServletContext().getRealPath("/") **/
 
             List<KeywordsInfo> cList = findKeywordsInfoByFile();
@@ -54,8 +51,8 @@ public class SearchSiteMapGen {
             fileExists(path);//判断文件夹是否存在，不存在则创建
             WebSitemapGenerator sitemapGenerator = WebSitemapGenerator.builder(WEBSITE, new File(path)).gzip(false).build();
             for (KeywordsInfo keywordsInfo : cList) {
-                //start ======================================================================
-                String url = "http://www.dealfuns.com/search.html?keywords=" + keywordsInfo.getKeywords();//文章详情页的url地址
+                //start ======================================================================https://127.0.0.1/list/sex.html
+                String url = "https://www.dealfuns.com/list/" + StringUtil.formatStringInUrl(keywordsInfo.getKeywords()) + ".html";//文章详情页的url地址
                 WebSitemapUrl sitemapUrl = new WebSitemapUrl.Options(url).lastMod(formatDate(Calendar.getInstance().getTime(), DATE_FORMAT)).priority(0.9).changeFreq(ChangeFreq.WEEKLY).build();
                 sitemapGenerator.addUrl(sitemapUrl);
             }

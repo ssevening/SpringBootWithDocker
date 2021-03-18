@@ -18,6 +18,7 @@ public interface ProductService {
 
     /**
      * 通过标题来搜索产品
+     *
      * @param keywords
      * @param pageable
      * @return
@@ -26,8 +27,11 @@ public interface ProductService {
 
     Product save(Product product);
 
+    public Page<Product> getProductsByPageNo(int pageNo, int pageSize);
+
     /**
      * 查找所有产品
+     *
      * @return
      */
     public List<Product> findAll();
