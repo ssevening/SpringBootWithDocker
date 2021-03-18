@@ -36,7 +36,7 @@ public class SiteMapUtils {
         List<Product> productList = productPage.getContent();
         int i = 0;
         for (Product product : productList) {
-            sb.append(new SiteMapp("https://www.dealfuns.com" + product.getDealFunWebUrl(), Calendar.getInstance().getTime(), CHANGEFREQ_WEEKLY, "0.8"));
+            sb.append(new SiteMap("https://www.dealfuns.com" + product.getDealFunWebUrl(), Calendar.getInstance().getTime(), CHANGEFREQ_WEEKLY, "0.8"));
         }
         sb.append(END_DOC);
         return sb.toString();
