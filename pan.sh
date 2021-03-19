@@ -7,7 +7,6 @@ echo "2. docker build --build-arg JAR_FILE=build/libs/*.jar -t ssevening/gs-spri
 echo "3. docker tag   8392d1854b81 ssevening/gs-spring-boot-docker:0.8.1"
 echo "4. docker push ssevening/gs-spring-boot-docker"
 echo "5. nohup docker run -p 80:80 -p 443:443 -t ssevening/gs-spring-boot-docker /bin/bash &"
-echo "6. mysql -urootofdeals -pHello1103 -hrm-rj99m0gh0h79uhl56yo.mysql.rds.aliyuncs.com"
 echo "6. scp root@47.251.8.226:nohup.out ./"
 
 
@@ -38,5 +37,4 @@ elif [ $x = "7" ]; then
 	echo "scp root@47.251.8.226:nohup.out ./"	
 elif [ $x = "6" ]; then		
 	echo $x
-	mysql -urootofdeals -pHello1103 -hrm-rj99m0gh0h79uhl56yo.mysql.rds.aliyuncs.com
 fi
