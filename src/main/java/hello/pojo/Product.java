@@ -533,7 +533,7 @@ public class Product extends TaobaoObject {
         if (productMainImageUrl != null) {
             productMainImageUrl = productMainImageUrl.replace("http://", "https://");
         }
-        return this.productMainImageUrl;
+        return this.productMainImageUrl + "_350x350xz.jpg_.webp";
     }
 
     public String getProductImageByIndex(int index) {
