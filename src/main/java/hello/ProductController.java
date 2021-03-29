@@ -68,6 +68,28 @@ public class ProductController {
         return "gtm";
     }
 
+
+
+
+    @RequestMapping(value = {"/optimize.html"})
+    // 为 optimize 测试添加的页面
+    public String optimize(Model model) {
+        return "optimize";
+    }
+
+
+    @RequestMapping(value = {"/optimizeb.html"})
+    // 为 optimize 测试添加的页面
+    public String optimizeb(Model model) {
+        return "optimizeb";
+    }
+
+    @RequestMapping(value = {"/optimizec.html"})
+    // 为 optimize 测试添加的页面
+    public String optimizec(Model model) {
+        return "optimizec";
+    }
+
     @RequestMapping(value = {"/index.html", "/"})
     public String index(Model model, @CookieValue(value = "sPid", required = false) String sPid) {
         List<BannerInfo> bannerInfoList = (List<BannerInfo>) MemCache.getInstance().get("bannerList");
