@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.ccode.dealfuns",
+      "sha256_cert_fingerprints": [
+        "8A:A3:88:9D:7F:96:A5:10:10:FE:D8:42:43:1E:2E:A6:EA:8B:C4:DA:27:38:11:EF:2E:05:D6:3C:EE:18:4C:33"
+      ]
+    }
+  }
+]

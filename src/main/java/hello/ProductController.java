@@ -69,8 +69,6 @@ public class ProductController {
     }
 
 
-
-
     @RequestMapping(value = {"/optimize.html"})
     // 为 optimize 测试添加的页面
     public String optimize(Model model) {
@@ -129,7 +127,7 @@ public class ProductController {
             if (aliexpressAffiliateProductSmartmatchResponse != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult() != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult().getRespCode() == 200) {
                 smartMatchProductList = aliexpressAffiliateProductSmartmatchResponse.getRespResult().getResult().getProducts();
             }
-            model.addAttribute("smartMatchProductList", smartMatchProductList);
+            model.addAttribute("smartMatchProductList", smartMatchProductList.subList(0, 12));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -177,11 +175,17 @@ public class ProductController {
         newArrivalMap.put("method", "aliexpress.affiliate.featuredpromo.products.get");
         featuredPromoProductGetAPI.setParamMap(newArrivalMap);
         try {
-            String response = featuredPromoProductGetAPI.request();
-            AliexpressAffiliateFeaturedpromoProductsGetResponse aliexpressAffiliateFeaturedpromoProductsGetResponse = AFFFeaturedPromoProductGetAPI.getResult(response);
-            if (aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult() != null && aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult().getResult() != null && aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult().getResult().getProducts() != null) {
-                model.addAttribute(result, aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult().getResult().getProducts().subList(0, 20));
+            List<Product> hotProductList = (List<Product>) MemCache.getInstance().get("hotProductList");
+            if (hotProductList == null) {
+                String response = featuredPromoProductGetAPI.request();
+                AliexpressAffiliateFeaturedpromoProductsGetResponse aliexpressAffiliateFeaturedpromoProductsGetResponse = AFFFeaturedPromoProductGetAPI.getResult(response);
+                if (aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult() != null && aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult().getResult() != null && aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult().getResult().getProducts() != null) {
+                    hotProductList = aliexpressAffiliateFeaturedpromoProductsGetResponse.getRespResult().getResult().getProducts().subList(0, 12);
+                    MemCache.getInstance().put("hotProductList", hotProductList);
+                }
             }
+
+            model.addAttribute(result, hotProductList);
         } catch (Exception e) {
             e.printStackTrace();
         }

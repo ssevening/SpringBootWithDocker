@@ -15,6 +15,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Entity
+@Table(name ="product",
+        indexes = {@Index(name = "index_product_id",columnList = "productId")})  //为字段productId加上索引
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Product extends TaobaoObject {
 
@@ -32,7 +34,7 @@ public class Product extends TaobaoObject {
             priceHistory.put("price", getLowerPrice());
             boolean alreadyAdded = false;
             List<Map<String, String>> priceHistories = new ArrayList<>();
-            if (AliYunOSSUtils.checkFileExist(getPriceHistoryPath())) {
+            if (AliYunOSSUtils.checkFileExist(getPriceHistoryPath(), -1)) {
                 // 已存在
                 String priceJson = AliYunOSSUtils.readFileContent(getPriceHistoryPath());
                 priceHistories = JsonMapper.json2pojo(priceJson, ArrayList.class);

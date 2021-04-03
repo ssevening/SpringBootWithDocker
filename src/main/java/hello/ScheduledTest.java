@@ -69,7 +69,11 @@ public class ScheduledTest {
 
     // 每天晚上 10:00触发
     // @Scheduled(cron = "0 0 22 * * ?")
-    // @Scheduled(cron = "0 0/1 8-20 * * ?")
+    // 每周一上午10点15分执行任务
+    // @Scheduled(cron = "0 15 10 ? * MON")
+
+    // 每天10:15运行 0 15 10 ? * *
+    @Scheduled(cron = "0 55 15 ? * *")
     public void executeGetProductData() {
         StringBuffer sb = new StringBuffer();
         sb.append("start executeGetProductData.....").append("\r\n");
@@ -82,8 +86,7 @@ public class ScheduledTest {
                 Category category = categoryList.get(i);
                 System.out.println(category.getCategoryName() + " data is getting.....");
                 sb.append(category.getCategoryName()).append(" data is getting.....").append("\r\n");
-                for (int j = 0; j <= 5000; j++) {
-                    Thread.sleep(100);
+                for (int j = 0; j <= 500; j++) {
                     Map<String, Object> downloadResultMap = AFFHotProductDownloadAPI.getFromNet(category.getCategoryId(), j + "");
                     AliexpressAffiliateHotproductDownloadResponse downloadResponse = (AliexpressAffiliateHotproductDownloadResponse) downloadResultMap.get("result");
                     if (downloadResponse.getRespResult() != null && downloadResponse.getRespResult().getResult() != null && downloadResponse.getRespResult().getRespCode() == 200) {
@@ -93,6 +96,7 @@ public class ScheduledTest {
                                 productService.save(product);
                                 totalCount++;
                             }
+                            System.out.println("now the total count is " + totalCount);
                         }
                     } else {
                         System.out.println(category.getCategoryName() + " get product list page:" + j + " is null");
@@ -103,12 +107,11 @@ public class ScheduledTest {
                 sb.append("finished :").append(category.getCategoryName()).append(" product data.").append("\r\n");
             }
             sb.append("Total saved product count:").append(totalCount).append("\r\n");
-            MailUtils.sendmail(new String[]{"ssevening@163.com"}, "getProductData detail log info", sb.toString());
+            MailUtils.sendmail(new String[]{"282867908@qq.com"}, "getProductData detail log info", sb.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
 
     // 每天早八点到晚八点，间隔2分钟执行任务
@@ -153,12 +156,12 @@ public class ScheduledTest {
 
     //每天上午10:15触发
     @Scheduled(cron = "0 15 10 ? * *")
-    public void executeCheckServerStatusTask(){
+    public void executeCheckServerStatusTask() {
         checkServerStatus();
     }
 
     private void checkServerStatus() {
-        MailUtils.sendmail(new String[]{"chenxing.pancx@alibaba-inc.com"}, "dealfuns.com 服务器处于启动中...", "https://www.dealfuns.com \r\n 网站可以正常访问!"  );
+        MailUtils.sendmail(new String[]{"chenxing.pancx@alibaba-inc.com"}, "dealfuns.com 服务器处于启动中...", "https://www.dealfuns.com \r\n 网站可以正常访问!");
     }
 
     private void checkHotProductQuery() {

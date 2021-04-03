@@ -3,10 +3,12 @@ package hello.sitemap;
 
 import hello.pojo.Product;
 import hello.service.ProductService;
+import hello.utils.AliYunOSSUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 
@@ -29,17 +31,27 @@ public class SiteMapUtils {
     private ProductService productService;
 
     public String getProductSiteMap(int pageNo) {
-        StringBuffer sb = new StringBuffer();
-        sb.append(BEGIN_DOC);
-        Page<Product> productPage = productService.getProductsByPageNo(pageNo, 500);
-
-        List<Product> productList = productPage.getContent();
-        int i = 0;
-        for (Product product : productList) {
-            sb.append(new SiteMap("https://www.dealfuns.com" + product.getDealFunWebUrl(), Calendar.getInstance().getTime(), CHANGEFREQ_WEEKLY, "0.8"));
+        if (AliYunOSSUtils.checkFileExist(getSitemapPath(pageNo), 7)) {
+            return AliYunOSSUtils.readFileContent(getSitemapPath(pageNo));
+        } else {
+            StringBuffer sb = new StringBuffer();
+            sb.append(BEGIN_DOC);
+            Page<Product> productPage = productService.getProductsByPageNo(pageNo, 500);
+            List<Product> productList = productPage.getContent();
+            int i = 0;
+            for (Product product : productList) {
+                sb.append(new SiteMap("https://www.dealfuns.com" + product.getDealFunWebUrl(), Calendar.getInstance().getTime(), CHANGEFREQ_WEEKLY, "0.8"));
+            }
+            sb.append(END_DOC);
+            AliYunOSSUtils.uploadString(getSitemapPath(pageNo), sb.toString());
+            return sb.toString();
         }
-        sb.append(END_DOC);
-        return sb.toString();
     }
+
+    private String getSitemapPath(int pageNo) {
+        return "SiteMap" + File.separator + pageNo + ".txt";
+    }
+
+
 }
 
