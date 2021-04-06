@@ -4,13 +4,14 @@ import hello.api.*;
 import hello.cache.MemCache;
 import hello.dao.UserRepository;
 import hello.dao.pojo.BannerInfo;
-import hello.dao.pojo.Notice;
 import hello.pojo.*;
 import hello.service.BannerService;
 import hello.service.CategoryService;
 import hello.service.ProductService;
 import hello.sitemap.SiteMapIndexUtils;
 import hello.sitemap.SiteMapUtils;
+import hello.utils.AliYunOSSUtils;
+import hello.utils.JsonMapper;
 import hello.utils.KeywordsUtils;
 import hello.utils.StringUtil;
 import org.slf4j.Logger;
@@ -23,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -321,7 +321,7 @@ public class ProductController {
             e.printStackTrace();
         }
 
-        // build seo info
+        // build seo info and product price history info
         if (product != null) {
             StringBuffer longText = new StringBuffer();
             for (int i = 0; i < smartMatchProductList.size(); i++) {
@@ -331,7 +331,10 @@ public class ProductController {
             product.setKeywords(product.getFirstLevelCategoryName() + ","
                     + product.getSecondLevelCategoryName() + ","
                     + KeywordsUtils.getSEOKeywords(KeywordsUtils.getKeywordsFromLongText(longText.toString())));
+            model.addAttribute("productHistoryList", product.getPriceHistoryChartJson());
         }
+
+
         return null;
     }
 

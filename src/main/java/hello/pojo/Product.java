@@ -15,8 +15,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Entity
-@Table(name ="product",
-        indexes = {@Index(name = "index_product_id",columnList = "productId")})  //为字段productId加上索引
+@Table(name = "product",
+        indexes = {@Index(name = "index_product_id", columnList = "productId")})  //为字段productId加上索引
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Product extends TaobaoObject {
 
@@ -326,6 +326,31 @@ public class Product extends TaobaoObject {
             return appSalePrice;
         }
         return "0";
+    }
+
+    public List getPriceHistoryChartJson() {
+        List<List> resultMapList = new ArrayList<>();
+        String priceHistoryJson = AliYunOSSUtils.readFileContent(getPriceHistoryPath());
+        try {
+            List priceHistoryList = JsonMapper.json2pojo(priceHistoryJson, List.class);
+
+
+            List headerList = new ArrayList();
+            headerList.add("Date");
+            headerList.add("Price");
+            resultMapList.add(headerList);
+            for (int i = 0; i < priceHistoryList.size(); i++) {
+                HashMap priceMap = (HashMap) priceHistoryList.get(i);
+                List list = new ArrayList();
+                list.add(priceMap.get("date"));
+                list.add(Float.parseFloat((String) priceMap.get("price")));
+                resultMapList.add(list);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultMapList;
     }
 
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");

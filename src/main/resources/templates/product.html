@@ -65,9 +65,8 @@
 
     </script>
 
-    <script type="application/ld+json" th:utext="${product?.convertToIdJson()}">
+    <script type="application/ld+json" th:utext="${product?.convertToIdJson()}"/>
 
-    </script>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -76,6 +75,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-PGB5P4T');
     </script>
     <!-- End Google Tag Manager -->
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var priceListJson = /*[[${productHistoryList}]]*/ [];
+        var data = google.visualization.arrayToDataTable(priceListJson);
+
+        var options = {
+          title: 'Price History: USD',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.2/chart.min.js" integrity="sha512-dnUg2JxjlVoXHVdSMWDYm2Y5xcIrJg1N+juOuRi0yLVkku/g26rwHwysJDAMwahaDfRpr1AxFz43ktuMPr/l1A==" crossorigin="anonymous"></script>
 
 </head>
 
@@ -359,6 +381,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     <ul class="main-thumb-desc nav">
                         <li><a class="active" data-toggle="tab" href="#dtail">Details</a></li>
                     </ul>
+                    <div id="curve_chart" style="width: 900px; height: 500px"></div>
                     <!-- Product Thumbnail Tab Content Start -->
                     <div class="tab-content thumb-content border-default">
                         <div id="dtail" class="tab-pane in active">
