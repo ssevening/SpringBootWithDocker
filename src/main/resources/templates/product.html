@@ -63,6 +63,7 @@
   gtag('config', 'UA-3439789-9');
 
 
+
     </script>
 
     <script type="application/ld+json" th:utext="${product?.convertToIdJson()}"/>
@@ -73,6 +74,7 @@ new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-PGB5P4T');
+
     </script>
     <!-- End Google Tag Manager -->
 
@@ -91,13 +93,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           legend: { position: 'bottom' }
         };
         var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+        if(priceListJson.length==0){
+            document.getElementById('curve_chart').style="display:none";
+        }
 
         chart.draw(data, options);
       }
+
     </script>
 
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.0.2/chart.min.js" integrity="sha512-dnUg2JxjlVoXHVdSMWDYm2Y5xcIrJg1N+juOuRi0yLVkku/g26rwHwysJDAMwahaDfRpr1AxFz43ktuMPr/l1A==" crossorigin="anonymous"></script>
 
 </head>
 

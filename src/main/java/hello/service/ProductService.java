@@ -29,6 +29,8 @@ public interface ProductService {
 
     public Page<Product> getProductsByPageNo(int pageNo, int pageSize);
 
+    public List<Product> queryProductByPageNo(int pageNo, int pageSize);
+
     /**
      * 查找所有产品
      *

@@ -330,23 +330,23 @@ public class Product extends TaobaoObject {
 
     public List getPriceHistoryChartJson() {
         List<List> resultMapList = new ArrayList<>();
-        String priceHistoryJson = AliYunOSSUtils.readFileContent(getPriceHistoryPath());
         try {
-            List priceHistoryList = JsonMapper.json2pojo(priceHistoryJson, List.class);
+            String priceHistoryJson = AliYunOSSUtils.readFileContent(getPriceHistoryPath());
+            if (!priceHistoryJson.isEmpty()) {
+                List priceHistoryList = JsonMapper.json2pojo(priceHistoryJson, List.class);
 
-
-            List headerList = new ArrayList();
-            headerList.add("Date");
-            headerList.add("Price");
-            resultMapList.add(headerList);
-            for (int i = 0; i < priceHistoryList.size(); i++) {
-                HashMap priceMap = (HashMap) priceHistoryList.get(i);
-                List list = new ArrayList();
-                list.add(priceMap.get("date"));
-                list.add(Float.parseFloat((String) priceMap.get("price")));
-                resultMapList.add(list);
+                List headerList = new ArrayList();
+                headerList.add("Date");
+                headerList.add("Price");
+                resultMapList.add(headerList);
+                for (int i = 0; i < priceHistoryList.size(); i++) {
+                    HashMap priceMap = (HashMap) priceHistoryList.get(i);
+                    List list = new ArrayList();
+                    list.add(priceMap.get("date"));
+                    list.add(Float.parseFloat((String) priceMap.get("price")));
+                    resultMapList.add(list);
+                }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

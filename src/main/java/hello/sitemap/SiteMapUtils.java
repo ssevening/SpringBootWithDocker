@@ -31,26 +31,21 @@ public class SiteMapUtils {
     private ProductService productService;
 
     public String getProductSiteMap(int pageNo) {
-        if (AliYunOSSUtils.checkFileExist(getSitemapPath(pageNo), 7)) {
-            return AliYunOSSUtils.readFileContent(getSitemapPath(pageNo));
-        } else {
-            StringBuffer sb = new StringBuffer();
-            sb.append(BEGIN_DOC);
-            Page<Product> productPage = productService.getProductsByPageNo(pageNo, 500);
-            List<Product> productList = productPage.getContent();
-            int i = 0;
-            for (Product product : productList) {
-                sb.append(new SiteMap("https://www.dealfuns.com" + product.getDealFunWebUrl(), Calendar.getInstance().getTime(), CHANGEFREQ_WEEKLY, "0.8"));
-            }
-            sb.append(END_DOC);
-            AliYunOSSUtils.uploadString(getSitemapPath(pageNo), sb.toString());
-            return sb.toString();
+        StringBuffer sb = new StringBuffer();
+        sb.append(BEGIN_DOC);
+//            Page<Product> productPage = productService.getProductsByPageNo(pageNo, 500);
+//            List<Product> productList = productPage.getContent();
+        List<Product> productList = productService.queryProductByPageNo(pageNo, 500);
+        int i = 0;
+        for (Product product : productList) {
+            sb.append(new SiteMap("https://www.dealfuns.com" + product.getDealFunWebUrl(), Calendar.getInstance().getTime(), CHANGEFREQ_WEEKLY, "0.8"));
         }
+        sb.append(END_DOC);
+
+        return sb.toString();
     }
 
-    private String getSitemapPath(int pageNo) {
-        return "SiteMap" + File.separator + pageNo + ".txt";
-    }
+
 
 
 }

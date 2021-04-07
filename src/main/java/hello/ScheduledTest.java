@@ -87,6 +87,7 @@ public class ScheduledTest {
                 System.out.println(category.getCategoryName() + " data is getting.....");
                 sb.append(category.getCategoryName()).append(" data is getting.....").append("\r\n");
                 for (int j = 0; j <= 500; j++) {
+                    Thread.sleep(1000);
                     Map<String, Object> downloadResultMap = AFFHotProductDownloadAPI.getFromNet(category.getCategoryId(), j + "");
                     AliexpressAffiliateHotproductDownloadResponse downloadResponse = (AliexpressAffiliateHotproductDownloadResponse) downloadResultMap.get("result");
                     if (downloadResponse.getRespResult() != null && downloadResponse.getRespResult().getResult() != null && downloadResponse.getRespResult().getRespCode() == 200) {
