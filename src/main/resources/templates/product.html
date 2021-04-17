@@ -64,6 +64,7 @@
 
 
 
+
     </script>
 
     <script type="application/ld+json" th:utext="${product?.convertToIdJson()}"/>
@@ -74,6 +75,7 @@ new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-PGB5P4T');
+
 
     </script>
     <!-- End Google Tag Manager -->
@@ -100,6 +102,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         chart.draw(data, options);
       }
 
+
     </script>
 
 
@@ -125,13 +128,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div class="header-top">
             <div class="container">
                 <div class="row">
-                    <!-- Header Top left Start -->
-                    <div class="col-lg-4 col-md-12 d-center">
-                        <div class="header-top-left">
-                            <img src="/img/icon/call.png" alt="">Call Us : XXX
-                        </div>
-                    </div>
-                    <!-- Header Top left End -->
                     <!-- Search Box Start -->
                     <div class="col-lg-4 col-md-6 ml-auto mr-auto">
                         <div class="search-box-view">
@@ -144,40 +140,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         </div>
                     </div>
                     <!-- Search Box End -->
-                    <!-- Header Top Right Start -->
-                    <div class="col-lg-4 col-md-12">
-                        <div class="header-top-right">
-                            <ul class="header-list-menu f-right">
-                                <!-- Language Start -->
-                                <li><a href="#">Language: English <i class="fa fa-angle-down"></i></a>
-                                    <ul class="ht-dropdown">
-                                        <li><a href="#">Spanish</a></li>
-                                        <li><a href="#">Bengali</a></li>
-                                        <li><a href="#">Russian</a></li>
-                                    </ul>
-                                </li>
-                                <!-- Language End -->
-                                <!-- Currency Start -->
-                                <li><a href="#">Currency: USD <i class="fa fa-angle-down"></i></a>
-                                    <ul class="ht-dropdown">
-                                        <li><a href="#">USD</a></li>
-                                        <li><a href="#">GBP</a></li>
-                                        <li><a href="#">EUR</a></li>
-                                    </ul>
-                                </li>
-                                <!-- Currency End -->
-                            </ul>
-                            <!-- Header-list-menu End -->
-                        </div>
-                    </div>
-                    <!-- Header Top Right End -->
                 </div>
             </div>
             <!-- Container End -->
         </div>
         <!-- Header Top End -->
         <!-- Header Bottom Start -->
-        <div class="header-bottom header-sticky">
+        <div class="header-bottom">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-3 col-lg-2 col-sm-5 col-5">
@@ -245,6 +214,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="breadcrumb">
                 <ul>
                     <li><a href="/index.html">Home</a></li>
+                    <li><a href="#">Product Detail</a></li>
                 </ul>
             </div>
         </div>
@@ -394,12 +364,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                                    controls="controls" style="width:90%">
                                 您的浏览器不支持 video 标签。
                             </video>
-
-                            <div th:each="image : ${product?.getProductSmallImageUrls()}">
-                                <img th:src="${image}" th:alt="${product?.getProductTitle()}"
-                                     style="width:90%"/><br/>
-                            </div>
-
                         </div>
                     </div>
                     <!-- Product Thumbnail Tab Content End -->
@@ -428,7 +392,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     <div class="single-product">
                         <!-- Product Image Start -->
                         <div class="pro-img">
-                            <a th:href="${product?.getDealFunWebUrl()}">
+                            <a th:href="${product?.getDealFunWebUrl()}" target="_blank">
                                 <img class="primary-img" th:src="${product?.getProductMainImageUrl()}"
                                      th:alt="${product?.getProductTitle()}">
                                 <img class="secondary-img" th:alt="${product?.getProductTitle()}"

@@ -32,7 +32,7 @@ public class SiteMapIndexUtils {
         sb.append(BEGIN_DOC);
 
 
-        for (int i = indexNo; i < indexNo + 200; i++) {
+        for (int i = (indexNo - 1) * 200; i < indexNo * 200; i++) {
             sb.append(new SiteMapIndex("https://www.dealfuns.com/product/" + i + "/sitemap.xml", Calendar.getInstance().getTime()));
         }
 

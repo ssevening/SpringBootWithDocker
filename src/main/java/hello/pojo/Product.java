@@ -34,7 +34,7 @@ public class Product extends TaobaoObject {
             priceHistory.put("price", getLowerPrice());
             boolean alreadyAdded = false;
             List<Map<String, String>> priceHistories = new ArrayList<>();
-            if (AliYunOSSUtils.checkFileExist(getPriceHistoryPath(), -1)) {
+            if (AliYunOSSUtils.isFileExists(getPriceHistoryPath(), -1)) {
                 // 已存在
                 String priceJson = AliYunOSSUtils.readFileContent(getPriceHistoryPath());
                 priceHistories = JsonMapper.json2pojo(priceJson, ArrayList.class);
@@ -51,7 +51,7 @@ public class Product extends TaobaoObject {
                 priceHistories.add(priceHistory);
             }
 
-            AliYunOSSUtils.uploadString(getPriceHistoryPath(), JsonMapper.pojo2json(priceHistories));
+            AliYunOSSUtils.uploadString(getPriceHistoryPath(), JsonMapper.pojo2json(priceHistories), true);
 
         } catch (IOException e) {
             e.printStackTrace();

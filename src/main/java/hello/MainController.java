@@ -9,10 +9,7 @@ import hello.utils.JsonMapper;
 import hello.utils.WebPageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
@@ -33,6 +30,7 @@ public class MainController {
     private ProductRepository productRepository;
 
     @GetMapping(path = "/add") // Map ONLY GET Requests
+    @CrossOrigin
     public @ResponseBody
     String addNewUser(@RequestParam String name
             , @RequestParam String email) {

@@ -132,7 +132,6 @@ public class ProductController {
             e.printStackTrace();
         }
 
-        model.addAttribute("userId", "ssevening");
         return "index";
     }
 
@@ -266,19 +265,10 @@ public class ProductController {
 
         Product product = new Product();
         try {
-            if (MemCache.getInstance().get(productId) != null) {
-                product = (Product) MemCache.getInstance().get(productId);
-            } else {
-                String response = affProductDetailGetAPI.request();
-                AliexpressAffiliateProductdetailGetResponse productDetailGetResponse = AFFProductDetailGetAPI.getResult(response);
-                if (productDetailGetResponse != null && productDetailGetResponse.getRespResult() != null && productDetailGetResponse.getRespResult().getRespCode() == 200 && productDetailGetResponse.getRespResult().getResult() != null && productDetailGetResponse.getRespResult().getResult().getProducts() != null) {
-                    product = productDetailGetResponse.getRespResult().getResult().getProducts().get(0);
-                    if (product != null) {
-                        MemCache.getInstance().put(productId, product);
-                    } else {
-                        logger.debug("product return null" + response);
-                    }
-                }
+            String response = affProductDetailGetAPI.request();
+            AliexpressAffiliateProductdetailGetResponse productDetailGetResponse = AFFProductDetailGetAPI.getResult(response);
+            if (productDetailGetResponse != null && productDetailGetResponse.getRespResult() != null && productDetailGetResponse.getRespResult().getRespCode() == 200 && productDetailGetResponse.getRespResult().getResult() != null && productDetailGetResponse.getRespResult().getResult().getProducts() != null) {
+                product = productDetailGetResponse.getRespResult().getResult().getProducts().get(0);
             }
 
             model.addAttribute("product", product);
@@ -306,15 +296,10 @@ public class ProductController {
         smartMatchAPI.setParamMap(sparamMap);
         List<Product> smartMatchProductList = new ArrayList<>();
         try {
-            if (MemCache.getInstance().get("smartResult_" + productId) != null) {
-                smartMatchProductList = (List<Product>) MemCache.getInstance().get("smartResult_" + productId);
-            } else {
-                String response = smartMatchAPI.request();
-                AliexpressAffiliateProductSmartmatchResponse aliexpressAffiliateProductSmartmatchResponse = AFFSmartMatchAPI.getResult(response);
-                if (aliexpressAffiliateProductSmartmatchResponse != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult() != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult().getRespCode() == 200) {
-                    smartMatchProductList = aliexpressAffiliateProductSmartmatchResponse.getRespResult().getResult().getProducts();
-                    MemCache.getInstance().put("smartResult_" + productId, smartMatchProductList);
-                }
+            String response = smartMatchAPI.request();
+            AliexpressAffiliateProductSmartmatchResponse aliexpressAffiliateProductSmartmatchResponse = AFFSmartMatchAPI.getResult(response);
+            if (aliexpressAffiliateProductSmartmatchResponse != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult() != null && aliexpressAffiliateProductSmartmatchResponse.getRespResult().getRespCode() == 200) {
+                smartMatchProductList = aliexpressAffiliateProductSmartmatchResponse.getRespResult().getResult().getProducts();
             }
             model.addAttribute("smartMatchProductList", smartMatchProductList);
         } catch (Exception e) {
@@ -371,14 +356,7 @@ public class ProductController {
     @RequestMapping("/category.html")
     public String category(Model model, @RequestParam(required = false) Long pid, @RequestParam(required = false) String pName) {
         try {
-            List<Category> categoryList;
-            if (MemCache.getInstance().get("categoryList") != null) {
-                categoryList = (List<Category>) MemCache.getInstance().get("categoryList");
-            } else {
-                categoryList = categoryService.findAll();
-                MemCache.getInstance().put("categoryList", categoryList);
-            }
-
+            List<Category> categoryList = categoryService.findAll();
             List<Category> displayCategory = new ArrayList<>();
             // 这里处理显示的类目
             if (pid == null) {

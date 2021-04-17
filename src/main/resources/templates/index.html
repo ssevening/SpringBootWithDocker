@@ -94,13 +94,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div class="header-top">
             <div class="container">
                 <div class="row">
-                    <!-- Header Top left Start -->
-                    <div class="col-lg-4 col-md-12 d-center">
-                        <div class="header-top-left">
-                            <img src="img/icon/call.png" alt="">Call Us : XXX
-                        </div>
-                    </div>
-                    <!-- Header Top left End -->
                     <!-- Search Box Start -->
                     <div class="col-lg-4 col-md-6 ml-auto mr-auto">
                         <div class="search-box-view">
@@ -112,40 +105,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         </div>
                     </div>
                     <!-- Search Box End -->
-                    <!-- Header Top Right Start -->
-                    <div class="col-lg-4 col-md-12">
-                        <div class="header-top-right">
-                            <ul class="header-list-menu f-right">
-                                <!-- Language Start -->
-                                <li><a href="#">Language: English <i class="fa fa-angle-down"></i></a>
-                                    <ul class="ht-dropdown">
-                                        <li><a href="#">Spanish</a></li>
-                                        <li><a href="#">Bengali</a></li>
-                                        <li><a href="#">Russian</a></li>
-                                    </ul>
-                                </li>
-                                <!-- Language End -->
-                                <!-- Currency Start -->
-                                <li><a href="#">Currency: USD <i class="fa fa-angle-down"></i></a>
-                                    <ul class="ht-dropdown">
-                                        <li><a href="#">USD</a></li>
-                                        <li><a href="#">GBP</a></li>
-                                        <li><a href="#">EUR</a></li>
-                                    </ul>
-                                </li>
-                                <!-- Currency End -->
-                            </ul>
-                            <!-- Header-list-menu End -->
-                        </div>
-                    </div>
-                    <!-- Header Top Right End -->
                 </div>
             </div>
             <!-- Container End -->
         </div>
         <!-- Header Top End -->
         <!-- Header Bottom Start -->
-        <div class="header-bottom header-sticky">
+        <div class="header-bottom">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-3 col-lg-2 col-sm-5 col-5">
@@ -263,7 +229,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     <div class="single-product">
                         <!-- Product Image Start -->
                         <div class="pro-img">
-                            <a th:href="${product.getDealFunWebUrl()}">
+                            <a th:href="${product.getDealFunWebUrl()}" target="_blank">
                                 <img class="primary-img" th:src="${product.getProductMainImageUrl()}">
                                 <img class="secondary-img" th:alt="${product.getProductTitle()}"
                                      th:src="${product.getProductMainImageUrl()}"
@@ -324,7 +290,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     <div class="single-product">
                         <!-- Product Image Start -->
                         <div class="pro-img">
-                            <a th:href="${product.getDealFunWebUrl()}">
+                            <a th:href="${product.getDealFunWebUrl()}" target="_blank">
                                 <img class="primary-img" th:src="${product.getProductMainImageUrl()}">
                                 <img class="secondary-img" th:alt="${product.getProductTitle()}"
                                      th:src="${product.getProductMainImageUrl()}"

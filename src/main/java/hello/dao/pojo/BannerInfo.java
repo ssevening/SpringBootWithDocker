@@ -22,6 +22,8 @@ public class BannerInfo implements Serializable {
     private String promotionUrl;
 
     private String bannerUrl;
+
+    private String platform;
     /**
      * 状态 online/offline
      */
@@ -85,6 +87,14 @@ public class BannerInfo implements Serializable {
 
     public void setBannerUrl(String bannerUrl) {
         this.bannerUrl = bannerUrl;
+    }
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
     }
 }
 

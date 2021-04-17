@@ -53,10 +53,10 @@ public class SiteMapIndex {
     /** 重写 toString 适应xml格式 */
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append("<url>").append("\r\n");
+        sb.append("<sitemap>").append("\r\n");
         sb.append("<loc>" + loc + "</loc>").append("\r\n");
         sb.append("<lastmod>" + TimeUtils.getSiteMapTimeStr(getLastmod()) + "</lastmod>").append("\r\n");
-        sb.append("</url>").append("\r\n");
+        sb.append("</sitemap>").append("\r\n");
         return sb.toString();
     }
 
